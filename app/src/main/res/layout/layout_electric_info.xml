@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="95dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/text_PlateNumber"
+            style="@style/showText"
+            android:text="LC123456" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="bottom"
+                android:background="@mipmap/ic_brand" />
+
+            <TextView
+                android:id="@+id/text_brand"
+                style="@style/descText"
+                android:layout_marginLeft="6dp"
+                android:layout_gravity="bottom"
+                android:text="艾玛" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginLeft="17dp"
+                android:layout_gravity="bottom"
+                android:background="@mipmap/ic_color" />
+
+            <TextView
+                android:id="@+id/text_color"
+                style="@style/descText"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="6dp"
+                android:text="黑色" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="bottom"
+                android:background="@mipmap/ic_owner" />
+
+            <TextView
+                android:id="@+id/text_owner"
+                style="@style/descText"
+                android:layout_marginLeft="6dp"
+                android:text="张三" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginLeft="17dp"
+                android:layout_gravity="bottom"
+                android:background="@mipmap/ic_phone" />
+
+            <TextView
+                android:id="@+id/text_phone"
+                style="@style/descText"
+                android:layout_marginLeft="6dp"
+                android:text="12345678901" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginLeft="17dp"
+                android:layout_gravity="bottom"
+                android:background="@mipmap/ic_identity" />
+
+            <TextView
+                android:id="@+id/text_identityShow"
+                style="@style/descText"
+                android:layout_marginLeft="6dp"
+                android:layout_gravity="bottom"
+                android:text="330302198602010305" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

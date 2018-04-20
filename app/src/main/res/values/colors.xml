@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4B9DF9</color>
+    <color name="colorPrimaryDark">#4B9DF9</color>
+    <color name="colorAccent">#4B9DF9</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#73C01F</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="transparent1">#40FFFFFF</color>
+
+    <color name="colorLoginHint">#E8F1FF</color>
+    <color name="colorLoginLine">#89B8FE</color>
+    <color name="colorTitle">#4B9DF9</color>
+    <color name="colorStatus">#4285F4</color>
+    <color name="colorBg">#F9F9F9</color>
+    <color name="colorBg2">#EBECEE</color>
+    <color name="colorLine">#E7E7E7</color>
+    <color name="colorInput">#333333</color>
+    <color name="colorDisplay">#666666</color>
+    <color name="colorHint">#999999</color>
+    <color name="colorSwip">#7f000000</color>
+    <color name="colorNormalBtnOn">#3589E6</color>
+    <color name="colorQuit">#E14123</color>
+    <color name="colorDialogBg">#F0F2F5</color>
+    <color name="colorNoData">#888888</color>
+
+
+
+    <color name="colorBlueLight">#FF33B5E5</color>
+
+    <color name="colorUnConnected">#FF853C</color>
+
+    <!-- 三级联动颜色 -->
+    <color name="colorTimeNor">#DF1E3D</color>
+    <color name="colorTimePre">#55DF1E3D</color>
+    <color name="colorTopBar">#F5F5F5</color>
+    <color name="colorOut">#A8A8A8</color>
+    <color name="colorCenter">#2A2A2A</color>
+    <color name="colorDivider">#D5D5D5</color>
+    <color name="colorOverlay">#60000000</color>
+
+    <!-- Wheel分割线 -->
+    <color name="colorProvinceLine">#99CCFF</color>
+
+    <!-- 更新 -->
+    <color name="bg_white">#FFFFFF</color>
+    <color name="bg_gray_kj">#F5F5F5</color>
+    <color name="gray_divider">#CFCFCF</color>
+    <color name="bg_transparent">#00000000</color>
+    <color name="font_blue">#5890FF</color>
+    <color name="font_gray">#999999</color>
+    <color name="font_content">#434343</color>
+    <color name="colorLogin">#73ADFD</color>
+    <color name="shapeCircularBKG">#67ACFA</color>
+    <color name="textColor">#CC99FF</color>
+
+    <color name="circular_green">#73C01F</color>
+    <color name="circular_blue">#48F0E2</color>
+
+
+</resources>

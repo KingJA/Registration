@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <include layout="@layout/layout_electric_info" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_gravity="center_vertical"
+                    android:text="更换类型" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/blockBg"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/check_plateNum"
+                    style="@style/custom_checkBox"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="10dp"
+                    android:text="车牌" />
+
+                <CheckBox
+                    android:id="@+id/check_labelA"
+                    style="@style/custom_checkBox"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="10dp"
+                    android:text="车辆标签" />
+
+                <CheckBox
+                    android:id="@+id/check_labelB"
+                    style="@style/custom_checkBox"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="10dp"
+                    android:text="电池标签" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_gravity="center_vertical"
+                    android:text="相关照片（滑动查看更多）" />
+
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_PhotoList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:scrollbars="none">
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/LL_plateNumber"
+                style="@style/blockBg"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车牌号" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_plateNumber"
+                    style="@style/inputText"
+                    android:maxLength="8"
+                    android:enabled="false"
+                    android:hint="请输入电动车车牌" />
+
+            </LinearLayout>
+
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout
+                android:id="@+id/LL_labelA"
+                style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:enabled="false"
+                        android:text="车辆标签" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_labelA"
+                    style="@style/inputText"
+                    android:enabled="false"
+                    android:hint="请输入车辆标签编号" />
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout
+                android:id="@+id/LL_labelB"
+                style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="电池标签" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_labelB"
+                    style="@style/inputText"
+                    android:hint="请输入电池标签编号" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="更换原因"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:maxLines="5"
+                    android:textSize="15sp"
+                    android:gravity="top"
+                    android:textColor="@color/colorInput" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/custom_button"
+                android:text="提交" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:background="@color/white"
+        android:fillViewport="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/ll_PhotoList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/fl_Index_1"
+                android:layout_width="85dp"
+                android:layout_height="85dp">
+
+                <ImageView
+                    android:id="@+id/iv_Index_1_Photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/image_camera" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="59dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_Index_1_Mandatory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asterisk"
+                        android:textColor="@color/red"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_Index_1_PhotoName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Index_1"
+                        android:textColor="@color/colorHint"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_Index_2"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_marginLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_Index_2_Photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/image_camera" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="59dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_Index_2_Mandatory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asterisk"
+                        android:textColor="@color/red"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_Index_2_PhotoName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Index_2"
+                        android:textColor="@color/colorHint"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_Index_3"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_marginLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_Index_3_Photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/image_camera" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="59dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_Index_3_Mandatory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asterisk"
+                        android:textColor="@color/red"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_Index_3_PhotoName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Index_3"
+                        android:textColor="@color/colorHint"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_Index_4"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_marginLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_Index_4_Photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/image_camera" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="59dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_Index_4_Mandatory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asterisk"
+                        android:textColor="@color/red"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_Index_4_PhotoName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Index_4"
+                        android:textColor="@color/colorHint"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_Index_5"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_marginLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_Index_5_Photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/image_camera" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="59dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_Index_5_Mandatory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asterisk"
+                        android:textColor="@color/red"
+                        android:textSize="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_Index_5_PhotoName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Index_5"
+                        android:textColor="@color/colorHint"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_Index_6"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_marginLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_Index_6_Photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/image_camera" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="59dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_Index_6_Mandatory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/asterisk"
+                        android:textColor="@color/red"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_Index_6_PhotoName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Index_6"
+                        android:textColor="@color/colorHint"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</LinearLayout>

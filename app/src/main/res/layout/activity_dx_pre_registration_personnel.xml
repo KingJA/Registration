@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/colorTitle">
+
+                <ImageView
+                    android:id="@+id/IV_back"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/back_change"
+                    android:clickable="true"
+                    android:scaleType="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="车辆预登记"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RL_Name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/LL_Name"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/TV_Name_"
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="购买人姓名" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ET_Name"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/LL_Name"
+                    android:hint="请输入购买人姓名" />
+
+
+                <ImageView
+                    style="@style/dividerLine"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RL_CardType"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/LL_CardType"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/TV_CardType_"
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="证件类型" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/TV_CardType"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/LL_CardType"
+                    android:hint="请选择证件类型" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+
+                <ImageView
+                    style="@style/dividerLine"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RL_CardID"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/LL_CardID"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/TV_CardID_"
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="证件号码" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ET_CardID"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/LL_CardID"
+                    android:hint="请输入车主证件号码" />
+
+                <ImageView
+                    style="@style/dividerLine"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RL_Phone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/LL_Phone"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/TV_Phone_"
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="联系手机" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ET_Phone"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/LL_Phone"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:hint="请输入车主联系手机" />
+
+                <ImageView
+                    style="@style/dividerLine"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RL_Phone2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/LL_Phone2"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/TV_Phone2_"
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="备用电话" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ET_Phone2"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/LL_Phone2"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:hint="请输入车主备用电话" />
+
+
+                <ImageView
+                    style="@style/dividerLine"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RL_Address"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/LL_Address"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/TV_Address_"
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="现住址" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ET_Address"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/LL_Address"
+                    android:hint="请输入现住址" />
+
+
+                <ImageView
+                    style="@style/dividerLine"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/RL_Remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/LL_Remark"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TV_Remark_"
+                        style="@style/showText"
+                        android:layout_marginTop="15dp"
+                        android:text="备注" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ET_Remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/LL_Remark"
+                    android:background="@null"
+                    android:minHeight="80dp"
+                    android:textColor="@color/colorInput"
+                    android:textColorHint="@color/colorHint"
+                    android:textSize="15sp" />
+
+
+                <ImageView
+                    style="@style/dividerLine"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/BT_Submit"
+                style="@style/custom_button"
+                android:text="提交" />
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

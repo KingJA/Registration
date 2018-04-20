@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/RL_item"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="28dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_plateNumber"
+                style="@style/showText"
+                android:text="YJ456789" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_"
+                    style="@style/descText"
+                    android:text="采集时间："
+                    android:textColor="@color/colorInput" />
+
+                <TextView
+                    android:id="@+id/text_collectTime"
+                    style="@style/descText"
+                    android:text="2016--10--12 12:12:12"
+                    android:textColor="@color/colorInput" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_auditing"
+            android:layout_width="63dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="28dp"
+            android:background="@drawable/auditing_change"
+            android:text="稽查"
+            android:textColor="@color/colorTitle"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

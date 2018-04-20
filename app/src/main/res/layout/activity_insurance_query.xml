@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <LinearLayout
+        android:id="@+id/linear_plateNumber"
+        style="@style/blockBg"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical|right"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="车牌号" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_plateNumber"
+            style="@style/inputText"
+            android:hint="请输入电动车车牌" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_search"
+        style="@style/custom_button"
+        android:text="查询" />
+
+</LinearLayout>

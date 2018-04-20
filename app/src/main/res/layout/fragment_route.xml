@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <ImageView style="@style/dividerLine" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/showText"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="28dp"
+            android:text="查询时间" />
+
+        <LinearLayout
+            android:id="@+id/linear_searchTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="11dp"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_searchTime"
+                style="@style/showText"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="11dp"
+                android:text="2016-10-15" />
+
+            <TextView
+                style="@style/descText"
+                android:layout_marginLeft="15dp"
+                android:text="到目前"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="9dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/image_more" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="14dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:background="@color/colorTitle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="28dp"
+            android:text="轨迹列表"
+            android:textColor="@color/colorDisplay"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:id="@+id/linear_mapRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="7dp"
+            android:clickable="true">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:text="查看轨迹地图"
+                android:textColor="@color/colorTitle"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:background="@mipmap/image_blemore" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageView style="@style/dividerLine" />
+
+    <ListView
+        android:id="@+id/list_route"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
+        android:cacheColorHint="@color/transparent"
+        android:divider="@color/colorLine"
+        android:dividerHeight="1px"
+        android:listSelector="@color/transparent"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:scrollbarFadeDuration="0"
+        android:scrollbars="none" />
+
+</LinearLayout>

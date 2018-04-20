@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/TV_PhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="1111111111"
+        android:gravity="bottom"
+        android:textColor="#333333"
+        android:textSize="15sp" />
+<View
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/TV_Time"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="2222222"
+        android:textColor="#aeaeae"
+        android:textSize="14sp" />
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/TV_Relation"
+        android:layout_width="55dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:text="关联"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:background="@drawable/shape_textview_bkg_blue1"
+        android:textSize="14sp" />
+</RelativeLayout>

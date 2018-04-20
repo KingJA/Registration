@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <ImageView
+        style="@style/dividerLine"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="布控人姓名" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_dispatchedName"
+                    style="@style/showTextView"
+                    android:text="SX123456" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="布控时间" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_dispatchedTime"
+                    style="@style/showTextView"
+                    android:text="SX123456" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="布控电话" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_dispatchedPhone"
+                    style="@style/showTextView"
+                    android:text="SX123456" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="布控类型" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_dispatchedType"
+                    style="@style/showTextView"
+                    android:text="SX123456" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="报警时间" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_alarmTime"
+                    style="@style/showTextView"
+                    android:text="SX123456" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="被盗时间" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_startAlarmTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="49dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="15dp"
+                        android:gravity="center_vertical|right"
+                        android:text="SX123456" />
+
+                    <ImageView
+                        android:id="@+id/image_line"
+                        style="@style/dividerLine"
+                        android:layout_below="@id/text_startAlarmTime" />
+
+                    <TextView
+                        android:id="@+id/text_endAlarmTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="49dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/image_line"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="1dp"
+                        android:gravity="center_vertical|right"
+                        android:text="SX123456" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="责任单位" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_responsibilityUnit"
+                    style="@style/showTextView"
+                    android:text="SX123456" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

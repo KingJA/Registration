@@ -1,0 +1,115 @@
+<resources>
+    <string name="app_name">电动车防盗登记系统</string>
+
+    <!-- 电动车备案登记 -->
+    <string name="slde_photo_show">滑动查看所有照片</string>
+    <string name="photo_guleCar">车辆标签涂抹胶水</string>
+    <string name="photo_guleBattery">电池标签涂抹胶水</string>
+    <string name="asterisk">*</string>
+    <string name="photo_labelA">车辆标签安装位置</string>
+    <string name="photo_labelB">电池标签安装位置</string>
+    <string name="photo_plateNum">后方全车照</string>
+    <string name="photo_identity">证件</string>
+    <string name="photo_applicationForm">前方全车照</string>
+    <string name="photo_invoice">发票/凭证</string>
+    <string name="photo_registrationForm">登记表</string>
+    <string name="click_again_quit">再按一次退出程序</string>
+
+    <string name="locating">正在定位…</string>
+    <string name="located_failed">定位失败</string>
+
+    <string name="pickerview_cancel">取消</string>
+    <string name="pickerview_submit">确定</string>
+    <string name="pickerview_year">年</string>
+    <string name="pickerview_month">月</string>
+    <string name="pickerview_day">日</string>
+    <string name="pickerview_hours">时</string>
+    <string name="pickerview_minutes">分</string>
+    <string name="pickerview_seconds">秒</string>
+
+    <string name="rv_with_footer_pull_load_more">上拉或点击加载更多</string>
+    <string name="rv_with_footer_loading">加载中…</string>
+    <string name="rv_with_footer_empty">没有数据啦</string>
+
+    <!-- camera -->
+    <string name="camera_open_error">相机权限未获取，请开启相机权限</string>
+    <string name="camera_indicator">请将身份证放入框内后拍照！</string>
+    <string name="camera_take_picture_error">拍照失败</string>
+
+    <!-- recognize -->
+    <string name="reco_dialog_title">提示</string>
+    <string name="reco_dialog_blur">图像无法识别，请将身份证水平放于框内进行拍摄</string>
+    <string name="reco_dialog_imei">该设备未授权！！！</string>
+    <string name="reco_dialog_cdma">请使用CDMA制式设备</string>
+    <string name="reco_dialog_time_out">引擎已过期！！</string>
+    <string name="reco_dialog_engine_init">引擎初始化失败！！</string>
+    <string name="reco_dialog_fail_copy">请勿使用复印件</string>
+    <string name="reco_dialog_licens">授权失败！</string>
+
+
+    <!-- 打印机参数-->
+    <string name="bluetooth">蓝牙</string>
+    <string name="usb">USB</string>
+    <string name="ethernet">网口</string>
+    <string name="print_mode">打印模式</string>
+    <string name="tsc">标签</string>
+    <string name="esc">票据</string>
+    <string name="print_text">打印文字</string>
+    <string name="print_image">打印图片</string>
+    <string name="print_1d_barcode">打印一维码</string>
+    <string name="open">打开端口</string>
+    <string name="close">关闭端口</string>
+    <string name="receive">接收的数据</string>
+    <string name="query">查询状态</string>
+    <string name="init_port_info">接口:未设定 地址:不详</string>
+    <string name="port">接口:</string>
+    <string name="address">地址:</string>
+    <string name="port_parameters_wrong">端口参数错误！</string>
+    <string name="port_parameters_is_not_save">端口参数未保存！</string>
+    <string name="gprinter001">Printer 001</string>
+    <string name="gprinter002">Printer 002</string>
+    <string name="gprinter003">Printer 003</string>
+    <string name="gprinter004">Printer 004</string>
+    <string name="gprinter005">Printer 005</string>
+    <string name="disconnect">未连接</string>
+    <string name="cut">断开</string>
+    <string name="cutting">断开中</string>
+    <string name="connect">连接</string>
+    <string name="connected">已连接</string>
+    <string name="connecting">连接中</string>
+    <string name="ok">确定</string>
+    <string name="port_configuration">端口设置</string>
+    <string name ="bluetooth_is_not_enabled">蓝牙没有开启</string>
+    <string name = "title_paired_devices">已配对</string>
+    <string name ="title_other_devices">新设备</string>
+    <string name ="scan">扫描</string>
+    <string name ="bluetooth_device_list">蓝牙设备列表</string>
+    <string name ="select_bluetooth_device">选择蓝牙设备</string>
+    <string name ="none_bluetooth_device_found">没有找到蓝牙设备</string>
+    <string name ="none_paired">没有配对的设备</string>
+    <string name ="refresh_bluetooth_list">打开蓝牙设备列表</string>
+    <string name ="scaning">正在扫描。。。</string>
+    <string name ="usb_info">扫描到的设备USB信息</string>
+    <string name ="refresh_usb_device">扫描USB设备</string>
+    <string name ="ip_address">ip:</string>
+    <string name ="default_ip_address">192.168.123.100</string>
+    <string name ="port_number">port:</string>
+    <string name ="default_port_number">9100</string>
+    <string name ="bluetooth_address">蓝牙地址： </string>
+    <string name ="usb_address">USB： </string>
+    <string name ="usb_devices_list">USB设备列表</string>
+    <string name ="none_usb_device">未连接USB打印机</string>
+    <string name="current_version">当前版本</string>
+    <string name="find_new_version">发现新版本</string>
+    <string name="whether_or_not_to_update">是否更新？</string>
+    <string name="app_update">App软件更新</string>
+    <string name="update">更新</string>
+    <string name="not_update">暂不更新</string>
+    <string name="downloading">正在下载</string>
+    <string name="please_wait">请稍后</string>
+    <string name="download_complated">下载完成</string>
+    <string name="whether_or_not_setup_new_app">是否安装新的应用</string>
+    <string name="loading">正在载入。。。</string>
+    <string name="cancel">取消</string>
+    <string name="Frame">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`¬!"£$%^*()~=#{}[];':,./?/*-_+&#060;&#062;&#064;&#038;</string>
+</resources>

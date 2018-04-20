@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/RL_SelectTHEFTNO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选择稽查标签："
+                android:textColor="#333333"
+                android:textSize="15sp" />
+
+            <RadioGroup
+                android:id="@+id/RG_SelectTHEFTNO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/RB_THEFTNO"
+                    style="@style/custom_radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="标签1"
+                    android:textColor="@color/colorInput"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/RB_THEFTNO2"
+                    style="@style/custom_radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="标签2"
+                    android:textColor="@color/colorInput"
+                    android:textSize="15sp" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/CB_Voice"
+                style="@style/custom_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="10dp"
+                android:text="信号强度提示音" />
+
+
+
+</LinearLayout>

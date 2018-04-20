@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/descText"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="@string/slde_photo_show" />
+
+            <include layout="@layout/layout_photo_edit_kunming" />
+
+            <LinearLayout
+                style="@style/blockBg"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:gravity="center_vertical"
+                        android:text="车辆类型" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/group_vehicletype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_newVehicle"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="新车"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_oldVehicle"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="旧车"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:gravity="center_vertical"
+                        android:text="来历承诺书" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/group_promise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_yes"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="是"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_no"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="否"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/linear_vehicleBrand"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车辆品牌" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_vehicleBrand"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/linear_vehicleBrand"
+                    android:hint="请选择车辆品牌" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车牌号" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_plateNumber"
+                    style="@style/inputText"
+                    android:hint="请输入电动车车牌" />
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车架号" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_frame"
+                    style="@style/inputText"
+                    android:hint="如若不清用*代替" />
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="发动机号" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_motor"
+                    style="@style/inputText"
+                    android:hint="如若不清用*代替" />
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/linear_vehicleColor"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车辆颜色" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_vehicleColor"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/linear_vehicleColor"
+                    android:hint="请选择车辆颜色" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="购买时间" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_buyTime"
+                    style="@style/inputText"
+                    android:hint="请选择购买时间" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_next"
+                style="@style/custom_button"
+                android:text="下一步" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

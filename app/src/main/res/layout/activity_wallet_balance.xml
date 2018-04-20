@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F9F9">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorTitle">
+        <ImageView
+            android:id="@+id/IV_Back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/back_change"
+            android:clickable="true"
+            android:scaleType="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="钱包余额"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="44dp"
+        android:background="@color/colorTitle"
+        android:orientation="vertical"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="可提现余额(元)"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/TV_Balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="55sp" />
+
+        <LinearLayout
+            android:id="@+id/LL_FrozenBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="未出账金额(元)"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@mipmap/image_more" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/TV_FrozenBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="244dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/RL_OrderDetails"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:background="@color/white">
+
+            <ImageView
+                style="@style/dividerLine"
+                android:layout_marginLeft="40dp" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@mipmap/ic_pay" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="43dp"
+                android:text="订单明细" />
+
+            <ImageView
+                android:layout_width="7.5dp"
+                android:layout_height="14.5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/image_more" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/RL_PresentationDetails"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:background="@color/white">
+
+            <ImageView
+                style="@style/dividerLine"
+                android:layout_marginLeft="40dp" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@mipmap/ic_ithdrawals" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="43dp"
+                android:text="提现明细" />
+
+            <ImageView
+                android:layout_width="7.5dp"
+                android:layout_height="14.5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/image_more" />
+
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/TV_Withdrawals"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="18sp"
+        android:text="提现"
+        android:textColor="#4B9DF9"
+        android:background="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"/>
+
+</RelativeLayout>

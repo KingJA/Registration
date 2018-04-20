@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="33dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="33dp">
+
+        <LinearLayout
+            android:id="@+id/linear_scanPre"
+            style="@style/blockBg"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_scan_pre" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="扫描自主预登记码" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_queryIdentity"
+            style="@style/dividerLine"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/linear_queryIdentity"
+            style="@style/blockBg"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_query_identity" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="证件号查询预登记" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_queryPlateNumber"
+            style="@style/dividerLine"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/linear_queryPlateNumber"
+            style="@style/blockBg"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_query_plate" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="防盗号查询预登记" />
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/image_PlateNumber"
+            style="@style/dividerLine"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/linear_PlateNumber"
+            style="@style/blockBg"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_query_plate" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="车牌号查询预登记" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

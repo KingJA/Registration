@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    >
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_marginTop="44dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                style="@style/blockBg"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:gravity="center_vertical"
+                        android:text="撤控原因" />
+                </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/rl_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp">
+                <TextView
+                    android:id="@+id/tv_feedbackReason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#222222"
+                    android:hint="请选择当前情况类型"/>
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+            </RelativeLayout>
+                <RadioGroup
+                    android:id="@+id/group_feedbackStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <RadioButton
+                        android:id="@+id/rb_notFound"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="车辆找回"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_beenFound"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="被贩卖"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_allGet"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="被拆解"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edit_desc"
+                    style="@style/inputText"
+                    android:layout_height="100dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="top"
+                    android:hint="案件处理过程简要描述" />
+
+                <com.tdr.registration.view.NoScrollGridView
+                    android:id="@+id/gridView_noScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:columnWidth="85dp"
+                    android:horizontalSpacing="6dp"
+                    android:verticalSpacing="10dp"
+                    android:numColumns="4"
+                    android:scrollbars="none" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/custom_button"
+                android:text="提交" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/ll_Arrested"
+        android:layout_marginTop="44dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E7E7E7"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/tv_ArrestedAll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:textSize="15sp"
+            android:background="#ffffff"
+            android:textColor="#222222"
+            android:text="人车并获"/>
+        <ImageView style="@style/dividerLine"/>
+        <TextView
+            android:id="@+id/tv_ArrestedCar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:textSize="15sp"
+            android:background="#ffffff"
+            android:textColor="#222222"
+            android:text="查获车辆"/>
+        <ImageView style="@style/dividerLine"/>
+        <TextView
+            android:id="@+id/tv_ArrestedID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:textSize="15sp"
+            android:background="#ffffff"
+            android:textColor="#222222"
+            android:text="查获标签"/>
+        <ImageView style="@style/dividerLine"/>
+        <TextView
+            android:id="@+id/tv_ArrestedStop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:textSize="15sp"
+            android:background="#ffffff"
+            android:textColor="#222222"
+            android:text="终止"/>
+        <ImageView style="@style/dividerLine"/>
+    </LinearLayout>
+</RelativeLayout>

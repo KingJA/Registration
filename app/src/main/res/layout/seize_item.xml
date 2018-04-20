@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/showText"
+                android:text="扣押单号：" />
+
+            <TextView
+                android:id="@+id/text_seizeNumber"
+                style="@style/showText"
+                android:text="KY201610011533465" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/descText"
+                android:text="身份证号：" />
+
+            <TextView
+                android:id="@+id/text_identity"
+                style="@style/descText"
+                android:text="330302198602010305" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

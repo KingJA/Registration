@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorLine" />
+
+    <include layout="@layout/layout_city_search" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ListView
+            android:id="@+id/list_brand"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/colorLine"
+            android:dividerHeight="1px"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:listSelector="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/text_dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorHint"
+            android:textSize="30.0dip"
+            android:visibility="invisible" />
+
+        <com.tdr.registration.view.SideBar
+            android:id="@+id/sidrbar"
+            android:layout_width="@dimen/side_letter_bar_width"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center" />
+
+    </FrameLayout>
+
+</LinearLayout>

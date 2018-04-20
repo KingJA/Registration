@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="80dp"
+        card_view:elevation="1dp">
+
+        <ImageView
+            android:id="@+id/image_blueCircle"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:background="@mipmap/ic_bluecircle"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_commandTitle"
+                style="@style/showText"
+                android:text="LC123456" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/descText"
+                    android:text="下发时间：" />
+
+                <TextView
+                    android:id="@+id/text_alarmTime"
+                    style="@style/descText"
+                    android:text="2016-03-16 15:00:00" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_check"
+            android:layout_width="53dp"
+            android:layout_height="24dp"
+            android:background="@mipmap/btn_check"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="15dp"
+            android:text="签收"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

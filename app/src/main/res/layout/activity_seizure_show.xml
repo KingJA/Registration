@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="扣押单编号" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_seizureNumber"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="当事人" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_concernedName"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="联系方式" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_concernedPhone"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="身份证" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_concernedIdentity"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车辆品牌" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_vehicleBrand"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车辆颜色" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_vehicleColor"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="车架号" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_frame"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="电机号" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_motor"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="扣押来源" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_isTraffic"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="扣押单位" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_seizeUnit"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="扣押时间" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_seizeTime"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="登记人" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_registrant"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="登记单位" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_registrUnit"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="登记时间" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_registrTime"
+                    style="@style/showTextView" />
+
+            </RelativeLayout>
+
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="备注"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_remarks"
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:maxLines="5"
+                    android:textColor="@color/colorInput"
+                    android:textSize="15dp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

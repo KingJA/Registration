@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4C9DF9"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorTitle">
+
+        <ImageView
+            android:id="@+id/IV_back"
+            android:layout_width="44.0dip"
+            android:layout_height="44.0dip"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/back_change"
+            android:clickable="true"
+            android:scaleType="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="空中信号强度"
+            android:textColor="@color/white"
+            android:textSize="20.0sp" />
+
+
+    </RelativeLayout>
+<android.support.v4.view.ViewPager
+    android:id="@+id/VP_show"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_marginTop="100dp"/>
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/RL_Radius"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="100dp">-->
+
+        <!--<View-->
+            <!--android:id="@+id/V_BKG"-->
+            <!--android:layout_width="170dp"-->
+            <!--android:layout_height="170dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:background="@drawable/shape_circular1" />-->
+
+
+        <!--<com.tdr.registration.view.ArcProgress-->
+            <!--android:id="@+id/AP_SignalIntensity"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:progressColor="#ffffff"-->
+            <!--app:progressStyle="tick"-->
+            <!--app:radius="100dp"-->
+            <!--app:tickDensity="8"-->
+            <!--app:unprogresColor="#00ffffff" />-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/TV_SignalIntensity"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignTop="@+id/linearLayout"-->
+                <!--android:text="0"-->
+                <!--android:textColor="#ffffff"-->
+                <!--android:textSize="40sp" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="db"-->
+                <!--android:textColor="#ffffff"-->
+                <!--android:textSize="20sp" />-->
+        <!--</LinearLayout>-->
+
+    <!--</RelativeLayout>-->
+
+
+    <TextView
+        android:id="@+id/TV_MSG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VP_show"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="正在连接蓝牙..."
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/TV_Start"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/shape_button_bkg"
+        android:gravity="center"
+        android:text="开启信号测速"
+        android:textColor="#4B9DF9"
+        android:textSize="15sp" />
+</RelativeLayout>

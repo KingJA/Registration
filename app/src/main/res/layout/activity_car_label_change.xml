@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorTitle">
+
+        <ImageView
+            android:id="@+id/IV_Back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:clickable="true"
+            android:scaleType="center"
+            android:background="@drawable/back_change"/>
+
+        <TextView
+            android:id="@+id/TV_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="标签绑定"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/layout_electric_info" />
+
+    <LinearLayout
+        android:id="@+id/LL_Label_Change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="原标签号" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/TV_OldLabelNum"
+                    style="@style/inputText"
+                     />
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+
+                style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="新标签号" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ET_NewLabelNum"
+                    style="@style/inputText"
+                    android:hint="请输入新标签号" />
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/RL_LabelType"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/linear_vehicleBrand"
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical|right"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="15sp" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="标签类型" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/TV_Label_Type"
+            style="@style/inputText"
+            android:layout_toRightOf="@id/linear_vehicleBrand"
+            android:hint="请选择标签类型" />
+
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@mipmap/image_more" />
+
+        <ImageView
+            style="@style/dividerLine"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/LL_LabelNum"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            style="@style/blockBg">
+
+            <LinearLayout
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical|right"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="15sp" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_gravity="center_vertical"
+                    android:text="标签号" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/ET_LabelNum"
+                style="@style/inputText"
+                android:hint="请输入标签号" />
+        </LinearLayout>
+
+        <ImageView style="@style/dividerLine" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="105.0dip"
+        android:layout_marginTop="15.0dip"
+        android:background="@color/bg_white"
+        android:orientation="horizontal"
+        android:paddingBottom="10.0dip"
+        android:paddingTop="10.0dip">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15.0dip"
+            android:text="标签照片"
+            android:textColor="#ff333333"
+            android:textSize="15.0dip" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RL_PhotoList"
+            android:layout_width="fill_parent"
+            android:layout_height="85.0dip"
+            android:layout_marginLeft="15.0dip"
+            android:background="@color/white"
+            android:scrollbars="none" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/BT_Search"
+        style="@style/custom_button"
+        android:text="绑定" />
+</LinearLayout>

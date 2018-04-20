@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="85.0dip"
+    android:layout_height="85.0dip">
+
+    <ImageView
+        android:id="@+id/iv_photo"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@mipmap/image_camera" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#aa5890ff"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_Mandatory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/asterisk"
+            android:textColor="@color/red"
+            android:textSize="10.0dip" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Index_1"
+            android:textColor="@color/white"
+            android:textSize="10.0dip" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_clear"
+        android:layout_width="15.0dip"
+        android:layout_height="15.0dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="3.0dip"
+        android:layout_marginTop="3.0dip"
+        android:background="@mipmap/search_clear_off" />
+</RelativeLayout>

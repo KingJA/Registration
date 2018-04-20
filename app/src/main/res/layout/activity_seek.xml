@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg">
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relative_titlebg"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:background="@color/colorUnConnected">
+
+                <RelativeLayout
+                    android:id="@+id/relative_imagecircle"
+                    android:layout_width="match_parent"
+                    android:layout_height="236dp"
+                    android:layout_marginTop="36dp">
+
+                    <ImageView
+                        android:id="@+id/IV_bkg"
+                        android:layout_width="230dp"
+                        android:layout_height="230dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@mipmap/image_circlelogo" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/VP_photo"
+                        android:layout_width="230dp"
+                        android:layout_height="230dp"
+                        android:layout_centerHorizontal="true">
+
+                    </android.support.v4.view.ViewPager>
+
+                    <ImageView
+                        android:id="@+id/IV_vpbkg"
+                        android:layout_width="230dp"
+                        android:layout_height="230dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@mipmap/vp_show_photo_y" />
+                    <!--<com.tdr.registration.view.CircleImageView-->
+                    <!--android:id="@+id/image_circlelogo"-->
+                    <!--android:layout_width="230dp"-->
+                    <!--android:layout_height="230dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:src="@mipmap/image_circlelogo"-->
+                    <!--app:civ_border_color="@color/transparent1"-->
+                    <!--app:civ_border_width="2dp" />-->
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="车牌号"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/text_platemun"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="0000123"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="#4DC4F3" />
+
+                    <LinearLayout
+                        android:id="@+id/LL_Voice"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="与你距离"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:id="@+id/LL_Signal1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="7dp"
+                                android:orientation="horizontal">
+
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/TV_Signal1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#ffffff"
+                                android:layout_marginLeft="3dp"
+                                android:textSize="10sp"
+                                android:text="0"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/LL_Signal2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="7dp"
+                                android:orientation="horizontal">
+
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/TV_Signal2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#ffffff"
+                                android:layout_marginLeft="3dp"
+                                android:textSize="10sp"
+                                android:text="0"/>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="#4DC4F3" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="车辆品牌"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/text_brand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_checked"
+                android:layout_width="match_parent"
+                android:layout_height="114dp"
+                android:background="@color/bg_white">
+
+                <ImageView
+                    android:id="@+id/image_checked"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="36dp"
+                    android:background="@mipmap/image_checked" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="9dp"
+                    android:layout_toRightOf="@id/image_checked"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="车辆稽查"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="输入车牌号对车辆进行稽查"
+                        android:textColor="@color/colorHint"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/TV_DeviceState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="50dp"
+                    android:text=""
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@mipmap/image_choice" />
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+        </LinearLayout>
+    </ScrollView>
+
+<RelativeLayout
+    android:id="@+id/RL_ShowPhoto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:visibility="gone">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/VP_ShowPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <ImageView
+        android:id="@+id/IV_back"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:clickable="true"
+        android:background="@drawable/back_change" />
+</RelativeLayout>
+</RelativeLayout>

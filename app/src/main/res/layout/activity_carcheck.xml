@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        style="@style/blockBg">
+
+        <LinearLayout
+            android:id="@+id/linear_plateNumber"
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="车牌号" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_plateNumber"
+            style="@style/inputText"
+            android:layout_toRightOf="@id/linear_plateNumber"
+            android:hint="请输入电动车车牌" />
+
+        <ImageView
+            android:id="@+id/image_scanPlateNumber"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@mipmap/ic_scan" />
+
+    </RelativeLayout>
+
+    <ImageView style="@style/dividerLine" />
+
+    <LinearLayout style="@style/blockBg">
+
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical|right"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="电机号" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_engineNumber"
+            style="@style/inputText"
+            android:hint="请输入车辆电机号" />
+
+
+    </LinearLayout>
+
+    <ImageView style="@style/dividerLine" />
+
+    <LinearLayout style="@style/blockBg">
+
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical|right"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="车架号" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_shelvesNumber"
+            style="@style/inputText"
+            android:hint="请输入车辆车架号" />
+
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/descText"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/colorStatus"
+        android:text="输入任一条件即可查询"/>
+
+    <Button
+        android:id="@+id/btn_search"
+        style="@style/custom_button"
+        android:text="查询" />
+
+</LinearLayout>

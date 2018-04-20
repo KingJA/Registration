@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/blockBg"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="预约日期" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_appointmentDate"
+                    style="@style/inputText"
+                    android:hint="请选择预约日期" />
+
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="备案登记点" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_registrationName"
+                    style="@style/inputText"
+                    android:hint="请选择备案登记点"
+                    android:singleLine="true" />
+
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="预约时段" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_appointment"
+                    style="@style/inputText"
+                    android:hint="请选择预约时段"
+                    android:singleLine="true" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_search"
+                style="@style/custom_button"
+                android:text="查询" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

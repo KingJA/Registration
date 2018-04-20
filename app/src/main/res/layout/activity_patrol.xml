@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relative_stateBg"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@color/colorUnConnected">
+
+            <LinearLayout
+                android:id="@+id/linear_bleState"
+                android:layout_width="150dp"
+                android:layout_height="136.5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:background="@mipmap/ic_state_circle"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="36dp"
+                    android:text="当前状态"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/text_bleState"
+                    style="@style/showText"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="未连接"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:text="设备名称："
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/text_bleName"
+                    style="@style/descText"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_selectble"
+                android:layout_width="85dp"
+                android:layout_height="21dp"
+                android:layout_below="@id/linear_bleState"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-5dp"
+                android:background="@mipmap/btn_selectble"
+                android:text="选择稽查设备"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="14dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@color/colorTitle" />
+
+            <TextView
+                android:id="@+id/text_blacklist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="28dp"
+                android:text="黑车列表"
+                android:textColor="@color/colorDisplay"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:id="@+id/linear_updateBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="黑车库更新时间："
+                    android:textColor="@color/colorTitle"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/text_updateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:text="2016-10-15"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:id="@+id/image_update"
+                    android:layout_width="12dp"
+                    android:layout_height="17dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="7dp"
+                    android:background="@mipmap/ic_update"
+                    android:clickable="true" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <ImageView style="@style/dividerLine" />
+
+        <ListView
+            android:id="@+id/list_blackCar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal"
+            android:cacheColorHint="@color/transparent"
+            android:divider="@color/colorLine"
+            android:dividerHeight="1px"
+            android:listSelector="@color/transparent"
+            android:scrollbarFadeDuration="0"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+</LinearLayout>

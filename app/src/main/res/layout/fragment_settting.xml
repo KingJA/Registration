@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorTitle">
+
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:background="@color/white">
+
+                <com.tdr.registration.view.CircleImageView
+                    android:id="@+id/circle_userPhoto"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:background="@mipmap/image_userphoto" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/circle_userPhoto"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_userName"
+                        style="@style/showText"
+                        android:text="张三" />
+
+                    <TextView
+                        android:id="@+id/text_police"
+                        style="@style/descText"
+                        android:layout_marginTop="13dp"
+                        android:text="蒲州派出所" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="7.5dp"
+                    android:layout_height="14.5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relative_modifyPwd"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:background="@mipmap/ic_modifypwd" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:text="修改密码" />
+
+                <ImageView
+                    android:layout_width="7.5dp"
+                    android:layout_height="14.5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_directions"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:background="@mipmap/ic_directions" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:text="使用说明" />
+
+                <ImageView
+                    android:layout_width="7.5dp"
+                    android:layout_height="14.5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <ImageView
+                style="@style/dividerLine"
+                android:layout_marginLeft="40dp"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/relative_feedBack"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:background="@mipmap/ic_feedback" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:text="问题反馈" />
+
+                <ImageView
+                    android:layout_width="7.5dp"
+                    android:layout_height="14.5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <ImageView
+                style="@style/dividerLine"
+                android:layout_marginLeft="40dp" />
+
+            <RelativeLayout
+                android:id="@+id/relative_currentVersion"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:background="@color/white">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:background="@mipmap/ic_version" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:text="当前版本" />
+
+                <TextView
+                    android:id="@+id/text_currentVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:text="1.0.0"
+                    android:textColor="@color/colorHint"
+                    android:textSize="15sp" />
+
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/relative_paylsit"
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:background="@color/white">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:background="@mipmap/ic_pay" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="43dp"
+                        android:text="待付款" />
+
+                    <TextView
+                        android:id="@+id/text_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="30dp"
+                        android:text="99"
+                        android:gravity="center"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp"
+                        android:padding="1dp"
+                        android:background="@drawable/paybgd"/>
+                    <ImageView
+                        android:layout_width="7.5dp"
+                        android:layout_height="14.5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:background="@mipmap/image_more" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/RL_WalletBalance"
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:background="@color/white">
+                    <ImageView
+                        style="@style/dividerLine"
+                        android:layout_marginLeft="40dp" />
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:background="@mipmap/ic_wallet" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="43dp"
+                        android:text="钱包余额" />
+
+                    <ImageView
+                        android:layout_width="7.5dp"
+                        android:layout_height="14.5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:background="@mipmap/image_more" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_quit"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btnquit_change"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="退出登录"
+                    android:textColor="@color/colorQuit"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

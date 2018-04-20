@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F9F9"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorTitle">
+
+        <ImageView
+            android:id="@+id/IV_Back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/back_change"
+            android:clickable="true"
+            android:scaleType="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="提现申请"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/LL_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            style="@style/blockBg">
+
+            <LinearLayout
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical|right"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="15sp" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_gravity="center_vertical"
+                    android:text="姓名" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/ET_Name"
+                style="@style/inputText"
+                android:hint="请输入姓名" />
+        </LinearLayout>
+
+        <ImageView style="@style/dividerLine" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LL_Phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            style="@style/blockBg">
+
+            <LinearLayout
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical|right"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="15sp" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_gravity="center_vertical"
+                    android:text="手机号" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/ET_Phone"
+                style="@style/inputText"
+                android:hint="请输入手机号"
+                android:inputType="phone"
+                android:maxLength="11" />
+        </LinearLayout>
+
+        <ImageView style="@style/dividerLine" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LL_PayID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            style="@style/blockBg">
+
+            <LinearLayout
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical|right"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="15sp" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_gravity="center_vertical"
+                    android:text="支付宝" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/ET_PayID"
+                style="@style/inputText"
+                android:hint="请输入支付宝账账户" />
+        </LinearLayout>
+
+        <ImageView style="@style/dividerLine" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical|right"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="15sp" />
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_gravity="center_vertical"
+                    android:text="金额" />
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/TV_Prompt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="#BCBCBC" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5">
+
+            <TextView
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:gravity="center|right"
+                android:text="¥"
+                android:textColor="#333333"
+                android:textSize="30sp" />
+
+            <EditText
+                android:id="@+id/ET_Money_Point"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:background="@null"
+                android:digits="1234567890."
+                android:gravity="center_vertical"
+                android:hint="请输入金额"
+                android:textColor="@color/colorInput"
+                android:textColorHint="@color/colorHint"
+                android:textSize="30sp"
+                android:visibility="gone"/>
+            <EditText
+                android:id="@+id/ET_Money"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:background="@null"
+                android:inputType="number"
+                android:gravity="center_vertical"
+                android:hint="请输入金额"
+                android:textColor="@color/colorInput"
+                android:textColorHint="@color/colorHint"
+                android:textSize="30sp"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/BT_Next"
+        style="@style/custom_button"
+        android:text="提交申请" />
+
+
+</LinearLayout>

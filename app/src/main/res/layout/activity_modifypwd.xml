@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <LinearLayout
+        style="@style/blockBg"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical|right"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="15sp" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="原密码" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_oldPwd"
+            style="@style/inputText"
+            android:inputType="textPassword"
+            android:hint="请输入旧密码" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/blockBg"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical|right"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="15sp" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="新密码" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_newPwd"
+            style="@style/inputText"
+            android:inputType="textPassword"
+            android:hint="请输入新密码（6~16）" />
+
+
+    </LinearLayout>
+
+    <ImageView style="@style/dividerLine" />
+
+    <LinearLayout style="@style/blockBg">
+
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical|right"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="15sp" />
+
+            <TextView
+                style="@style/showText"
+                android:layout_gravity="center_vertical"
+                android:text="确认密码" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_confirmPwd"
+            style="@style/inputText"
+            android:hint="请再次输入新密码"
+            android:inputType="textPassword"
+            android:maxLength="18" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        style="@style/custom_button"
+        android:text="提交" />
+
+
+</LinearLayout>

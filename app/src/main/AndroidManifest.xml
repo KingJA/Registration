@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tdr.registration">
+
+    <permission
+        android:name="com.tdr.registration.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" /><!-- 低版本使用该权限 -->
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" /><!-- 为了兼容低版本 -->
+
+
+    <uses-permission android:name="com.tdr.permission.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- GPS定位权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <application
+        android:name=".base.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <!-- 登录页面 -->
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"></activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"></activity>
+        <!-- 备案登记动态页面_车辆-->
+        <activity
+            android:name=".activity.AutoRegister.AutoRegister_Car_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 备案登记动态页面_人员-->
+        <activity
+            android:name=".activity.AutoRegister.AutoRegister_Personnel_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 备案登记动态页面_保险-->
+        <activity
+            android:name=".activity.AutoRegister.AutoRegister_Insurance_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+
+        <!-- 黑车信息-->
+        <activity
+            android:name=".activity.BlackCarInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 标签绑定-->
+        <activity
+            android:name=".activity.CarLabelBindingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 标签绑定查询-->
+        <activity
+            android:name=".activity.LabelBindingCarQueryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 标签绑定列表-->
+        <activity
+            android:name=".activity.LabelBindingListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 空中信号-->
+        <activity
+            android:name=".activity.AerialSignalActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 查缉界面-->
+        <activity
+            android:name=".activity.PatrolActivity2"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 查缉界面-->
+        <activity
+            android:name=".activity.BleListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 电信预登记统计-->
+        <activity
+            android:name=".activity.DX_PreRegistration_Statistics_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 电信预登记查询展示列表-->
+        <activity
+            android:name=".activity.DX_PreListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 电信预登记_车主-->
+        <activity
+            android:name=".activity.DX_PreRegistration_Personnel_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 电信预登记_车辆-->
+        <activity
+            android:name=".activity.DX_PreRegistration_Car_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 电信预登记查询-->
+        <activity
+            android:name=".activity.DX_PreRegistrationQueryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 购买续费保险-->
+        <activity
+            android:name=".activity.BuyInsuranceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 保险续费 -->
+        <activity
+            android:name=".activity.InsuranceRenew"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆回访 -->
+        <activity
+            android:name=".activity.Visit_1_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity
+            android:name=".activity.Visit_2_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity
+            android:name=".activity.VisitStatistics"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!-- 钱包界面 -->
+        <activity
+            android:name=".activity.WalletBalanceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 订单列表界面 -->
+        <activity
+            android:name=".activity.OrderListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 提现详情界面 -->
+        <activity
+            android:name=".activity.WithdrawalsDetails"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 提现列表界面 -->
+        <activity
+            android:name=".activity.WithdrawalsListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 提现界面 -->
+        <activity
+            android:name=".activity.WithdrawalsApplyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 代付款列表界面 -->
+        <activity
+            android:name=".activity.UnpaidActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 支付界面 -->
+        <activity
+            android:name=".activity.PayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 城市选择 -->
+        <activity
+            android:name=".activity.CityPickerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 主页面 -->
+        <activity
+            android:name=".activity.HomeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 备案登记第一屏 -->
+        <activity
+            android:name=".activity.kunming.RegisterFirstKunMingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 备案登记第二屏 -->
+        <activity
+            android:name=".activity.RegisterSecondActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 备案登记第三屏 -->
+        <activity
+            android:name=".activity.RegisterThirdActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!--确认保险界面-->
+        <activity
+            android:name=".activity.ConfirmationInsuranceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 车辆品牌 -->
+        <activity
+            android:name=".activity.BrandActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 昆明摩托车登记第一页 -->
+        <activity
+            android:name=".activity.kunming.motorcycle.MotorcycleFirstKunMingActvity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 各类查询页面 -->
+        <activity
+            android:name=".activity.ElectricInfoSearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 信息变更第一屏 -->
+        <activity
+            android:name=".activity.kunming.ChangeFirstKunMingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 信息变更第二屏 -->
+        <activity
+            android:name=".activity.ChangeSecondActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 信息变更第三屏 -->
+
+        <!-- 车辆布控 -->
+        <activity
+            android:name=".activity.VehicleMonitorActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆报废 -->
+        <activity
+            android:name=".activity.CarScrapActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆过户 -->
+        <activity
+            android:name=".activity.CarTransferActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车牌补办 -->
+        <activity
+            android:name=".activity.CarReissueActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity
+            android:name=".activity.CarReissueActivity2"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆查询 -->
+        <activity
+            android:name=".activity.CarCheckActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆查询-详情 -->
+        <activity
+            android:name=".activity.CheckShowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 预登记车辆查询-详情 -->
+        <activity
+            android:name=".activity.PreCheckShowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆扣押 -->
+        <activity
+            android:name=".activity.VehiclesSeizeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆扣押管理-查询 -->
+        <activity
+            android:name=".activity.SeizureSearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆扣押管理-列表 -->
+        <activity
+            android:name=".activity.SeizureListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆扣押管理-详情 -->
+        <activity
+            android:name=".activity.SeizureShowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 备案统计-->
+        <activity
+            android:name=".activity.StatisticActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 个人备案统计-->
+        <activity
+            android:name=".activity.PersonalStatisticActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- ViewInject-查询-->
+        <activity
+            android:name=".activity.InsuranceQueryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- ViewInject-修改-->
+        <activity
+            android:name=".activity.InsuranceModifyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆品牌 -->
+        <activity
+            android:name=".activity.AreaActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆稽查 -->
+        <activity
+            android:name=".activity.AuditingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆稽查-选择蓝牙列表 -->
+        <activity
+            android:name=".activity.SelectBleActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 车辆稽查-详情页 -->
+        <activity
+            android:name=".activity.AuditingDetailsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 稽查 -->
+        <activity
+            android:name=".activity.SeekActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 稽查 -->
+        <activity
+            android:name=".activity.SeekActivity2"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 巡逻模式 -->
+        <activity
+            android:name=".activity.PatrolActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 指令中心 -->
+        <activity
+            android:name=".activity.CommandCenterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 指令反馈 -->
+        <activity
+            android:name=".activity.FeedBackCommandActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 昆明定制预登记 -->
+        <activity
+            android:name=".activity.kunming.JustFuckForKMActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!--车辆返还 -->
+        <activity
+            android:name=".activity.CarReturnActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 修改密码-->
+        <activity
+            android:name=".activity.ModifyPwdActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 地图展示-->
+        <activity
+            android:name=".activity.MapActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 二维码扫描 -->
+        <activity
+            android:name=".activity.QRCodeScanActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 二维码生成 -->
+        <activity
+            android:name=".activity.QRCodeCreateActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- ===========================================龙岩===============================-->
+        <!-- 预登记转备案查询 -->
+        <activity
+            android:name=".activity.longyan.PreSearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 预登记转备案第一页 -->
+        <activity
+            android:name=".activity.longyan.PreToOfficialFirstLongYanActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 预登记转备案第二页 -->
+        <activity
+            android:name=".activity.longyan.PreToOfficialSecondLongYanActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 现场预登记第一页-->
+        <activity
+            android:name=".activity.PreFirstActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 现场预登记第一页-->
+        <activity
+            android:name=".activity.PreSecondActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 上传打印凭证-->
+        <activity
+            android:name=".activity.UploadCredentialsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 预登记列表-->
+        <activity
+            android:name=".activity.PreListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 临时布控列表-->
+        <activity
+            android:name=".activity.TempListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 图片查看器-->
+        <activity
+            android:name=".activity.PreviewImageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!-- 保险理赔-->
+        <activity
+            android:name=".activity.InsuranceClaimsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!--============================来宾等正常版========================================-->
+        <activity
+            android:name=".activity.normal.RegisterFirstNormalActivity2"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity
+            android:name=".activity.normal.ChangeFirstNormalActivity2"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+
+        <!-- ===========================================蓝牙打印机===============================-->
+        <!-- 蓝牙打印机列表 -->
+        <activity
+            android:name=".activity.BlueListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 搜索到的蓝牙设备列表 -->
+        <activity
+            android:name=".activity.BluetoothDeviceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+
+        <!-- =================================天津=====================================-->
+        <!-- 预约查询 -->
+        <activity
+            android:name=".activity.tianjin.AppointmentQueryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 备案登记点列表 -->
+        <activity
+            android:name=".activity.tianjin.RegistrationPointActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 预约时段列表 -->
+        <activity
+            android:name=".activity.tianjin.PeriodTimeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <!-- 预约列表 -->
+        <activity
+            android:name=".activity.tianjin.AppointmentListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <!--OCR-->
+        <activity
+            android:name="com.yunmai.android.idcard.ACamera"
+            android:configChanges="orientation|keyboard|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.yunmai.android.idcard.ARecognize"
+            android:configChanges="orientation|keyboard|keyboardHidden">
+
+        </activity>
+
+        <service
+            android:name=".imagecompress.LGImgCompressorIntentService"
+            android:exported="false" />
+
+        <service
+            android:name=".imagecompress.LGImgCompressorService"
+            android:process=":remote" />
+
+        <receiver android:name=".gprinter.DeviceBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.gprinter.service.GpPrintService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="GpPrintService"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.gprinter.aidl.GpPrintService" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58df27144ad1564ef2000a3f" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
+        <!--高德地图定位-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="559b5da48cf7d084c6b2ba05bdb0468d" />
+        <!--高德地图定位结束-->
+
+        <!--极光推送-->
+        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
+        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+                <category android:name="com.tdr.wisdome" />
+            </intent-filter>
+
+        </service>
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
+                <category android:name="com.tdr.wisdome" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+
+        </receiver>
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.AlarmReceiver"
+            android:exported="false" />
+
+        <!-- User defined.  For test only  用户自定义的广播接收器-->
+        <receiver
+            android:name=".jpush.MyReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.tdr.registration" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".ble.BluetoothLeService"
+            android:enabled="true"></service>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.tdr.registration"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
+    </application>
+
+</manifest>

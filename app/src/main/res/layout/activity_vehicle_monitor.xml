@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:gravity="center_vertical"
+                        android:text="布控类型" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/group_monitorType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_monitorStolen"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="被盗"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_monitorOthers"
+                        style="@style/custom_radioButton"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="其他"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="布控车辆" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_plateNumber"
+                    style="@style/inputText"
+                    android:hint="请输入布控车辆车牌号"
+                    />
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="布控人姓名" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_dispatchedName"
+                    style="@style/inputText"
+                    android:hint="请输入布控人姓名" />
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="布控人电话" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_dispatchedPhone"
+                    style="@style/inputText"
+                    android:hint="请输入布控人联系方式"
+                    android:inputType="number"
+                    android:maxLength="11" />
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout style="@style/blockBg">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical|right"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/showText"
+                        android:layout_gravity="center_vertical"
+                        android:text="短信预警" />
+
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/group_noticeTimes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_noticeNone"
+                        style="@style/custom_radioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="不发送"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_noticeOne"
+                        style="@style/custom_radioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="发送一次"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_noticeRepeat"
+                        style="@style/custom_radioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="重复发送"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout
+                android:id="@+id/linear_monitorStolen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical|right"
+                            android:text="*"
+                            android:textColor="@color/red"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="报警时间" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_alarmTime"
+                        style="@style/inputText"
+                        android:hint="请选择报警时间" />
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="通知电话" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edit_noticePhone"
+                        style="@style/inputText"
+                        android:hint="请输入通知电话"
+                        android:inputType="number"
+                        android:maxLength="11" />
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="报警人姓名" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edit_alarmName"
+                        style="@style/inputText"
+                        android:hint="请输入报警人姓名" />
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="报警人电话" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edit_alarmPhone"
+                        style="@style/inputText"
+                        android:hint="请输入报警人电话"
+                        android:inputType="number"
+                        android:maxLength="11" />
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical|right"
+                            android:text="*"
+                            android:textColor="@color/red"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="被盗时间" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_alarmStartTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="49dp"
+                            android:gravity="center_vertical"
+                            android:hint="请选择被盗起始时间"
+                            android:textColor="@color/colorInput"
+                            android:textColorHint="@color/colorHint" />
+
+                        <ImageView style="@style/dividerLine" />
+
+                        <TextView
+                            android:id="@+id/text_alarmEndTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="49dp"
+                            android:gravity="center_vertical"
+                            android:hint="请选择被盗终止时间"
+                            android:textColor="@color/colorInput"
+                            android:textColorHint="@color/colorHint" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical|right"
+                            android:text="*"
+                            android:textColor="@color/red"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="被盗地点" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edit_stolenAddress"
+                        style="@style/inputText"
+                        android:hint="请输入车辆被盗地点" />
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical|right"
+                            android:text="*"
+                            android:textColor="@color/red"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="责任单位" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_responsibilityUnit"
+                        style="@style/inputText"
+                        android:hint="请选择责任单位" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_monitorOthers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical|right"
+                            android:text="*"
+                            android:textColor="@color/red"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="布控时间" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_dispatchedTime"
+                        style="@style/inputText"
+                        android:hint="请选择布控时间" />
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="通知电话" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edit_noticePhoneOthers"
+                        style="@style/inputText"
+                        android:hint="请输入通知电话"
+                        android:maxLength="11" />
+
+                </LinearLayout>
+
+                <ImageView style="@style/dividerLine" />
+
+                <LinearLayout style="@style/blockBg">
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/showText"
+                            android:layout_gravity="center_vertical"
+                            android:text="责任单位" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_responsibilityUnitOthers"
+                        style="@style/inputText"
+                        android:hint="请选择责任单位" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="布控原因"
+                        android:textColor="@color/colorInput"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_case"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:maxLines="5"
+                    android:textColor="@color/colorInput"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/custom_button"
+                android:text="布控" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

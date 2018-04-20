@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.tdr.registration.view.NoScrollViewPager
+        android:id="@+id/VP_Home"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <ImageView style="@style/dividerLine" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/LL_business"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/IV_business"
+                android:layout_width="26dp"
+                android:layout_height="38dp"
+                android:background="@mipmap/business_on" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LL_inspect"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/IV_inspect"
+                android:layout_width="26dp"
+                android:layout_height="38dp"
+                android:background="@mipmap/inspect_off" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LL_setting"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/IV_setting"
+                android:layout_width="26dp"
+                android:layout_height="38dp"
+                android:background="@mipmap/setting_off" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

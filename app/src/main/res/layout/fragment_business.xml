@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relative_title"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@mipmap/home_top">
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <LinearLayout
+                android:id="@+id/linear_title"
+                android:layout_width="wrap_content"
+                android:layout_height="26.5dp"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="42.5dp"
+                    android:layout_height="26.5dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/home_icon" />
+
+                <ImageView
+                    android:id="@+id/image_appName"
+                    android:layout_width="234dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="16dp"
+                    android:background="@mipmap/home_app" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_appName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:text="电动车备案登记系统"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/image_desc"
+            android:layout_width="191.5dp"
+            android:layout_height="31dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="@mipmap/home_desc" />
+
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <com.tdr.registration.view.MyRecyclerView
+                android:id="@+id/RL_square"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.tdr.registration.view.MyRecyclerView
+                android:id="@+id/RV_func"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:elevation="0dp" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

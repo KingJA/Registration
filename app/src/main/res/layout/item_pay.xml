@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        >
+        <TextView
+            android:id="@+id/TV_InsuranceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:textSize="15dp"
+            android:textColor="#222222"
+            android:text="防盗备案装置费(1年)" />
+
+        <TextView
+            android:id="@+id/TV_InsuranceExplain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="送指定年限产品责任险"
+            android:textColor="#999999"
+            android:textSize="12dp"
+            android:layout_below="@+id/TV_InsuranceName"
+            android:layout_marginTop="16dp"
+            />
+
+        <TextView
+            android:id="@+id/TV_InsuranceAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textSize="19dp"
+            android:textColor="#ff0000"
+            android:text="¥20.00" />
+    </RelativeLayout>
+</RelativeLayout>

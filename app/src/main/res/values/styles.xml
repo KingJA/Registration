@@ -1,0 +1,201 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- 关键型说明性文字风格 -->
+    <style name="showText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorInput</item>
+    </style>
+
+    <!-- 非关键型说明性文字 -->
+    <style name="descText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorHint</item>
+    </style>
+
+    <!-- 输入框文字风格 -->
+    <style name="inputText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/colorInput</item>
+        <item name="android:textColorHint">@color/colorHint</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <!-- 显示TextView风格 -->
+    <style name="showTextView">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:gravity">right</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_marginRight">15dp</item>
+    </style>
+
+    <!-- 对话框 -->
+    <style name="DialogWindowTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorInput</item>
+    </style>
+
+    <style name="dialog_tran" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+    </style>
+
+    <style name="dialog_untran" parent="dialog_tran">
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!--ZProgressHUD-->
+    <style name="DialogTheme" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+    </style>
+
+    <!-- RadioButton风格 -->
+    <style name="custom_radioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/radiobutton_change</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+    <style name="anim_pop_feedback">
+        <item name="android:windowEnterAnimation">@anim/pop_feedback_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_feedback_out</item>
+    </style>
+    <!-- 分割线 -->
+    <style name="dividerLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/colorLine</item>
+    <!--    <item name="android:background">@color/red</item>-->
+    </style>
+
+    <!-- 小布局 -->
+    <style name="blockBg">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <!-- CheckBox风格 -->
+    <style name="custom_checkBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/checkbox_change</item>
+        <item name="android:textColor">@color/colorInput</item>
+    </style>
+
+    <!-- button风格 -->
+    <style name="custom_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">35dp</item>
+        <item name="android:layout_marginBottom">17dp</item>
+        <item name="android:background">@drawable/normal_btn_change</item>
+    </style>
+
+    <!--对话框样式-->
+    <style name="custom_alertDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_bg</item>
+    </style>
+
+    <style name="LetterIndexTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">@dimen/side_letter_bar_width</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="MyWidget" parent="@android:style/Theme" />
+
+    <style name="MyWidget.TabText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@drawable/indicator_change</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
+
+    <!--右上角出来Popupwindow样式-->
+    <style name="PopupTopRightAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_enter</item>
+        <!--<item name="android:windowExitAnimation">@anim/pop_exit</item>-->
+    </style>
+
+    <color name="colorGray">#8C8C8C</color>
+
+    <style name="CustomAlertDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/shape_lnull_bwhite_r8</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <!--普通垂直分割线-->
+
+    <style name="divider_nomal_vertical">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/gray_divider</item>
+    </style>
+
+    <!--普通水平分割线-->
+    <style name="divider_nomal_horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/gray_divider</item>
+    </style>
+
+    <style name="font_blue_16">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/font_blue</item>
+    </style>
+
+    <style name="font_gray_16">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/font_gray</item>
+    </style>
+
+    <style name="font_content_16">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/font_content</item>
+    </style>
+
+    <style name="font_content_14">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/font_content</item>
+    </style>
+    <style name="AnimationBottomFade">
+        <item name="android:windowEnterAnimation">@anim/in_bottomtotop</item>
+        <item name="android:windowExitAnimation">@anim/out_toptobottom</item>
+    </style>
+
+</resources>

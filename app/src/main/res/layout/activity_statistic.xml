@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_centerVertical="true"
+                    android:text="开始时间" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_startTime"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="开始日期" />
+
+                <TextView
+                    android:id="@+id/text_startTime"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_centerVertical="true"
+                    android:text="结束时间" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_endTime"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="结束日期" />
+
+                <TextView
+                    android:id="@+id/text_endTime"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_centerVertical="true"
+                    android:text="基本信息" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_registrationName"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="登记点名称" />
+
+                <TextView
+                    android:id="@+id/text_registrationName"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="登记点编号" />
+
+                <TextView
+                    android:id="@+id/text_registrationNumber"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:id="@+id/relative_registrationArea"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="所属辖区" />
+
+                <TextView
+                    android:id="@+id/text_registrationArea"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp" />
+
+                <ImageView
+                    android:id="@+id/image_registrationArea"
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="登记车辆总数" />
+
+                <TextView
+                    android:id="@+id/text_totalNum"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="防盗登记数" />
+
+                <TextView
+                    android:id="@+id/text_totalAntitheft"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/image_totalWithoutAntitheft"
+                style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:id="@+id/relative_totalWithoutAntitheft"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="无防盗登记数" />
+
+                <TextView
+                    android:id="@+id/text_totalWithoutAntitheft"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="新车" />
+
+                <TextView
+                    android:id="@+id/text_newCar"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView
+                style="@style/dividerLine"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="旧车" />
+
+                <TextView
+                    android:id="@+id/text_oldCar"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView
+                style="@style/dividerLine"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="车牌变更" />
+
+                <TextView
+                    android:id="@+id/text_palteNumberChange"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="已上赔付服务" />
+
+                <TextView
+                    android:id="@+id/text_havaInsurance"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView
+                style="@style/dividerLine"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="补办车牌费" />
+
+                <TextView
+                    android:id="@+id/text_reissuePlate"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView
+                style="@style/dividerLine"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="补办车牌防盗费" />
+
+                <TextView
+                    android:id="@+id/text_reissueAntitheft"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="登记总额" />
+
+                <TextView
+                    android:id="@+id/text_registrationTotalNum"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_centerVertical="true"
+                    android:text="费用信息" />
+
+
+                <!--<TextView-->
+                    <!--style="@style/descText"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginRight="100dp"-->
+                    <!--android:text="数量" />-->
+
+                <!--<TextView-->
+                    <!--style="@style/descText"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:text="金额" />-->
+
+            </RelativeLayout>
+
+            <com.tdr.registration.view.LinearLayoutForShowInsurance
+                android:id="@+id/list_insurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:divider="@color/colorLine"
+                android:orientation="vertical"
+                android:scrollbars="none"
+                android:visibility="visible" />
+
+
+            <LinearLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:text="套餐总计" />
+
+                <TextView
+                    android:id="@+id/text_packageTotal"
+                    style="@style/showText"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="right" />
+
+                <TextView
+                    android:id="@+id/text_packageMoney"
+                    style="@style/showText"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="right" />
+
+            </LinearLayout>
+
+            <!-- <LinearLayout
+                 style="@style/blockBg"
+                 android:paddingLeft="15dp"
+                 android:paddingRight="15dp">
+
+                 <TextView
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="2"
+                     android:text="防盗备案装置费1年" />
+
+                 <TextView
+                     android:id="@+id/text_againstTheft1"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+                 <TextView
+                     android:id="@+id/text_againstTheftMoney1"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+             </LinearLayout>
+
+             <ImageView style="@style/dividerLine" />
+
+             <LinearLayout
+                 style="@style/blockBg"
+                 android:paddingLeft="15dp"
+                 android:paddingRight="15dp">
+
+                 <TextView
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="2"
+                     android:text="防盗备案装置费2年" />
+
+                 <TextView
+                     android:id="@+id/text_againstTheft2"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+                 <TextView
+                     android:id="@+id/text_againstTheftMoney2"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+             </LinearLayout>
+
+             <ImageView style="@style/dividerLine" />
+
+             <LinearLayout
+                 style="@style/blockBg"
+                 android:paddingLeft="15dp"
+                 android:paddingRight="15dp">
+
+                 <TextView
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="2"
+                     android:text="防盗备案装置费3年" />
+
+                 <TextView
+                     android:id="@+id/text_againstTheft3"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+                 <TextView
+                     android:id="@+id/text_againstTheftMoney3"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+             </LinearLayout>
+
+             <ImageView style="@style/dividerLine" />
+
+             <LinearLayout
+                 style="@style/blockBg"
+                 android:paddingLeft="15dp"
+                 android:paddingRight="15dp">
+
+                 <TextView
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="2"
+                     android:text="驾驶员意外险" />
+
+                 <TextView
+                     android:id="@+id/text_driverCasualty"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+                 <TextView
+                     android:id="@+id/text_driverCasualtyMoney"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+             </LinearLayout>
+
+             <ImageView style="@style/dividerLine" />
+
+             <LinearLayout
+                 style="@style/blockBg"
+                 android:paddingLeft="15dp"
+                 android:paddingRight="15dp">
+
+                 <TextView
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="2"
+                     android:text="驾驶员意外险" />
+
+                 <TextView
+                     android:id="@+id/text_thirdInsurance"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+                 <TextView
+                     android:id="@+id/text_thirdInsuranceMoney"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+             </LinearLayout>
+
+             <ImageView style="@style/dividerLine" />
+
+             <LinearLayout
+                 style="@style/blockBg"
+                 android:paddingLeft="15dp"
+                 android:paddingRight="15dp">
+
+                 <TextView
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="2"
+                     android:text="保险总计" />
+
+                 <TextView
+                     android:id="@+id/text_insuranceTotal"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+                 <TextView
+                     android:id="@+id/text_insuranceTotalMoney"
+                     style="@style/showText"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:gravity="right" />
+
+             </LinearLayout>-->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

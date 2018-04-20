@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="#ffffff"
+>
+
+    <TextView
+        android:id="@+id/TV_Money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="-1000"
+        android:layout_marginLeft="15dp"
+        android:textColor="#333333"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/TV_Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:text="2017-10-11 12:12:12"
+        android:textColor="#999999"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/TV_Type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="未发放"
+        android:layout_marginLeft="15dp"
+        android:textColor="#333333"
+        android:textSize="13sp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:background="@drawable/shape_textview_bkg_blue2"/>
+    <TextView
+        android:id="@+id/TV_OrderMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="-900"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:textColor="#333333"
+        android:textSize="15sp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:visibility="gone"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#F9F9F9"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>
