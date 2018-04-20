@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -179,7 +180,15 @@ public class UnpaidActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("UnPaid", "1");
                 bundle.putString("PayDate", mGson.toJson(L));
-                ActivityUtil.goActivityWithBundle(UnpaidActivity.this, PayActivity.class, bundle);
+                Log.e("debug", "PI.getPaymentWay(): "+PI.getPaymentWay() );
+                if (PI.getPaymentWay() == 2) {
+                    //  扫码支付
+                    PayQcodeActivity.goActivity(UnpaidActivity.this,PI.getContent(),PI.getTotal_Amount(),PI.getPlateNumber(),PI.getPayNo());
+                } else {
+                    //普通支付
+                    ActivityUtil.goActivityWithBundle(UnpaidActivity.this, PayActivity.class, bundle);
+                }
+
 
 //                pay(PI.getContent());
 
@@ -210,7 +219,8 @@ public class UnpaidActivity extends BaseActivity {
         map.put("PLATENUMBER", "");
         map.put("STATUS", "0");
         RL_UnPaid_Loding.setVisibility(View.VISIBLE);
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPAYBILLLIST, map,
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                        .WEBSERVER_GETPAYBILLLIST, map,
                 new WebServiceUtils.WebServiceCallBack() {
                     @Override
                     public void callBack(String result) {
@@ -228,9 +238,9 @@ public class UnpaidActivity extends BaseActivity {
                                     UPLA.UpDate(PIL);
                                 }
                                 RL_UnPaid_Loding.setVisibility(View.GONE);
-                                if(PIL.size()==0){
+                                if (PIL.size() == 0) {
                                     RL_UnPaid_NoData.setVisibility(View.VISIBLE);
-                                }else{
+                                } else {
                                     RL_UnPaid_NoData.setVisibility(View.GONE);
                                 }
                             } catch (JSONException e) {

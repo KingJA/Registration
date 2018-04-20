@@ -20,6 +20,7 @@ public class PayInsurance implements Serializable {
     private List<policys> Policys;
     private String Content;
     private String Order_Type;
+    private int PaymentWay;
     private String BigPayNo;
     private String CreateTime;
 
@@ -110,5 +111,13 @@ public class PayInsurance implements Serializable {
 
     public void setCreateTime(String createTime) {
         CreateTime = createTime;
+    }
+
+    public int getPaymentWay() {
+        return PaymentWay;
+    }
+
+    public void setPaymentWay(int paymentWay) {
+        PaymentWay = paymentWay;
     }
 }

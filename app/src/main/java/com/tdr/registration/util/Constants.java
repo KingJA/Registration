@@ -107,6 +107,7 @@ public class Constants {
     public static final String HTTP_GetModelByPlateNumber = "api/TransferAppointment/GetModelByPlateNumber";//过户预约信息
     public static final String HTTP_GetSetting = "/api/Cache/GetSetting";//获取配置信息
     public static final String HTTP_UploadPicture = "http://10.130.0.104:818/api/Picture/Upload2";//上传图片
+    public static final String HTTP_GetPayBill = "api/PayBill/GetPayBill";//获取订单支付状态
 
 
 

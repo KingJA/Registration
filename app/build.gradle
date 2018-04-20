@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "com.tdr.registration"
@@ -13,7 +11,7 @@ android {
         versionCode 50
         versionName "1.5.0"
 
-        multiDexEnabled true
+//        multiDexEnabled true
 
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "armeabi"
@@ -26,14 +24,27 @@ android {
         ]
 
     }
+
+    signingConfigs {
+        release {
+            storeFile file("tendency_android.keystore")
+            storePassword "tendency2011,tdr"
+            keyAlias "tendency_android.keystore"
+            keyPassword "tendency2011,tdr"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            signingConfig signingConfigs.release
+            buildApk()
         }
-
         debug {
-            debuggable true
+            buildApk()
         }
     }
     lintOptions {
@@ -51,47 +62,47 @@ android {
     }
 }
 
-buildscript {
-    repositories {
-        maven { url "https://jitpack.io" }
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
+dependencies {
+//    compile 'com.android.support:multidex:'
+    implementation "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
+    implementation "com.android.support:cardview-v7:${SUPPORT_VERSION}"
+    implementation "com.android.support:design:${SUPPORT_VERSION}"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.bluelinelabs:logansquare-compiler:1.3.6'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.bluelinelabs:logansquare:1.3.6'
+    implementation 'com.jakewharton:butterknife:8.4.0'
+    implementation 'com.bigkoo:pickerview:2.1.1'
+    implementation 'cn.jiguang:jpush:2.1.8'
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation 'com.github.chrisbanes:PhotoView:1.3.0'
+    implementation 'com.umeng.analytics:analytics:latest.integration'
+    implementation 'org.xutils:xutils:3.5.0'
+    implementation 'com.belerweb:pinyin4j:2.5.0'
+    implementation 'com.github.czy1121:cornerlabelview:1.0.3'
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
+    implementation 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
+    implementation 'com.jcodecraeer:xrecyclerview:1.3.2'
+    implementation 'com.inuker.bluetooth:library:1.4.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation files('libs/AMap2DMap_5.2.0_AMapLocation_3.6.1_20171012.jar')
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+}
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 
-dependencies {
-//    compile 'com.android.support:multidex:'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    apt 'com.bluelinelabs:logansquare-compiler:1.3.6'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.bluelinelabs:logansquare:1.3.6'
-//    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.bigkoo:pickerview:2.1.1'
-    compile 'cn.jiguang:jpush:2.1.8'
-    compile 'com.google.code.gson:gson:2.7'
-//    compile 'io.reactivex:rxandroid:1.2.1'
-//    compile 'io.reactivex:rxjava:1.1.9'
-    compile 'com.github.chrisbanes:PhotoView:1.3.0'
-    compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'org.xutils:xutils:3.5.0'
-    compile 'com.belerweb:pinyin4j:2.5.0'
-    compile 'com.github.czy1121:cornerlabelview:1.0.3'
-    compile 'com.google.zxing:core:3.2.1'
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
-    compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
-    compile 'com.jcodecraeer:xrecyclerview:1.3.2'
-    compile 'com.inuker.bluetooth:library:1.4.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile files('libs/AMap2DMap_5.2.0_AMapLocation_3.6.1_20171012.jar')
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-//    compile 'com.orhanobut:logger:2.2.0'
-//    compile 'id.zelory:compressor:2.1.0'
+def buildApk() {
+    android.applicationVariants.all { variant ->
+        variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
+            def versionName = variant.versionName
+            def buildDate = releaseTime()
+            def buildType = variant.buildType.name
+            apkData.outputFileName = APP_NAME + "_" +versionName + "_" + buildDate + "_" + buildType + ".apk"
+        }
+    }
 }
