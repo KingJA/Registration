@@ -180,10 +180,11 @@ public class UnpaidActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("UnPaid", "1");
                 bundle.putString("PayDate", mGson.toJson(L));
-                Log.e("debug", "PI.getPaymentWay(): "+PI.getPaymentWay() );
+                Log.e("debug", "PI.getPaymentWay(): " + PI.getPaymentWay());
                 if (PI.getPaymentWay() == 2) {
                     //  扫码支付
-                    PayQcodeActivity.goActivity(UnpaidActivity.this,PI.getContent(),PI.getTotal_Amount(),PI.getPlateNumber(),PI.getPayNo());
+                    PayQcodeActivity.goActivity(UnpaidActivity.this, PI.getContent(), PI.getTotal_Amount(), PI
+                            .getPlateNumber(), PI.getPayNo(), PayQcodeActivity.FORM_ORDER_LIST);
                 } else {
                     //普通支付
                     ActivityUtil.goActivityWithBundle(UnpaidActivity.this, PayActivity.class, bundle);

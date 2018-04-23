@@ -9,6 +9,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -32,6 +33,7 @@ import com.umeng.analytics.MobclickAgent;
  * Created by Linus_Xie on 2016/9/9.
  */
 public class BaseActivity extends AppCompatActivity {
+    private  final String TAG = getClass().getSimpleName();
     private MyApplication mBaseApp = null;
     private boolean mIsAddedView;
 
@@ -69,6 +71,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "当前Activit ");
         ActivityCollection.addActivity(this);
         mBaseApp = (MyApplication) getApplication();
 

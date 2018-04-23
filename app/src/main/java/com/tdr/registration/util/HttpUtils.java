@@ -12,27 +12,27 @@ public class HttpUtils {
     public static final String Cancelled = "onCancelled";
     public static final String Finished = "onFinished";
 
-    public static void get(RequestParams RP, final HttpGetCallBack httpcallback) {
+    public static Callback.Cancelable get(RequestParams RP, final HttpGetCallBack httpcallback) {
         RP.addHeader("accessToken", (String) SharedPreferencesUtils.get("token", ""));
 //        //设置联网超时时间
         RP.setConnectTimeout(5000);
 //        //设置重试次数
         RP.setMaxRetryCount(3);
-        x.http().get(RP, new Callback.CommonCallback<String>() {
+        Callback.Cancelable cancelable = x.http().get(RP, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                httpcallback.getcallback(Success, result);
+                httpcallback.onSuccess(result);
                 mLog.e("onSuccess:" + result);
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 mLog.e("onError:" + ex.toString());
-                httpcallback.getcallback(Error, "");
-                if(ex.getMessage().contains("Network is unreachable")){
+                httpcallback.onError(ex);
+                if (ex.getMessage().contains("Network is unreachable")) {
                     Utils.showToast("网络连接中断！请检查您的网络。");
                 }
-                if(ex.getMessage().contains("timeout")){
+                if (ex.getMessage().contains("timeout")) {
                     Utils.showToast("访问网络超时。请检查网络状况并联系相关工作人员。");
                 }
 
@@ -40,16 +40,15 @@ public class HttpUtils {
 
             @Override
             public void onCancelled(CancelledException cex) {
-                httpcallback.getcallback(Cancelled, "");
                 mLog.e("onCancelled:" + cex.toString());
             }
 
             @Override
             public void onFinished() {
-                httpcallback.getcallback(Finished, "");
                 mLog.e("onFinished");
             }
         });
+        return cancelable;
     }
 
     public static void post(RequestParams RP, final HttpPostCallBack httpcallback) {
@@ -139,7 +138,8 @@ public class HttpUtils {
     }
 
     public interface HttpGetCallBack {
-        void getcallback(String Finish, String paramString);
+        void onSuccess(String result);
+        void onError(Throwable ex);
     }
     public interface HttpPostUpLoadFileCallBack {
         void UpLoadFilePostCallBack(String Finish, String paramString);

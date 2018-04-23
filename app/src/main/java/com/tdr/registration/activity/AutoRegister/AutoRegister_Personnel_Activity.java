@@ -157,6 +157,7 @@ public class AutoRegister_Personnel_Activity extends Activity implements View.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("【当前Activity】", "AutoRegister_Personnel_Activity" );
         x.view().inject(this);
         mActivity = this;
         RU = new RegisterUtil(this);

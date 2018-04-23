@@ -15,6 +15,7 @@ import com.tdr.registration.activity.ConfirmationInsuranceActivity;
 import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.activity.PayActivity;
+import com.tdr.registration.activity.PayQcodeActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.activity.UnpaidActivity;
 import com.tdr.registration.activity.longyan.PreToOfficialSecondLongYanActivity;
@@ -56,7 +57,6 @@ public class RegisterUtil {
     public final static int PRE_SHOW_CODE = 1314;//预登记展示回调值
 
 
-
     public MyApplication BA;
     public ZProgressHUD mProgressHUD;
     private Activity mActivity;
@@ -86,12 +86,13 @@ public class RegisterUtil {
 
     public List<InsuranceModel> insuranceModelsList;
     public ConfirmInsuranceModel ConfirmInsuranceList;
-    NiftyDialogBuilder  dialogBuilder ;
-    NiftyDialogBuilder.Effectstype effectstype ;
+    NiftyDialogBuilder dialogBuilder;
+    NiftyDialogBuilder.Effectstype effectstype;
     List<Order> listOrder;
     Order CAR = null;
-    Order Insurance= null;
-    Order Personnel= null;
+    Order Insurance = null;
+    Order Personnel = null;
+
     public RegisterUtil(Activity AC) {
         mActivity = AC;
         db = x.getDb(DBUtils.getDb());
@@ -101,15 +102,16 @@ public class RegisterUtil {
         mProgressHUD = new ZProgressHUD(mActivity);
         mProgressHUD.setMessage("");
         mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);
-        listOrder = mGson.fromJson((String) SharedPreferencesUtils.get("Order", ""), new TypeToken<List<Order>>() {}.getType());
+        listOrder = mGson.fromJson((String) SharedPreferencesUtils.get("Order", ""), new TypeToken<List<Order>>() {
+        }.getType());
 
         for (Order order : listOrder) {
-            if(order.getName().equals("Car")){
-                CAR=order;
-            }else if(order.getName().equals("Insurance")){
-                Insurance=order;
-            }else if(order.getName().equals("Personnel")){
-                Personnel=order;
+            if (order.getName().equals("Car")) {
+                CAR = order;
+            } else if (order.getName().equals("Insurance")) {
+                Insurance = order;
+            } else if (order.getName().equals("Personnel")) {
+                Personnel = order;
             }
         }
         Version = (String) SharedPreferencesUtils.get("Version", "");
@@ -131,7 +133,7 @@ public class RegisterUtil {
 
         HasAgent = (String) SharedPreferencesUtils.get("HasAgent", "");
         identity = (String) SharedPreferencesUtils.get("identity", "");
-        EnableInvoice= (String) SharedPreferencesUtils.get("EnableInvoice", "");
+        EnableInvoice = (String) SharedPreferencesUtils.get("EnableInvoice", "");
 
         characterParser = CharacterParser.getInstance();
         dialogBuilder = NiftyDialogBuilder.getInstance(mActivity);
@@ -231,57 +233,60 @@ public class RegisterUtil {
             ArrayList list = new ArrayList();
             list.add(ConfirmInsuranceList);
             bundle.putParcelableArrayList("ConfirmInsurance", list);
-            ActivityUtil.goActivityForResultWithBundle(mActivity, ConfirmationInsuranceActivity.class, bundle, CONFIRMATION_INSURANCE);
+            ActivityUtil.goActivityForResultWithBundle(mActivity, ConfirmationInsuranceActivity.class, bundle,
+                    CONFIRMATION_INSURANCE);
         } else {
             sendMsg();
         }
     }
 
     public void ActivityFinish_Car() {
-        if(CAR.getOrder()+1==Personnel.getOrder()){
+        if (CAR.getOrder() + 1 == Personnel.getOrder()) {
             ActivityUtil.goActivity(mActivity, AutoRegister_Personnel_Activity.class);
         }
-        if(CAR.getOrder()+1==Insurance.getOrder()){
+        if (CAR.getOrder() + 1 == Insurance.getOrder()) {
             if (insuranceModelsList.size() > 0) {//该城市有保险
                 ActivityUtil.goActivity(mActivity, AutoRegister_Insurance_Activity.class);
             } else {
                 ActivityUtil.goActivity(mActivity, AutoRegister_Car_Activity.class);
             }
         }
-        if(CAR.getOrder()==(Insurance.getOrder()+Personnel.getOrder())){
+        if (CAR.getOrder() == (Insurance.getOrder() + Personnel.getOrder())) {
             SendMSG();
         }
 
     }
+
     public void ActivityFinish_Personnel() {
-        if(Personnel.getOrder()+1==Insurance.getOrder()){
-            mLog.e("insuranceModelsList="+insuranceModelsList.size());
+        if (Personnel.getOrder() + 1 == Insurance.getOrder()) {
+            mLog.e("insuranceModelsList=" + insuranceModelsList.size());
             if (insuranceModelsList.size() > 0) {//该城市有保险
                 ActivityUtil.goActivity(mActivity, AutoRegister_Insurance_Activity.class);
             } else {
                 ActivityUtil.goActivity(mActivity, AutoRegister_Car_Activity.class);
             }
         }
-        if(Personnel.getOrder()+1==CAR.getOrder()){
+        if (Personnel.getOrder() + 1 == CAR.getOrder()) {
             ActivityUtil.goActivity(mActivity, AutoRegister_Car_Activity.class);
         }
-        if(Personnel.getOrder()==(CAR.getOrder()+Insurance.getOrder())){
+        if (Personnel.getOrder() == (CAR.getOrder() + Insurance.getOrder())) {
             SendMSG();
         }
 
     }
+
     public void ActivityFinish_Insurance() {
-        mLog.e("VEHICLETYPE=" +BA.getRD().getVEHICLETYPE());
+        mLog.e("VEHICLETYPE=" + BA.getRD().getVEHICLETYPE());
         if (BA.getIsPRE().equals("1")) {
             ActivityUtil.goActivity(mActivity, PreToOfficialSecondLongYanActivity.class);
         } else {
-            if(Insurance.getOrder()+1==Personnel.getOrder()){
+            if (Insurance.getOrder() + 1 == Personnel.getOrder()) {
                 ActivityUtil.goActivity(mActivity, AutoRegister_Personnel_Activity.class);
             }
-            if(Insurance.getOrder()+1==CAR.getOrder()){
+            if (Insurance.getOrder() + 1 == CAR.getOrder()) {
                 ActivityUtil.goActivity(mActivity, AutoRegister_Car_Activity.class);
             }
-            if(Insurance.getOrder()==(CAR.getOrder()+Personnel.getOrder())){
+            if (Insurance.getOrder() == (CAR.getOrder() + Personnel.getOrder())) {
                 SendMSG();
             }
         }
@@ -338,8 +343,8 @@ public class RegisterUtil {
             obj.put("Photo4File", "");
             obj.put("REGISTERID", BA.getRD().getREGISTERID());
             obj.put("CARTYPE", BA.getRD().getCARTYPE());
-            obj.put("ISCONFIRM",BA.getRD().getISCONFIRM());
-            obj.put("VehicleBrand",BA.getRD().getVehicleBrand());
+            obj.put("ISCONFIRM", BA.getRD().getISCONFIRM());
+            obj.put("VehicleBrand", BA.getRD().getVehicleBrand());
             obj.put("PlateNumber", BA.getRD().getPlateNumber());
 
             String platetype = BA.getRD().getPlateType();
@@ -348,8 +353,8 @@ public class RegisterUtil {
             }
             obj.put("PlateType", platetype);
             obj.put("ShelvesNo", BA.getRD().getShelvesNo());
-            obj.put("EngineNo",  BA.getRD().getEngineNo());
-            obj.put("ColorId",  BA.getRD().getColorId());
+            obj.put("EngineNo", BA.getRD().getEngineNo());
+            obj.put("ColorId", BA.getRD().getColorId());
             obj.put("ColorId2", BA.getRD().getColorId2());
             obj.put("BuyDate", BA.getRD().getBuyDate());
             obj.put("Price", "");
@@ -391,7 +396,7 @@ public class RegisterUtil {
             obj.put("AGENTCARDID", BA.getRD().getCommissionIdentity());
             obj.put("AGENTPHONE", BA.getRD().getCommissionPhone1());
             obj.put("AGENTADDR", BA.getRD().getCommissionAddress());
-            obj.put("AGENTREMARK",BA.getRD().getCommissionRemark());
+            obj.put("AGENTREMARK", BA.getRD().getCommissionRemark());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -409,67 +414,125 @@ public class RegisterUtil {
         Utils.LOGE("Pan", map.toString());
         mLog.e("apiUrl:" + (String) SharedPreferencesUtils.get("apiUrl", ""));
         mProgressHUD.show();
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), functionName, map, new WebServiceUtils.WebServiceCallBack() {
-            @Override
-            public void callBack(String result) {
-                mLog.e("result:" + result);
-                Utils.LOGE("Pan", result);
-                if (result != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        if (errorCode == 0) {
-                            mProgressHUD.dismiss();
-                            if (checkJson(data) == 0) {
-                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
-                                }.getType());
-                                SharedPreferencesUtils.put("preregisters", "");
-                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
-                                Bundle bundle = new Bundle();
-                                bundle.putString("UnPaid", "0");
-//                                bundle.putString("PayDate", data);
-                                ArrayList list = new ArrayList();
-                                list.add(PI);
-                                bundle.putParcelableArrayList("PayDate", list);
-                                ActivityUtil.goActivityWithBundle(mActivity, PayActivity.class, bundle);
-                                mActivity.finish();
-                            } else if (checkJson(data) == 1) {
-                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
-                                }.getType());
-                                SharedPreferencesUtils.put("preregisters", "");
-                                SharedPreferencesUtils.put("preregistration", "");
-                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
-                                Bundle bundle = new Bundle();
-                                bundle.putString("UnPaid", "2");
-                                ArrayList list = new ArrayList();
-                                list.add(PI);
-                                bundle.putParcelableArrayList("PayDate", list);
-                                ActivityUtil.goActivityWithBundle(mActivity, UnpaidActivity.class, bundle);
-                                mActivity.finish();
-                            } else {
-                                dialogShow(0,"车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), functionName,
+                map, new WebServiceUtils.WebServiceCallBack() {
+                    @Override
+                    public void callBack(String result) {
+                        mLog.e("result:" + result);
+                        Utils.LOGE("Pan", result);
+                        if (result != null) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                int errorCode = jsonObject.getInt("ErrorCode");
+                                String data = jsonObject.getString("Data");
+                                if (errorCode == 0) {
+                                    mProgressHUD.dismiss();
+                                    List<PayInsurance> payInsurances = mGson.fromJson(data, new
+                                            TypeToken<List<PayInsurance>>
+                                                    () {
+                                            }.getType());
+
+                                    if (payInsurances == null) {
+                                        return;
+                                    }
+                                    if (payInsurances.size() == 1) {
+                                        PayInsurance payInsurance = payInsurances.get(0);
+                                        if (payInsurance.getPaymentWay() == 2) {
+                                            //二维码支付
+                                            PayQcodeActivity.goActivity(mActivity, payInsurance.getContent(),
+                                                    payInsurance.getTotal_Amount(), payInsurance.getPlateNumber(),
+                                                    payInsurance.getPayNo(),PayQcodeActivity.FORM_REGISTER);
+                                        } else {
+                                            //直接支付
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("UnPaid", "0");
+                                            bundle.putString("PayDate", data);
+                                            ArrayList list = new ArrayList();
+                                            list.add(payInsurances);
+                                            bundle.putParcelableArrayList("PayDate", list);
+                                            ActivityUtil.goActivityWithBundle(mActivity, PayActivity.class, bundle);
+                                        }
+
+                                    } else if (payInsurances.size() > 1) {
+                                        List<PayInsurance> PI = mGson.fromJson(data, new
+                                                TypeToken<List<PayInsurance>>() {
+                                                }.getType());
+                                        SharedPreferencesUtils.put("preregisters", "");
+                                        SharedPreferencesUtils.put("preregistration", "");
+                                        Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
+                                                (VehiclesStorageUtils
+                                                        .PLATENUMBER) + "  电动车信息上传成功！");
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("UnPaid", "2");
+                                        ArrayList list = new ArrayList();
+                                        list.add(PI);
+                                        bundle.putParcelableArrayList("PayDate", list);
+                                        ActivityUtil.goActivityWithBundle(mActivity, UnpaidActivity.class, bundle);
+                                        mActivity.finish();
+
+                                    } else {
+                                        dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils
+                                                .PLATENUMBER) + "  电动车信息上传成功！");
+                                    }
+//                                    if (checkJson(data) == 0) {
+//                                        //一条订单
+//                                        List<PayInsurance> PI = mGson.fromJson(data, new
+//                                                TypeToken<List<PayInsurance>>() {
+//                                        }.getType());
+//                                        SharedPreferencesUtils.put("preregisters", "");
+//                                        Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
+//                                                (VehiclesStorageUtils
+//                                                .PLATENUMBER) + "  电动车信息上传成功！");
+//                                        Bundle bundle = new Bundle();
+//                                        bundle.putString("UnPaid", "0");
+////                                bundle.putString("PayDate", data);
+//                                        ArrayList list = new ArrayList();
+//                                        list.add(PI);
+//                                        bundle.putParcelableArrayList("PayDate", list);
+//                                        ActivityUtil.goActivityWithBundle(mActivity, PayActivity.class, bundle);
+//                                        mActivity.finish();
+//                                    } else if (checkJson(data) == 1) {
+//                                        //多条订单
+//                                        List<PayInsurance> PI = mGson.fromJson(data, new
+//                                                TypeToken<List<PayInsurance>>() {
+//                                        }.getType());
+//                                        SharedPreferencesUtils.put("preregisters", "");
+//                                        SharedPreferencesUtils.put("preregistration", "");
+//                                        Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
+//                                                (VehiclesStorageUtils
+//                                                .PLATENUMBER) + "  电动车信息上传成功！");
+//                                        Bundle bundle = new Bundle();
+//                                        bundle.putString("UnPaid", "2");
+//                                        ArrayList list = new ArrayList();
+//                                        list.add(PI);
+//                                        bundle.putParcelableArrayList("PayDate", list);
+//                                        ActivityUtil.goActivityWithBundle(mActivity, UnpaidActivity.class, bundle);
+//                                        mActivity.finish();
+//                                    } else {
+//                                        dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr
+// (VehiclesStorageUtils
+//                                                .PLATENUMBER) + "  电动车信息上传成功！");
+//                                    }
+                                } else if (errorCode == 1) {
+                                    mProgressHUD.dismiss();
+                                    Utils.showToast(data);
+                                    SharedPreferencesUtils.put("token", "");
+                                    ActivityUtil.goActivityAndFinish(mActivity, LoginActivity.class);
+                                } else {
+                                    Utils.showToast(data);
+                                    mProgressHUD.dismiss();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                mProgressHUD.dismiss();
+                                Utils.showToast("JSON解析出错");
                             }
-                        } else if (errorCode == 1) {
-                            mProgressHUD.dismiss();
-                            Utils.showToast(data);
-                            SharedPreferencesUtils.put("token", "");
-                            ActivityUtil.goActivityAndFinish(mActivity, LoginActivity.class);
                         } else {
-                            Utils.showToast(data);
                             mProgressHUD.dismiss();
+                            Utils.showToast("获取数据超时，请检查网络连接");
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        mProgressHUD.dismiss();
-                        Utils.showToast("JSON解析出错");
                     }
-                } else {
-                    mProgressHUD.dismiss();
-                    Utils.showToast("获取数据超时，请检查网络连接");
-                }
-            }
-        });
+                });
     }
 
     private int checkJson(String json) {
@@ -485,8 +548,9 @@ public class RegisterUtil {
             return 2;
         }
     }
-    private void dialogShow(int flag,final String msg) {
-        if(flag==0){
+
+    private void dialogShow(int flag, final String msg) {
+        if (flag == 0) {
             dialogBuilder.withTitle("提示")
                     .withTitleColor("#333333")
                     .withMessage(msg)
@@ -504,10 +568,11 @@ public class RegisterUtil {
                             ActivityUtil.goActivityAndFinish(mActivity, HomeActivity.class);
                         }
                     }).show();
-        }else if(flag==1){
+        } else if (flag == 1) {
             dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage(msg)
                     .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("取消")
-                    .setCustomView(R.layout.custom_view, mActivity).withButton2Text("确认").setButton1Click(new View.OnClickListener() {
+                    .setCustomView(R.layout.custom_view, mActivity).withButton2Text("确认").setButton1Click(new View
+                    .OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialogBuilder.dismiss();
@@ -562,12 +627,12 @@ public class RegisterUtil {
     }
 
     public void BackPressed() {
-        if(BA.getACList().contains(mActivity)){
-            if(BA.getACList().size()>1){
+        if (BA.getACList().contains(mActivity)) {
+            if (BA.getACList().size() > 1) {
                 BA.getACList().remove(mActivity);
                 mActivity.finish();
-            }else{
-                dialogShow(1,"信息编辑中，确认离开该页面？");
+            } else {
+                dialogShow(1, "信息编辑中，确认离开该页面？");
             }
         }
 

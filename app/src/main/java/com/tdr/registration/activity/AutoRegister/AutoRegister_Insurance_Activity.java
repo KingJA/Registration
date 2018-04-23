@@ -10,6 +10,7 @@ import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -100,6 +101,7 @@ public class AutoRegister_Insurance_Activity extends Activity implements View.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("【当前Activity】", "AutoRegister_Insurance_Activity" );
         x.view().inject(this);
         mActivity = this;
         RU = new RegisterUtil(this);

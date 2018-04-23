@@ -7,6 +7,45 @@
     android:gravity="center_horizontal">
 
     <include layout="@layout/layout_title"/>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_pay_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dp"
+        android:background="#F9F9F9"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="198dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/IV_PaySuccess"
+                android:layout_width="53.5dp"
+                android:layout_height="53.5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="45dp"
+                android:background="@mipmap/pay_success" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/IV_PaySuccess"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="支付成功"
+                android:textColor="#4C9DF9"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/custom_button"
+            android:text="完成" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_marginTop="24dp"
@@ -14,6 +53,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/pb_pay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
 
         <TextView
             android:layout_marginBottom="24dp"
