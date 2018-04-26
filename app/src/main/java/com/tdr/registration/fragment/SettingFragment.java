@@ -42,16 +42,26 @@ import java.util.List;
  */
 @ContentView(R.layout.fragment_settting)
 public class SettingFragment extends Fragment implements View.OnClickListener {
-    @ViewInject(R.id.text_userName) private TextView textUserName;
-    @ViewInject(R.id.text_police) private TextView textPolice;
-    @ViewInject(R.id.relative_modifyPwd) private RelativeLayout relativeModifyPwd;
-    @ViewInject(R.id.relative_directions) private RelativeLayout relativeDirections;
-    @ViewInject(R.id.relative_feedBack) private RelativeLayout relativeFeedBack;
-    @ViewInject(R.id.text_currentVersion) private TextView textCurrentVersion;
-    @ViewInject(R.id.linear_quit) private LinearLayout linearQuit;
-    @ViewInject(R.id.relative_paylsit) private RelativeLayout relative_paylsit;
-    @ViewInject(R.id.text_pay) private TextView text_pay;
-    @ViewInject(R.id.RL_WalletBalance) private RelativeLayout RL_WalletBalance;
+    @ViewInject(R.id.text_userName)
+    private TextView textUserName;
+    @ViewInject(R.id.text_police)
+    private TextView textPolice;
+    @ViewInject(R.id.relative_modifyPwd)
+    private RelativeLayout relativeModifyPwd;
+    @ViewInject(R.id.relative_directions)
+    private RelativeLayout relativeDirections;
+    @ViewInject(R.id.relative_feedBack)
+    private RelativeLayout relativeFeedBack;
+    @ViewInject(R.id.text_currentVersion)
+    private TextView textCurrentVersion;
+    @ViewInject(R.id.linear_quit)
+    private LinearLayout linearQuit;
+    @ViewInject(R.id.relative_paylsit)
+    private RelativeLayout relative_paylsit;
+    @ViewInject(R.id.text_pay)
+    private TextView text_pay;
+    @ViewInject(R.id.RL_WalletBalance)
+    private RelativeLayout RL_WalletBalance;
 
     private String IsShowPay;
     private Gson mGson;
@@ -64,14 +74,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case Update: {//刷新view 显示有多少条未支付订单
-                    if(PIL!=null&&PIL.size()>0&&text_pay!=null){
+                    if (PIL != null && PIL.size() > 0 && text_pay != null) {
                         text_pay.setVisibility(View.VISIBLE);
-                        if(PIL.size()>9){
+                        if (PIL.size() > 9) {
                             text_pay.setText("9+");
-                        }else{
-                            text_pay.setText(""+PIL.size());
+                        } else {
+                            text_pay.setText("" + PIL.size());
                         }
-                    }else{
+                    } else {
                         text_pay.setVisibility(View.GONE);
                     }
                     break;
@@ -85,7 +95,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        if(relative_paylsit.getVisibility()==View.VISIBLE){//有支付列表的功能权限则获取未支付订单数据
+        if (relative_paylsit.getVisibility() == View.VISIBLE) {//有支付列表的功能权限则获取未支付订单数据
             initdate();
         }
     }
@@ -100,24 +110,24 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     /**
      * 加载视图
      */
-    private void initview(){
-        mGson=new Gson();
-        IsShowPay= (String)SharedPreferencesUtils.get("IsShowPay","");
-        ShowWallet= (String)SharedPreferencesUtils.get("ShowWallet","");
+    private void initview() {
+        mGson = new Gson();
+        IsShowPay = (String) SharedPreferencesUtils.get("IsShowPay", "");
+        ShowWallet = (String) SharedPreferencesUtils.get("ShowWallet", "");
         textUserName.setText((String) SharedPreferencesUtils.get("userName", ""));
         textPolice.setText((String) SharedPreferencesUtils.get("regionName", ""));
         textCurrentVersion.setText(Utils.getVersion(getActivity()).toString());
         text_pay.setVisibility(View.GONE);
-        if(IsShowPay.equals("1")){//是否有支付列表功能的权限
+        if (IsShowPay.equals("1")) {//是否有支付列表功能的权限
             relative_paylsit.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             relative_paylsit.setVisibility(View.GONE);
         }
 
-        ShowWallet="1";
-        if(ShowWallet.equals("1")){//是否有钱包功能的权限
+        ShowWallet = "1";
+        if (ShowWallet.equals("1")) {//是否有钱包功能的权限
             RL_WalletBalance.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             RL_WalletBalance.setVisibility(View.GONE);
         }
 
@@ -134,7 +144,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *获取未支付列表的数据
+     * 获取未支付列表的数据
      */
     private void initdate() {
         mLog.e("-------------");
@@ -143,12 +153,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         map.put("PAYNO", "");
         map.put("PLATENUMBER", "");
         map.put("STATUS", "0");
-        WebServiceUtils.callWebService(getActivity(), (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPAYBILLLIST, map,
+        WebServiceUtils.callWebService(getActivity(), (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                        .WEBSERVER_GETPAYBILLLIST, map,
                 new WebServiceUtils.WebServiceCallBack() {
                     @Override
                     public void callBack(String result) {
                         if (result != null) {
-                            Utils.LOGE("Pan",result);
+                            Utils.LOGE("Pan", result);
                             try {
                                 JSONObject JB = new JSONObject(result);
                                 int errorCode = JB.getInt("ErrorCode");
@@ -157,7 +168,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                                     PIL = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
                                     }.getType());
                                     mHandler.sendEmptyMessage(Update);
-                                }else{
+                                } else {
                                     Utils.showToast(data);
                                 }
                             } catch (JSONException e) {
@@ -189,9 +200,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 ActivityUtil.goActivity(getActivity(), WalletBalanceActivity.class);
                 break;
             case R.id.linear_quit:
-                SharedPreferencesUtils.put("token","");
+                SharedPreferencesUtils.put("token", "");
                 SharedPreferencesUtils.put("CarTypesList", "");
                 ActivityUtil.goActivityAndFinish(getActivity(), LoginActivity.class);
+                break;
+            default:
                 break;
 
         }

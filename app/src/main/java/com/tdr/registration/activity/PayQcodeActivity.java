@@ -217,7 +217,6 @@ public class PayQcodeActivity extends BaseActivity {
             public void onClick(View v) {
                 dialogBuilder.dismiss();
                 finishCurrentActivity();
-
             }
         }).show();
     }

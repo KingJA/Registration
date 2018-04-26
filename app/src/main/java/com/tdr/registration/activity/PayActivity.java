@@ -119,7 +119,15 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
         initdate();
     }
 
-    //    final String orderInfo = "app_id=2017052307316905&biz_content=%7b%22body%22%3a%22%e6%88%91%e6%98%af%e6%b5%8b%e8%af%95%e6%95%b0%e6%8d%ae%22%2c%22out_trade_no%22%3a%2220170216test01%22%2c%22product_code%22%3a%22QUICK_MSECURITY_PAY%22%2c%22seller_id%22%3a%22tendencycw%40163.com%22%2c%22subject%22%3a%22App%e6%94%af%e4%bb%98%e6%b5%8b%e8%af%95DoNet%22%2c%22timeout_express%22%3a%2230m%22%2c%22total_amount%22%3a%220.01%22%7d&charset=UTF-8&format=json&method=alipay.trade.app.pay&sign_type=RSA2&timestamp=2017-05-25+16%3a40%3a37&version=1.0&sign=hOrUhL1fkbyUs1%2bINY2ngWmIRT7I19C9Svu1wOOwHputllLp8kAlxiPZriEuqen%2bVAakHfZ2GW%2fxz5H8BoDGy%2f1ExF4nZ%2f4qbyrgxayI2lAAZuYTx7SePh%2fT2yeZMG42QT91fAGyDXX98vtioIzeE3u8lJRpHHYwvTvGzjLWRKr2G5ieycZj1OWAFugkFZLh5jlZSBr8IOjGDupkkxpXK2Yer14FJIw6arPxZVceRFT5Plib7qZL4NEOVzZpVbv3YlNIwfmybbvoEOovDn2GA%2bXOsqtf3qeLGdl%2fuPqKws5FVc0fJmJMk0M7IXtvzfbS446CkP4QZaU7DuMZqHLc2Q%3d%3d";
+    //    final String orderInfo = "app_id=2017052307316905&biz_content=%7b%22body%22%3a%22%e6%88%91%e6%98%af%e6%b5
+    // %8b%e8%af%95%e6%95%b0%e6%8d%ae%22%2c%22out_trade_no%22%3a%2220170216test01%22%2c%22product_code%22%3a
+    // %22QUICK_MSECURITY_PAY%22%2c%22seller_id%22%3a%22tendencycw%40163.com%22%2c%22subject%22%3a%22App%e6%94%af%e4
+    // %bb%98%e6%b5%8b%e8%af%95DoNet%22%2c%22timeout_express%22%3a%2230m%22%2c%22total_amount%22%3a%220.01%22%7d
+    // &charset=UTF-8&format=json&method=alipay.trade.app
+    // .pay&sign_type=RSA2&timestamp=2017-05-25+16%3a40%3a37&version=1.0&sign=hOrUhL1fkbyUs1
+    // %2bINY2ngWmIRT7I19C9Svu1wOOwHputllLp8kAlxiPZriEuqen%2bVAakHfZ2GW%2fxz5H8BoDGy%2f1ExF4nZ
+    // %2f4qbyrgxayI2lAAZuYTx7SePh
+    // %2fT2yeZMG42QT91fAGyDXX98vtioIzeE3u8lJRpHHYwvTvGzjLWRKr2G5ieycZj1OWAFugkFZLh5jlZSBr8IOjGDupkkxpXK2Yer14FJIw6arPxZVceRFT5Plib7qZL4NEOVzZpVbv3YlNIwfmybbvoEOovDn2GA%2bXOsqtf3qeLGdl%2fuPqKws5FVc0fJmJMk0M7IXtvzfbS446CkP4QZaU7DuMZqHLc2Q%3d%3d";
     private void pay(final String orderInfo) {
         Runnable payRunnable = new Runnable() {
             @Override
@@ -156,7 +164,7 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
         if (PayDate != null && !PayDate.equals("")) {
             PIList = mGson.fromJson(PayDate, new TypeToken<List<PayInsurance>>() {
             }.getType());
-        }else{
+        } else {
             ArrayList list = bundle.getParcelableArrayList("PayDate");
             PIList = (List<PayInsurance>) list.get(0);
         }
@@ -179,7 +187,8 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
         TextView InsuranceExplain = (TextView) v.findViewById(R.id.TV_InsuranceExplain);
         TextView InsuranceAmount = (TextView) v.findViewById(R.id.TV_InsuranceAmount);
 
-        InsuranceName.setText( PIp.getDEADLINE()==null|| PIp.getDEADLINE().equals("")||PIp.getDEADLINE().equals("null")?PIp.getTypeName():PIp.getTypeName() + "(" + PIp.getDEADLINE() + "年)");
+        InsuranceName.setText(PIp.getDEADLINE() == null || PIp.getDEADLINE().equals("") || PIp.getDEADLINE().equals
+                ("null") ? PIp.getTypeName() : PIp.getTypeName() + "(" + PIp.getDEADLINE() + "年)");
 
         InsuranceExplain.setText(PIp.getSubTitle());
         InsuranceAmount.setText("¥" + FormatAmount(PIp.getPRICE()));
@@ -219,7 +228,8 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
             case R.id.btn_submit:
                 ActivityUtil.goActivityAndFinish(PayActivity.this, HomeActivity.class);
                 break;
-
+            default:
+                break;
 
         }
     }
