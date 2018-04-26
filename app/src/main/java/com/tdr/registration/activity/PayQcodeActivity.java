@@ -98,7 +98,7 @@ public class PayQcodeActivity extends BaseActivity {
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishCurrentActivity();
+                startActivity(new Intent(PayQcodeActivity.this, HomeActivity.class));
             }
         });
         mIvBack.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +177,8 @@ public class PayQcodeActivity extends BaseActivity {
 
             @Override
             public void onError(Throwable ex) {
-
+                Utils.showToast("网络异常");
+                httpHandler.post(httpRunnable);
             }
         });
     }

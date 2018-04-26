@@ -169,9 +169,12 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
      * @param position
      */
     private void setTabStatus(int position) {
-        IV_business.setBackgroundResource(position == fragments.indexOf(BF) ? R.mipmap.business_on : R.mipmap.business_off);
-        IV_inspect.setBackgroundResource(position == fragments.indexOf(IF) ? R.mipmap.inspect_on : R.mipmap.inspect_off);
-        IV_setting.setBackgroundResource(position == fragments.indexOf(SF) ? R.mipmap.setting_on : R.mipmap.setting_off);
+        IV_business.setBackgroundResource(position == fragments.indexOf(BF) ? R.mipmap.business_on : R.mipmap
+                .business_off);
+        IV_inspect.setBackgroundResource(position == fragments.indexOf(IF) ? R.mipmap.inspect_on : R.mipmap
+                .inspect_off);
+        IV_setting.setBackgroundResource(position == fragments.indexOf(SF) ? R.mipmap.setting_on : R.mipmap
+                .setting_off);
     }
 
     /**
@@ -195,7 +198,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.LL_setting:
                 selectFragment(fragments.indexOf(SF));
-
+                break;
+            default:
                 break;
         }
     }
@@ -207,14 +211,16 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         GetSetting();
     }
 
-    private void GetSetting(){
+    private void GetSetting() {
         mLog.e("GetSetting");
-        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim()+ Constants.HTTP_GetSetting);
+        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_GetSetting);
         HttpUtils.post(RP, new HttpUtils.HttpPostCallBack() {
+            @Override
             public void postcallback(String Finish, String result) {
                 if (Finish.equals(HttpUtils.Success)) {
                     if (result != null) {
-                    Utils.LOGE("Pan","result:"+result);
+                        Utils.LOGE("Pan", "result:" + result);
 //                        try {
 //                            JSONObject jsonObject = new JSONObject(result);
 //                            int errorCode = jsonObject.getInt("ErrorCode");

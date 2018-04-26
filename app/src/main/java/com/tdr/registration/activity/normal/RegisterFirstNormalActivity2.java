@@ -37,6 +37,7 @@ import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.LabelBindingCarQueryActivity;
 import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.activity.PayActivity;
+import com.tdr.registration.activity.PayQcodeActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.activity.UnpaidActivity;
 import com.tdr.registration.adapter.ColorAdapter;
@@ -1464,54 +1465,130 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                         String data = jsonObject.getString("Data");
                         if (errorCode == 0) {
                             mProgressHUD.dismiss();
-                            if (checkJson(data) == 0) {
-                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
-                                }.getType());
-                                SharedPreferencesUtils.put("preregisters", "");
-                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
-                                Bundle bundle = new Bundle();
-                                bundle.putString("UnPaid", "0");
-//                                bundle.putString("PayDate", data);
-                                ArrayList list = new ArrayList();
-                                list.add(PI);
-                                bundle.putParcelableArrayList("PayDate", list);
-                                ActivityUtil.goActivityWithBundle(RegisterFirstNormalActivity2.this, PayActivity.class, bundle);
-                                finish();
-                            } else if (checkJson(data) == 1) {
-                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
-                                }.getType());
+                            List<PayInsurance> payInsurances = mGson.fromJson(data, new
+                                    TypeToken<List<PayInsurance>>
+                                            () {
+                                    }.getType());
+
+                            if (payInsurances == null) {
+                                return;
+                            }
+                            if (payInsurances.size() == 1) {
+                                PayInsurance payInsurance = payInsurances.get(0);
+                                if (payInsurance.getPaymentWay() == 2) {
+                                    //二维码支付
+                                    PayQcodeActivity.goActivity(mActivity, payInsurance.getContent(),
+                                            payInsurance.getTotal_Amount(), payInsurance.getPlateNumber(),
+                                            payInsurance.getPayNo(),PayQcodeActivity.FORM_REGISTER);
+                                } else {
+                                    //直接支付
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("UnPaid", "0");
+                                    bundle.putString("PayDate", data);
+                                    ArrayList list = new ArrayList();
+                                    list.add(payInsurances);
+                                    bundle.putParcelableArrayList("PayDate", list);
+                                    ActivityUtil.goActivityWithBundle(mActivity, PayActivity.class, bundle);
+                                }
+
+                            } else if (payInsurances.size() > 1) {
+                                List<PayInsurance> PI = mGson.fromJson(data, new
+                                        TypeToken<List<PayInsurance>>() {
+                                        }.getType());
                                 SharedPreferencesUtils.put("preregisters", "");
                                 SharedPreferencesUtils.put("preregistration", "");
-                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
+                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
+                                        (VehiclesStorageUtils
+                                                .PLATENUMBER) + "  电动车信息上传成功！");
                                 Bundle bundle = new Bundle();
                                 bundle.putString("UnPaid", "2");
-//                                bundle.putString("PayDate", data);
                                 ArrayList list = new ArrayList();
                                 list.add(PI);
                                 bundle.putParcelableArrayList("PayDate", list);
-                                ActivityUtil.goActivityWithBundle(RegisterFirstNormalActivity2.this, UnpaidActivity.class, bundle);
-                                finish();
+                                ActivityUtil.goActivityWithBundle(mActivity, UnpaidActivity.class, bundle);
+                                mActivity.finish();
+
                             } else {
-                                dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
+                                dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils
+                                        .PLATENUMBER) + "  电动车信息上传成功！");
                             }
                         } else if (errorCode == 1) {
                             mProgressHUD.dismiss();
-                            Utils.myToast(mContext, data);
+                            Utils.showToast(data);
                             SharedPreferencesUtils.put("token", "");
-                            ActivityUtil.goActivityAndFinish(RegisterFirstNormalActivity2.this, LoginActivity.class);
+                            ActivityUtil.goActivityAndFinish(mActivity, LoginActivity.class);
                         } else {
-                            Utils.myToast(mContext, data);
+                            Utils.showToast(data);
                             mProgressHUD.dismiss();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         mProgressHUD.dismiss();
-                        Utils.myToast(mContext, "JSON解析出错");
+                        Utils.showToast("JSON解析出错");
                     }
                 } else {
                     mProgressHUD.dismiss();
-                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+                    Utils.showToast("获取数据超时，请检查网络连接");
                 }
+
+//                mLog.e("result:" + result);
+//                Utils.LOGE("Pan", result);
+//                if (result != null) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(result);
+//                        int errorCode = jsonObject.getInt("ErrorCode");
+//                        String data = jsonObject.getString("Data");
+//                        if (errorCode == 0) {
+//                            mProgressHUD.dismiss();
+//                            if (checkJson(data) == 0) {
+//                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
+//                                }.getType());
+//                                SharedPreferencesUtils.put("preregisters", "");
+//                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("UnPaid", "0");
+////                                bundle.putString("PayDate", data);
+//                                ArrayList list = new ArrayList();
+//                                list.add(PI);
+//                                bundle.putParcelableArrayList("PayDate", list);
+//                                ActivityUtil.goActivityWithBundle(RegisterFirstNormalActivity2.this, PayActivity.class, bundle);
+//                                finish();
+//                            } else if (checkJson(data) == 1) {
+//                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
+//                                }.getType());
+//                                SharedPreferencesUtils.put("preregisters", "");
+//                                SharedPreferencesUtils.put("preregistration", "");
+//                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("UnPaid", "2");
+////                                bundle.putString("PayDate", data);
+//                                ArrayList list = new ArrayList();
+//                                list.add(PI);
+//                                bundle.putParcelableArrayList("PayDate", list);
+//                                ActivityUtil.goActivityWithBundle(RegisterFirstNormalActivity2.this, UnpaidActivity.class, bundle);
+//                                finish();
+//                            } else {
+//                                dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
+//                            }
+//                        } else if (errorCode == 1) {
+//                            mProgressHUD.dismiss();
+//                            Utils.myToast(mContext, data);
+//                            SharedPreferencesUtils.put("token", "");
+//                            ActivityUtil.goActivityAndFinish(RegisterFirstNormalActivity2.this, LoginActivity.class);
+//                        } else {
+//                            Utils.myToast(mContext, data);
+//                            mProgressHUD.dismiss();
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        mProgressHUD.dismiss();
+//                        Utils.myToast(mContext, "JSON解析出错");
+//                    }
+//                } else {
+//                    mProgressHUD.dismiss();
+//                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+//                }
+
             }
         });
     }

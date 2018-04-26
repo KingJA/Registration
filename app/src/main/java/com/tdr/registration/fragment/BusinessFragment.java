@@ -474,7 +474,6 @@ public class BusinessFragment extends Fragment {
                         ActivityUtil.goActivity(getActivity(), RegisterSecondActivity.class);
                     }
 
-
                 }
             }
             mLog.e("MyCarType=" + CarType[0]);

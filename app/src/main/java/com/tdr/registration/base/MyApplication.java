@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.multidex.MultiDex;
 
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.RegisterData;
@@ -100,6 +101,7 @@ public class MyApplication extends Application implements BleInterface.BleStatus
     @Override
     public void onCreate() {
         super.onCreate();
+
         x.Ext.init(this);
 //        Logger.addLogAdapter(new AndroidLogAdapter());
         context = this;
@@ -111,7 +113,11 @@ public class MyApplication extends Application implements BleInterface.BleStatus
         BLE.RegisterBLEState(this);
         BleStatus= BLE.isOpenBLE();
     }
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);/*64K说拜拜*/
+    }
     public String getTitleType() {
         return TitleType;
     }

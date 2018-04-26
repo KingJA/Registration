@@ -10,8 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 50
         versionName "1.5.0"
-
-//        multiDexEnabled true
+        multiDexEnabled true
 
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "armeabi"
@@ -34,6 +33,14 @@ android {
             v1SigningEnabled true
             v2SigningEnabled true
         }
+        debug {
+            storeFile file("tendency_android.keystore")
+            storePassword "tendency2011,tdr"
+            keyAlias "tendency_android.keystore"
+            keyPassword "tendency2011,tdr"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
     buildTypes {
         release {
@@ -44,6 +51,10 @@ android {
             buildApk()
         }
         debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            signingConfig signingConfigs.debug
             buildApk()
         }
     }
@@ -67,8 +78,8 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
     implementation "com.android.support:cardview-v7:${SUPPORT_VERSION}"
     implementation "com.android.support:design:${SUPPORT_VERSION}"
+    implementation 'com.android.support:multidex:1.0.2'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     annotationProcessor 'com.bluelinelabs:logansquare-compiler:1.3.6'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.bluelinelabs:logansquare:1.3.6'
@@ -102,7 +113,7 @@ def buildApk() {
             def versionName = variant.versionName
             def buildDate = releaseTime()
             def buildType = variant.buildType.name
-            apkData.outputFileName = APP_NAME + "_" +versionName + "_" + buildDate + "_" + buildType + ".apk"
+            apkData.outputFileName = APP_NAME + "_" + versionName + "_" + buildDate + "_" + buildType + ".apk"
         }
     }
 }

@@ -67,6 +67,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
+
 /**
  * 登陆
  */
@@ -107,7 +108,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 //    private ZProgressHUD mProgressHUD;
 
-    private String[] permissionArray = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION};
+    private String[] permissionArray = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     private String version = "";
 
@@ -140,7 +142,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         intent = new Intent();
         db = x.getDb(DBUtils.getDb());
 //        DBUtils.deletedb();
-        PermissionUtils.checkPermissionArray(LoginActivity.this, permissionArray, PermissionUtils.PERMISSION_REQUEST_CODE);
+        PermissionUtils.checkPermissionArray(LoginActivity.this, permissionArray, PermissionUtils
+                .PERMISSION_REQUEST_CODE);
 //        mLocationTask = LocationTask.getInstance(getApplicationContext());
 //        mLocationTask.setOnLocationGetListener(this);
 //        mLocationTask.startSingleLocate();
@@ -204,7 +207,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager
+                .PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -238,7 +242,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.e("Pan", "userInfo=" + map.toString());
         Log.e("Pan", "LOGIN=" + Constants.WEBSERVER_LOGIN_V2);
 
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_LOGIN_V2, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_LOGIN_V2, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 mLog.e("Login=" + result);
@@ -260,11 +265,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         SharedPreferencesUtils.put("city", Utils.initNullStr(model.getCity()));
                         SharedPreferencesUtils.put("regionId", Utils.initNullStr(model.getRegionID()));
                         SharedPreferencesUtils.put("UserType", Utils.initNullStr(model.getUserType()));
-                        mLog.e("UserType="+Utils.initNullStr(model.getUserType()));
-                        if(model.getRegionNo()==null){
+                        mLog.e("UserType=" + Utils.initNullStr(model.getUserType()));
+                        if (model.getRegionNo() == null) {
                             model.setRegionNo("3");
                         }
-                        if (model.getRegionNo()!=null&&model.getRegionNo().length() == 4) {//市级帐号
+                        if (model.getRegionNo() != null && model.getRegionNo().length() == 4) {//市级帐号
                             SharedPreferencesUtils.put("roleLevel", "1");
                         } else if (model.getRegionNo().length() == 6) {//区、县帐号
                             SharedPreferencesUtils.put("roleLevel", "2");
@@ -306,12 +311,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
 //        Log.e("Pan","apiUrl="+(String) SharedPreferencesUtils.get("apiUrl", ""));
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETINSURANCECONFIGURE, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETINSURANCECONFIGURE, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 mLog.e("保险：" + result);
-                    DownloadInsurance DI = new DownloadInsurance(result);
-                    DI.execute();
+                DownloadInsurance DI = new DownloadInsurance(result);
+                DI.execute();
             }
         });
     }
@@ -325,7 +331,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         RL_Loding.setVisibility(View.VISIBLE);
         HashMap<String, String> map = new HashMap<>();
         map.put("lastUpdateTime", (String) SharedPreferencesUtils.get("codeUpdateTime", ""));
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETCODETABLE, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETCODETABLE, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
@@ -653,7 +660,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 e.printStackTrace();
             }
             String bluetoothRegular = resultList.get(0).getBluetooth_Regular();
-            Log.e("Pan","bluetoothRegular="+bluetoothRegular);
+            Log.e("Pan", "bluetoothRegular=" + bluetoothRegular);
             try {
                 JSONArray jsonArray = new JSONArray(bluetoothRegular);
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -783,6 +790,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String IsTransferReserve = jsonObject.getString("value");
                             SharedPreferencesUtils.put("IsTransferReserve", IsTransferReserve);
                             break;
+                        default:
+                            break;
 
                     }
 
@@ -869,42 +878,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", DESCoder.encrypt("GETFIELDSETTING", Constants.DES_KEY));
         map.put("infoJsonStr", cityListId);
-        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new WebServiceUtils.WebServiceCallBack() {
-            @Override
-            public void callBack(String result) {
-                if (result != null) {
-                    mLog.e("FieldSetting=" + result);
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        if (errorCode == 0) {
-                            List<FieldSettingModel> fieldSettingModels = new ArrayList<>();
-                            fieldSettingModels = mGson.fromJson(data, new TypeToken<List<FieldSettingModel>>() {
-                            }.getType());
-                            if (fieldSettingModels.size() > 0 && fieldSettingModels != null) {
-                                db.dropTable(FieldSettingModel.class);
-                                mLog.e("存储FieldSetting");
-                                for (FieldSettingModel fieldSettingModel : fieldSettingModels) {
-                                    db.save(fieldSettingModel);
+        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
+                WebServiceUtils.WebServiceCallBack() {
+                    @Override
+                    public void callBack(String result) {
+                        if (result != null) {
+                            mLog.e("FieldSetting=" + result);
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                int errorCode = jsonObject.getInt("ErrorCode");
+                                String data = jsonObject.getString("Data");
+                                if (errorCode == 0) {
+                                    List<FieldSettingModel> fieldSettingModels = new ArrayList<>();
+                                    fieldSettingModels = mGson.fromJson(data, new TypeToken<List<FieldSettingModel>>() {
+                                    }.getType());
+                                    if (fieldSettingModels.size() > 0 && fieldSettingModels != null) {
+                                        db.dropTable(FieldSettingModel.class);
+                                        mLog.e("存储FieldSetting");
+                                        for (FieldSettingModel fieldSettingModel : fieldSettingModels) {
+                                            db.save(fieldSettingModel);
+                                        }
+                                    }
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                RL_Loding.setVisibility(View.GONE);
+                                Utils.myToast(mContext, "JSON解析出错");
+                            } catch (DbException e) {
+                                e.printStackTrace();
+                                RL_Loding.setVisibility(View.GONE);
+                                Utils.myToast(mContext, "存储到本地数据库出错");
                             }
+                        } else {
+                            RL_Loding.setVisibility(View.GONE);
+                            dialogShow("获取城市配置列表超时，请检查网络连接。");
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        RL_Loding.setVisibility(View.GONE);
-                        Utils.myToast(mContext, "JSON解析出错");
-                    } catch (DbException e) {
-                        e.printStackTrace();
-                        RL_Loding.setVisibility(View.GONE);
-                        Utils.myToast(mContext, "存储到本地数据库出错");
                     }
-                } else {
-                    RL_Loding.setVisibility(View.GONE);
-                    dialogShow("获取城市配置列表超时，请检查网络连接。");
-                }
-            }
-        });
+                });
     }
 
     private void getBaseData() {
@@ -925,60 +935,62 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        map.put("infoJsonStr", (String) SharedPreferencesUtils.get("cityUpdateTime", "") + "_" + "ANDROID");
         map.put("infoJsonStr", "_" + "ANDROID");
 
-        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new WebServiceUtils.WebServiceCallBack() {
-            @Override
-            public void callBack(String result) {
-                Utils.LOGE("Pan", result);
-                Log.e("Pan","getBaseData_result= "+result);
-                if (result != null) {
-                    getBaseDataing = true;
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        List<BaseInfo> baseInfos = new ArrayList<BaseInfo>();
-                        if (errorCode == 0) {
-                            baseInfos = mGson.fromJson(data, new TypeToken<List<BaseInfo>>() {
-                            }.getType());
+        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
+                WebServiceUtils.WebServiceCallBack() {
+                    @Override
+                    public void callBack(String result) {
+                        Utils.LOGE("Pan", result);
+                        Log.e("Pan", "getBaseData_result= " + result);
+                        if (result != null) {
+                            getBaseDataing = true;
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                int errorCode = jsonObject.getInt("ErrorCode");
+                                String data = jsonObject.getString("Data");
+                                List<BaseInfo> baseInfos = new ArrayList<BaseInfo>();
+                                if (errorCode == 0) {
+                                    baseInfos = mGson.fromJson(data, new TypeToken<List<BaseInfo>>() {
+                                    }.getType());
 
-                            if (baseInfos.size() > 0 && baseInfos != null) {
-                                db.dropTable(BaseInfo.class);
-                                for (int i = 0; i < baseInfos.size(); i++) {
-                                    if (!baseInfos.get(i).getIsValid().equals("0")) {
-                                        db.save(baseInfos.get(i));
-                                    }
-//                                    Log.e("Pan", "CityName=" + baseInfos.get(i).getCityName() + "  ListId=" + baseInfos.get(i).getListId() + "  getPhotoConfig= " + baseInfos.get(i).getPhotoConfig());
+                                    if (baseInfos.size() > 0 && baseInfos != null) {
+                                        db.dropTable(BaseInfo.class);
+                                        for (int i = 0; i < baseInfos.size(); i++) {
+                                            if (!baseInfos.get(i).getIsValid().equals("0")) {
+                                                db.save(baseInfos.get(i));
+                                            }
+//                                    Log.e("Pan", "CityName=" + baseInfos.get(i).getCityName() + "  ListId=" +
+// baseInfos.get(i).getListId() + "  getPhotoConfig= " + baseInfos.get(i).getPhotoConfig());
 //                                    db.deleteById(BaseInfo.class, baseInfos.get(i).getListId());
 
+                                        }
+                                        SharedPreferencesUtils.put("cityUpdateTime", Utils.getNowTime());
+                                    }
+                                    if (cityName != null && !cityName.equals("")) {
+                                        initData();
+                                    }
+//                            mProgressHUD.dismiss();
+                                    RL_Loding.setVisibility(View.GONE);
+                                } else {
+//                            mProgressHUD.dismiss();
+                                    RL_Loding.setVisibility(View.GONE);
+                                    Utils.myToast(mContext, data);
                                 }
-                                SharedPreferencesUtils.put("cityUpdateTime", Utils.getNowTime());
-                            }
-                            if (cityName != null && !cityName.equals("")) {
-                                initData();
-                            }
-//                            mProgressHUD.dismiss();
-                            RL_Loding.setVisibility(View.GONE);
-                        } else {
-//                            mProgressHUD.dismiss();
-                            RL_Loding.setVisibility(View.GONE);
-                            Utils.myToast(mContext, data);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
 //                        mProgressHUD.dismiss();
-                        RL_Loding.setVisibility(View.GONE);
-                        Utils.myToast(mContext, "JSON解析出错");
-                    } catch (DbException e) {
-                        e.printStackTrace();
-                    }
-                } else {
+                                RL_Loding.setVisibility(View.GONE);
+                                Utils.myToast(mContext, "JSON解析出错");
+                            } catch (DbException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
 //                    mProgressHUD.dismiss();
-                    RL_Loding.setVisibility(View.GONE);
-                    dialogShow("获取城市列表数据超时，请检查网络连接。");
+                            RL_Loding.setVisibility(View.GONE);
+                            dialogShow("获取城市列表数据超时，请检查网络连接。");
 //                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
-                }
-            }
-        });
+                        }
+                    }
+                });
 
     }
 
