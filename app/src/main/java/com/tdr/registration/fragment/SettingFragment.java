@@ -18,7 +18,7 @@ import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.activity.ModifyPwdActivity;
 import com.tdr.registration.activity.UnpaidActivity;
 import com.tdr.registration.activity.WalletBalanceActivity;
-import com.tdr.registration.activity.normal.RegisterFirstNormalActivity2;
+import com.tdr.registration.event.FleshOrderCountEvent;
 import com.tdr.registration.model.PayInsurance;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
@@ -27,6 +27,9 @@ import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.view.annotation.ContentView;
@@ -102,6 +105,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         View view = x.view().inject(this, inflater, container);
         initview();
         return view;
@@ -209,4 +213,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refleshOrderCount(FleshOrderCountEvent event) {
+        initdate();
+    }
+
+
 }
+

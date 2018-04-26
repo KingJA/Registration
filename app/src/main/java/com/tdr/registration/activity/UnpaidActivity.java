@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.UnPaidListAdapter;
 import com.tdr.registration.base.BaseActivity;
+import com.tdr.registration.event.FleshOrderCountEvent;
 import com.tdr.registration.model.PayInsurance;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
@@ -32,6 +33,9 @@ import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.view.annotation.ContentView;
@@ -118,6 +122,7 @@ public class UnpaidActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         x.view().inject(this);
         initview();
         Bundle bundle = (Bundle) getIntent().getExtras();
@@ -252,5 +257,8 @@ public class UnpaidActivity extends BaseActivity {
                 });
     }
 
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refleshOrderCount(FleshOrderCountEvent event) {
+        initdate();
+    }
 }

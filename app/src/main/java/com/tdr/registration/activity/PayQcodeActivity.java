@@ -15,12 +15,14 @@ import android.widget.TextView;
 
 import com.tdr.registration.R;
 import com.tdr.registration.base.BaseActivity;
+import com.tdr.registration.event.FleshOrderCountEvent;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -98,7 +100,12 @@ public class PayQcodeActivity extends BaseActivity {
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PayQcodeActivity.this, HomeActivity.class));
+                if (from == FORM_ORDER_LIST) {
+                    EventBus.getDefault().post(new FleshOrderCountEvent());
+                    finish();
+                } else {
+                    startActivity(new Intent(PayQcodeActivity.this, HomeActivity.class));
+                }
             }
         });
         mIvBack.setOnClickListener(new View.OnClickListener() {
