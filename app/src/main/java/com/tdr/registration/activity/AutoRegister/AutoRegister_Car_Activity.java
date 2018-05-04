@@ -246,6 +246,8 @@ public class AutoRegister_Car_Activity extends Activity implements View.OnClickL
     }
 
     private void initview() {
+        imageScan.setVisibility(View.VISIBLE);
+        imageScan.setBackgroundResource(R.mipmap.register_pop);
         image_back.setOnClickListener(this);
         imageScan.setOnClickListener(this);
         TV_buyTime.setOnClickListener(this);
