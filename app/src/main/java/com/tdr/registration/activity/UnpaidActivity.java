@@ -261,4 +261,9 @@ public class UnpaidActivity extends BaseActivity {
     public void refleshOrderCount(FleshOrderCountEvent event) {
         initdate();
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

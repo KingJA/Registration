@@ -32,6 +32,7 @@ import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.NoScrollViewPager;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.http.RequestParams;
@@ -260,5 +261,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             finish();
         }
     }
+
 
 }

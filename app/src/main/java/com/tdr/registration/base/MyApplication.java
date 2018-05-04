@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.RegisterData;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by Linus_Xie on 2016/9/9.
  */
-public class MyApplication extends Application implements BleInterface.BleStatusListener {
+public class MyApplication extends MultiDexApplication implements BleInterface.BleStatusListener {
 
     public static Context context;
     private static SharedPreferences mSharedPreferences;
