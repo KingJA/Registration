@@ -11,11 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tdr.registration.R;
-import com.tdr.registration.activity.normal.RegisterFirstNormalActivity2;
-import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.AllCapTransformationMethod;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;

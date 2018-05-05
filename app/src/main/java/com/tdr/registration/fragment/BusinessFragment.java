@@ -20,11 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.AutoRegister.AutoRegister_Car_Activity;
-import com.tdr.registration.activity.AutoRegister.AutoRegister_Insurance_Activity;
-import com.tdr.registration.activity.AutoRegister.AutoRegister_Personnel_Activity;
 import com.tdr.registration.activity.DX_PreRegistration_Car_Activity;
 import com.tdr.registration.activity.DX_PreRegistration_Statistics_Activity;
 import com.tdr.registration.activity.ElectricInfoSearchActivity;
@@ -32,21 +28,20 @@ import com.tdr.registration.activity.LabelBindingCarQueryActivity;
 import com.tdr.registration.activity.PersonalStatisticActivity;
 import com.tdr.registration.activity.PreFirstActivity;
 import com.tdr.registration.activity.DX_PreRegistrationQueryActivity;
-import com.tdr.registration.activity.RegisterSecondActivity;
+import com.tdr.registration.activity.RegisterPersonalActivity;
 import com.tdr.registration.activity.StatisticActivity;
 import com.tdr.registration.activity.VehicleMonitorActivity;
 import com.tdr.registration.activity.Visit_1_Activity;
 import com.tdr.registration.activity.kunming.JustFuckForKMActivity;
 import com.tdr.registration.activity.longyan.PreSearchActivity;
+import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.activity.tianjin.AppointmentQueryActivity;
 import com.tdr.registration.adapter.MainRecyclerAdapter;
 import com.tdr.registration.adapter.RecyclerAdapter;
-import com.tdr.registration.base.MyApplication;
 import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.ItemModel;
 import com.tdr.registration.model.Order;
-import com.tdr.registration.model.RegisterData;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.AppUtil;
 import com.tdr.registration.util.Constants;
@@ -241,9 +236,8 @@ public class BusinessFragment extends Fragment {
                    ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
                }else{
                    Bundle bundle=new Bundle();
-
                    if (mAdapter.Name.equals(Register)) {
-                       ActivityUtil.goActivity(getActivity(), RegisterSecondActivity.class);
+                       ActivityUtil.goActivity(getActivity(), RegisterCarActivity.class);
                    } else if (mAdapter.Name.equals(PreRegister)) {
                        if (locCityName.contains("昆明")) {
                            ActivityUtil.goActivity(getActivity(), JustFuckForKMActivity.class);
@@ -452,29 +446,33 @@ public class BusinessFragment extends Fragment {
                 if(CarType[0].equals("")){
                     Utils.showToast("车辆类型数据被清除，请重新登录以获取最新数据。");
                 }else{
-//                    ActivityUtil.goActivity(getActivity(), RegisterSecondActivity.class);
-                    if(city.contains("天津")){
-                        ((MyApplication) mActivity.getApplicationContext()).setRD(new RegisterData());
-                        ((MyApplication) mActivity.getApplicationContext()).setACList(new ArrayList<Activity>());
-                        ((MyApplication) mActivity.getApplicationContext()).getRD().setVEHICLETYPE(CarType[0]);
-
-                        List<Order> listOrder = new Gson().fromJson((String) SharedPreferencesUtils.get("Order", ""), new TypeToken<List<Order>>() {
-                        }.getType());
-                        for (Order order : listOrder) {
-                            if(order.getName().equals("Car")&&order.getOrder()==1){
-                                ActivityUtil.goActivity(getActivity(), AutoRegister_Car_Activity.class);
-                            }else if(order.getName().equals("Personnel")&&order.getOrder()==1){
-                                ActivityUtil.goActivity(getActivity(), AutoRegister_Personnel_Activity.class);
-                            }else if(order.getName().equals("Insurance")&&order.getOrder()==1){
-                                ActivityUtil.goActivity(getActivity(), AutoRegister_Insurance_Activity.class);
-                            }
-                        }
-                    }else{
-                        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
-                        ActivityUtil.goActivity(getActivity(), RegisterSecondActivity.class);
-                    }
-
+                    VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
+//                    ActivityUtil.goActivity(getActivity(), RegisterPersonalActivity.class);//人员信息
+                    ActivityUtil.goActivity(getActivity(), RegisterCarActivity.class);//车辆信息
                 }
+//                    ActivityUtil.goActivity(getActivity(), RegisterPersonalActivity.class);
+//                    if(city.contains("天津")){
+//                        ((MyApplication) mActivity.getApplicationContext()).setRD(new RegisterData());
+//                        ((MyApplication) mActivity.getApplicationContext()).setACList(new ArrayList<Activity>());
+//                        ((MyApplication) mActivity.getApplicationContext()).getRD().setVEHICLETYPE(CarType[0]);
+//
+//                        List<Order> listOrder = new Gson().fromJson((String) SharedPreferencesUtils.get("Order", ""), new TypeToken<List<Order>>() {
+//                        }.getType());
+//                        for (Order order : listOrder) {
+//                            if(order.getName().equals("Car")&&order.getOrder()==1){
+//                                ActivityUtil.goActivity(getActivity(), AutoRegister_Car_Activity.class);
+//                            }else if(order.getName().equals("Personnel")&&order.getOrder()==1){
+//                                ActivityUtil.goActivity(getActivity(), AutoRegister_Personnel_Activity.class);
+//                            }else if(order.getName().equals("Insurance")&&order.getOrder()==1){
+//                                ActivityUtil.goActivity(getActivity(), AutoRegister_Insurance_Activity.class);
+//                            }
+//                        }
+//                    }else{
+//                        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
+//                        ActivityUtil.goActivity(getActivity(), RegisterPersonalActivity.class);
+//                    }
+//
+//                }
             }
             mLog.e("MyCarType=" + CarType[0]);
         }

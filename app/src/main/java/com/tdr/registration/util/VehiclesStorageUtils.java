@@ -34,6 +34,7 @@ public class VehiclesStorageUtils {
     public static final String CURRENTADDRESS = "CurrentAddress";// 现居住地址
     public static final String REMARK = "Remark";// 备注
     public static final String CARDTYPE = "CARDTYPE";// 证件类型,1身份证 2 组织机构代码 3 台胞证 4 军人证 5 护照
+    public static final String CARDTYPEID = "CARDTYPEID";// 证件类型,1身份证 2 组织机构代码 3 台胞证 4 军人证 5 护照
     public static final String THEFTNO = "THEFTNO";//防盗标签
     public static final String THEFTNO2 = "THEFTNO2";
 
@@ -42,6 +43,7 @@ public class VehiclesStorageUtils {
     public static final String PHOTOLIST3 = "PHOTOLIST3";
 
     public static final String INSURANCE = "INSURANCE";
+    public static final String INSURANCES = "INSURANCES";
 
 
 
@@ -104,7 +106,9 @@ public class VehiclesStorageUtils {
     public static String getVehiclesAttr(String attrname) {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.context).getString(attrname, "");
     }
-
+    public static String getVehiclesAttr(String attrname,String defaultValue) {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.context).getString(attrname, defaultValue);
+    }
     public static void setVehiclesAttr(String attrname, String value) {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.context).edit().putString(attrname, value).commit();
     }

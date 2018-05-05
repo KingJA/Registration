@@ -11,15 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tdr.registration.R;
-import com.tdr.registration.activity.kunming.RegisterFirstKunMingActivity;
 import com.tdr.registration.adapter.PreAdapter;
-import com.tdr.registration.adapter.SeizeAdapter;
 import com.tdr.registration.base.BaseActivity;
-import com.tdr.registration.model.DistrainModel;
-import com.tdr.registration.model.ElectricCarModel;
-import com.tdr.registration.model.PreModel;
 import com.tdr.registration.model.PreRegistrationModel;
-import com.tdr.registration.model.SortModel;
 import com.tdr.registration.util.ActivityUtil;
 
 import java.util.ArrayList;
@@ -65,7 +59,7 @@ public class PreListActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.setClass(PreListActivity.this, RegisterSecondActivity.class);
+                intent.setClass(PreListActivity.this, RegisterPersonalActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("preModels", models.get(position));
                 intent.putExtras(bundle);
@@ -90,7 +84,7 @@ public class PreListActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        ActivityUtil.goActivityAndFinish(PreListActivity.this, RegisterSecondActivity.class);
+        ActivityUtil.goActivityAndFinish(PreListActivity.this, RegisterPersonalActivity.class);
     }
 
     @Override

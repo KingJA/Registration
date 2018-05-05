@@ -217,12 +217,12 @@
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <!-- 备案登记第二屏 -->
         <activity
-            android:name=".activity.RegisterSecondActivity"
+            android:name=".activity.RegisterPersonalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <!-- 备案登记第三屏 -->
         <activity
-            android:name=".activity.RegisterThirdActivity"
+            android:name=".activity.RegisterInsuranceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <!--确认保险界面-->
@@ -475,7 +475,7 @@
 
         <!--============================来宾等正常版========================================-->
         <activity
-            android:name=".activity.normal.RegisterFirstNormalActivity2"
+            android:name=".activity.normal.RegisterCarActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity

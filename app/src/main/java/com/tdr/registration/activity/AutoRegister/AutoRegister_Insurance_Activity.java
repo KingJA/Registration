@@ -21,15 +21,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.tdr.registration.R;
-import com.tdr.registration.activity.RegisterThirdActivity;
-import com.tdr.registration.activity.longyan.PreToOfficialSecondLongYanActivity;
-import com.tdr.registration.activity.normal.RegisterFirstNormalActivity2;
 import com.tdr.registration.adapter.InsuranceAdapter;
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.DetailBean;
 import com.tdr.registration.model.InsuranceModel;
 import com.tdr.registration.model.UploadInsuranceModel;
-import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.RegisterUtil;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
@@ -45,8 +41,6 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.OnClick;
 
 
 /**

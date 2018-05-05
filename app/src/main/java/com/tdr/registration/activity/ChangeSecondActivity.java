@@ -64,7 +64,7 @@ import butterknife.OnClick;
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class ChangeSecondActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private static final String TAG = "RegisterSecondActivity";
+    private static final String TAG = "RegisterPersonalActivity";
     @BindView(R.id.image_back)
     ImageView imageBack;
     @BindView(R.id.text_title)

@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -19,17 +17,11 @@ import com.tdr.registration.R;
 import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
-import com.tdr.registration.activity.RegisterSecondActivity;
-import com.tdr.registration.activity.SeizureShowActivity;
-import com.tdr.registration.activity.normal.RegisterFirstNormalActivity2;
-import com.tdr.registration.adapter.ColorAdapter;
+import com.tdr.registration.activity.RegisterPersonalActivity;
 import com.tdr.registration.base.BaseActivity;
 import com.tdr.registration.model.BaseInfo;
-import com.tdr.registration.model.BikeCode;
-import com.tdr.registration.model.PayInsurance;
 import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.model.PreRegistrationModel;
-import com.tdr.registration.model.SortModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
@@ -151,7 +143,7 @@ public class PreSearchActivity extends BaseActivity {
                                             bundle.putString("InType","Registration");
                                             bundle.putSerializable("RegistrationModel", model);
                                             SharedPreferencesUtils.put("preregisters", data);
-                                            ActivityUtil.goActivityWithBundle(PreSearchActivity.this, RegisterSecondActivity.class, bundle);
+                                            ActivityUtil.goActivityWithBundle(PreSearchActivity.this, RegisterPersonalActivity.class, bundle);
 
                                         }
                                     } else {
@@ -228,7 +220,7 @@ public class PreSearchActivity extends BaseActivity {
                 if("".equals(VEHICLETYPE)){
                     VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, "1");
                 }
-                ActivityUtil.goActivityAndFinish(PreSearchActivity.this, RegisterSecondActivity.class);
+                ActivityUtil.goActivityAndFinish(PreSearchActivity.this, RegisterPersonalActivity.class);
             }
         }).show();
 

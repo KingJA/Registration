@@ -30,13 +30,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.longyan.PreToOfficialSecondLongYanActivity;
-import com.tdr.registration.activity.normal.ChangeFirstNormalActivity2;
-import com.tdr.registration.activity.normal.RegisterFirstNormalActivity2;
+import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.base.BaseActivity;
 import com.tdr.registration.model.DX_PreRegistrationModel;
-import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.PinyinComparator;
@@ -46,7 +43,6 @@ import com.tdr.registration.util.mLog;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.DetailBean;
 import com.tdr.registration.model.ElectricCarModel;
-import com.tdr.registration.model.FieldSettingModel;
 import com.tdr.registration.model.InsuranceModel;
 import com.tdr.registration.model.PreModel;
 import com.tdr.registration.model.PreRegistrationModel;
@@ -81,10 +77,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 昆明等地区备案登记第二页
+ * 昆明等地区备案登记第二页 人员信息
  */
-public class RegisterSecondActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, RegistrPop.OnRegistrPopClickListener {
-    private static final String TAG = "RegisterSecondActivity";
+public class RegisterPersonalActivity extends BaseActivity implements View.OnClickListener, AdapterView
+        .OnItemClickListener, RegistrPop.OnRegistrPopClickListener {
+    private static final String TAG = "RegisterPersonalActivity";
     @BindView(R.id.image_back)
     ImageView imageBack;
     @BindView(R.id.text_title)
@@ -211,7 +208,7 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         mGson = new Gson();
         db = x.getDb(DBUtils.getDb());
         city = (String) SharedPreferencesUtils.get("city", "");
-        REGISTRATION= (String)SharedPreferencesUtils.get("REGISTRATION","");
+        REGISTRATION = (String) SharedPreferencesUtils.get("REGISTRATION", "");
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
         Bundle bundle = (Bundle) getIntent().getExtras();
@@ -253,14 +250,15 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
             Bundle bundle = new Bundle();
             bundle.putBoolean("isShow", true);
             bundle.putString("activity", "register");
-            ActivityUtil.goActivityForResultWithBundle(RegisterSecondActivity.this, QRCodeScanActivity.class, bundle, SCANNIN_QR_CODE);
+            ActivityUtil.goActivityForResultWithBundle(RegisterPersonalActivity.this, QRCodeScanActivity.class, bundle,
+                    SCANNIN_QR_CODE);
         }
     }
 
     private void initView() {
 
 //        if (!locCityName.contains("南宁") && !locCityName.contains("郑州") && !locCityName.contains("许昌")) {
-        imageScan.setVisibility(View.VISIBLE);
+//        imageScan.setVisibility(View.VISIBLE);
         imageScan.setBackgroundResource(R.mipmap.register_pop);
 //        }
 
@@ -269,9 +267,9 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
 
         editOwnerIdentity.setTransformationMethod(new AllCapTransformationMethod(true));
         if (activity.equals("")) {
-            if(!REGISTRATION.equals("")){
+            if (!REGISTRATION.equals("")) {
                 textTitle.setText(REGISTRATION);
-            }else{
+            } else {
                 if (city.contains("温州")) {
                     textTitle.setText("登记备案");
                 } else {
@@ -286,7 +284,7 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
             textTitle.setText("扣押转正式");
         }
         textCardType.setText("身份证");
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, "1");
+//        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, "1");
 
         checkCommission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -319,10 +317,22 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
 
     }
 
+    public void savePersonalInfo() {
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, editOwnerName.getText().toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, mCardTypeId);
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, editOwnerIdentity.getText().toString()
+                .trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, editOwnerPhone1.getText().toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE2, editOwnerPhone2.getText().toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, editOwnerCurrentAddress.getText()
+                .toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REMARK, editRemarks.getText().toString().trim());
+    }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initData() {
 
-        mCardTypeId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE);
+        mCardTypeId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE,"1");
         try {
             cardList = db.selector(BikeCode.class).where("type", "=", "6").findAll();
         } catch (DbException e) {
@@ -372,7 +382,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
             cardTypeMap2.clear();
             cardTypeMap2.put(cardType2, 100);
             editCommissionName.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COMMISSIONNAME));
-            editCommissionIdentity.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COMMISSIONIDENTITY));
+            editCommissionIdentity.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils
+                    .COMMISSIONIDENTITY));
             editCommissionPhone1.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COMMISSIONPHONE1));
             edit_AGENTADDR.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COMMISSIONADDRESS));
             edit_agentremark.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COMMISSIONREMARK));
@@ -390,7 +401,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         }
     }
 
-    @OnClick({R.id.image_back, R.id.image_scan, R.id.btn_next, R.id.text_cardType, R.id.text_commissionCardType, R.id.relative_identity})
+    @OnClick({R.id.image_back, R.id.image_scan, R.id.btn_next, R.id.text_cardType, R.id.text_commissionCardType, R.id
+            .relative_identity})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
@@ -406,16 +418,23 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
                 if (!checkData()) {
                     break;
                 }
+                savePersonalInfo();
                 mLog.e("VEHICLETYPE=" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
                 Bundle bundle = new Bundle();
                 bundle.putString("activity", activity);
                 bundle.putString("distrainCarListID", listId);
                 bundle.putString("IsPRE", "0");
-                if (insuranceModelsList.size() > 0) {//该城市有保险
-                    ActivityUtil.goActivityWithBundle(RegisterSecondActivity.this, RegisterThirdActivity.class, bundle);
-                } else {
-                    ActivityUtil.goActivity(RegisterSecondActivity.this, RegisterFirstNormalActivity2.class);
-                }
+
+                ActivityUtil.goActivityWithBundle(RegisterPersonalActivity.this, RegisterInsuranceActivity.class,
+                        bundle);
+                //TODO
+//                if (insuranceModelsList.size() > 0) {
+//                    //该城市有保险
+//                    ActivityUtil.goActivityWithBundle(RegisterPersonalActivity.this, RegisterInsuranceActivity.class,
+// bundle);
+//                } else {
+//                    ActivityUtil.goActivity(RegisterPersonalActivity.this, RegisterCarActivity.class);
+//                }
                 break;
 
             case R.id.text_cardType:
@@ -428,6 +447,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
 
             case R.id.relative_identity:
                 PhotoUtils.TakePicture(mActivity, "identity");
+                break;
+            default:
                 break;
         }
     }
@@ -477,8 +498,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         ArrayList list = new ArrayList();
         list.add(uploadInsuranceModels);
         bundle.putParcelableArrayList("insurance", list);
-//        ActivityUtil.goActivityWithBundle(RegisterSecondActivity.this, RegisterFirstNormalActivity.class, bundle);
-        ActivityUtil.goActivityWithBundle(RegisterSecondActivity.this, RegisterFirstNormalActivity2.class, bundle);
+//        ActivityUtil.goActivityWithBundle(RegisterPersonalActivity.this, RegisterFirstNormalActivity.class, bundle);
+        ActivityUtil.goActivityWithBundle(RegisterPersonalActivity.this, RegisterCarActivity.class, bundle);
 
     }
 
@@ -531,7 +552,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
                         return;
                     } else {
                         Bundle bundle = data.getExtras();
-                        PreRegistrationModel preRegistrationModel = (PreRegistrationModel) bundle.getSerializable("preModels");
+                        PreRegistrationModel preRegistrationModel = (PreRegistrationModel) bundle.getSerializable
+                                ("preModels");
                         dealPreByPolice(preRegistrationModel);
                     }
                 }
@@ -564,7 +586,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         map.put("phone", "");
         map.put("registerId", registerId.substring(7));
         mLog.e("Pan", "map=" + map);
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERLIST, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPREREGISTERLIST, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 Utils.LOGE("Pan", result);
@@ -579,7 +602,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
                                 PRList = mGson.fromJson(data, new TypeToken<List<DX_PreRegistrationModel>>() {
                                 }.getType());
                                 if (PRList.get(0) != null) {
-                                    if (VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE).equals(PRList.get(0).getVEHICLETYPE())) {
+                                    if (VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE).equals
+                                            (PRList.get(0).getVEHICLETYPE())) {
                                         dealModel(PRList.get(0));
                                     } else {
                                         dialogShow(7, "扫码获得的车辆类型与您选择的车辆类型不符，请退出登记重新选择车辆类型或者扫描相对应的车辆类型的二维码。");
@@ -625,7 +649,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         map.put("encryption", "");
         map.put("DataTypeCode", "GetPreRateOne");
         map.put("content", jsonObject.toString());
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_CARDHOLDER, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_CARDHOLDER, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
@@ -664,7 +689,10 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        dialogShow(4, "");
+//        dialogShow(4, "");
+        savePersonalInfo();
+        finish();
+
     }
 
     private boolean checkData() {
@@ -759,20 +787,27 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         }
 
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, ownerName);
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, editOwnerIdentity.getText().toString().toUpperCase().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, editOwnerIdentity.getText().toString()
+                .toUpperCase().trim());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, phone1);
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE2, editOwnerPhone2.getText().toString().trim());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, editOwnerCurrentAddress.getText().toString());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, editOwnerCurrentAddress.getText()
+                .toString());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REMARK, editRemarks.getText().toString().trim());
 
         //=======代办人=======
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ISCOMMISSION, isCommission);
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONCARDTYPE, mCardTypeId2);
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONNAME, editCommissionName.getText().toString().trim());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONIDENTITY, editCommissionIdentity.getText().toString().trim());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONPHONE1, editCommissionPhone1.getText().toString().trim());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONADDRESS, edit_AGENTADDR.getText().toString().trim());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONREMARK, edit_agentremark.getText().toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONNAME, editCommissionName.getText()
+                .toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONIDENTITY, editCommissionIdentity.getText
+                ().toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONPHONE1, editCommissionPhone1.getText()
+                .toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONADDRESS, edit_AGENTADDR.getText()
+                .toString().trim());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COMMISSIONREMARK, edit_agentremark.getText()
+                .toString().trim());
 
         return true;
     }
@@ -931,7 +966,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
             effectstype = NiftyDialogBuilder.Effectstype.Fadein;
             dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage("信息编辑中，确认离开该页面？")
                     .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("取消")
-                    .setCustomView(R.layout.custom_view, mContext).withButton2Text("确认").setButton1Click(new View.OnClickListener() {
+                    .setCustomView(R.layout.custom_view, mContext).withButton2Text("确认").setButton1Click(new View
+                    .OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialogBuilder.dismiss();
@@ -997,7 +1033,7 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
                 dialogBuilder.dismiss();
                 String plateNumber = editQueryIdentity.getText().toString();
 
-                    queryPreByPlateNumber(plateNumber);
+                queryPreByPlateNumber(plateNumber);
             }
         }).show();
     }
@@ -1007,7 +1043,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
         map.put("plateNumber", plateNumber);
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERS, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPREREGISTERS, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
@@ -1048,7 +1085,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         String vehicleType = Utils.initNullStr(preForKMModel.getVEHICLETYPE());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preForKMModel.getREGISTERID());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preForKMModel.getPLATENUMBER());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, preForKMModel.getVEHICLEBRANDNAME());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, preForKMModel.getVEHICLEBRANDNAME
+                ());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preForKMModel.getVEHICLEBRAND());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, preForKMModel.getColorName());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preForKMModel.getCOLORID());
@@ -1056,7 +1094,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2NAME, preForKMModel.getCOLORNAME2());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preForKMModel.getSHELVESNO());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preForKMModel.getENGINENO());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, Utils.dateWithoutTime(preForKMModel.getBUYDATE()));
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, Utils.dateWithoutTime(preForKMModel
+                .getBUYDATE()));
         if (Utils.initNullStr(preForKMModel.getCARDTYPE()).equals("")) {
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, "1");
         } else {
@@ -1074,7 +1113,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
 
 //        mPhotoListFileBean = (List<PreForKMModel.PhotoListFileBean>) preForKMModel.getPhotoListFile();
 //        for (int i = 0; i < mPhotoListFileBean.size(); i++) {
-//            switch (Integer.valueOf(mPhotoListFileBean.get(i).getINDEX())) {//6(labelB),5(labelA),1(applicationForm ),7(guleCar),2(identity),4(plateNum),3(invoice),8(guleBattery)
+//            switch (Integer.valueOf(mPhotoListFileBean.get(i).getINDEX())) {//6(labelB),5(labelA),1(applicationForm
+// ),7(guleCar),2(identity),4(plateNum),3(invoice),8(guleBattery)
 //                case 5:
 //                    SharedPreferencesUtils.put("applicationForm", mPhotoListFileBean.get(i).getPhotoFile());
 //                    break;
@@ -1099,7 +1139,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
         map.put("cardid", queryIdentity);
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERSBYCARDID, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPREREGISTERSBYCARDID, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
@@ -1118,7 +1159,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
                                 list.add(preRegistrationModels);
                                 bundle.putParcelableArrayList("electricCarModelList", list);
 
-                                ActivityUtil.goActivityForResultWithBundle(RegisterSecondActivity.this, PreListActivity.class, bundle, PRE_SHOW_CODE);
+                                ActivityUtil.goActivityForResultWithBundle(RegisterPersonalActivity.this,
+                                        PreListActivity.class, bundle, PRE_SHOW_CODE);
                             } else if (preRegistrationModels.size() == 1) {
                                 dealPreByPolice(preRegistrationModels.get(0));
                             }
@@ -1140,7 +1182,7 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
     }
 
     private void dealPreByPolice(PreRegistrationModel preRegistrationModel) {
-        String VEHICLETYPE= VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE );
+        String VEHICLETYPE = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE);
         String vehicleType = Utils.initNullStr(preRegistrationModel.getVEHICLETYPE());
         if (!vehicleType.equals(VEHICLETYPE)) {
             Utils.myToast(mContext, "预登记车辆类型与所选类型不符，请重新选择车辆类型登记");
@@ -1148,22 +1190,27 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         } else {
             SharedPreferencesUtils.put("preregistration", mGson.toJson(preRegistrationModel.getPhotoListFile()));
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preRegistrationModel.getREGISTERID());
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preRegistrationModel.getPLATENUMBER());
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, preRegistrationModel.getVEHICLEBRANDNAME());
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preRegistrationModel.getVEHICLEBRAND());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preRegistrationModel
+                    .getPLATENUMBER());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, preRegistrationModel
+                    .getVEHICLEBRANDNAME());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preRegistrationModel
+                    .getVEHICLEBRAND());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, preRegistrationModel.getColorName());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preRegistrationModel.getCOLORID());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2ID, preRegistrationModel.getCOLORID2());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2NAME, preRegistrationModel.getCOLORNAME2());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preRegistrationModel.getSHELVESNO());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preRegistrationModel.getENGINENO());
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, Utils.dateWithoutTime(preRegistrationModel.getBUYDATE()));
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, Utils.dateWithoutTime
+                    (preRegistrationModel.getBUYDATE()));
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, preRegistrationModel.getCARDTYPE());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, preRegistrationModel.getOWNERNAME());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, preRegistrationModel.getCARDID());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, preRegistrationModel.getPHONE1());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE2, preRegistrationModel.getPHONE2());
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, preRegistrationModel.getADDRESS());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, preRegistrationModel.getADDRESS
+                    ());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REMARK, preRegistrationModel.getREMARK());
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, vehicleType);
             initData();
@@ -1177,10 +1224,12 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, preModel.getVEHICLETYPE());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preModel.getREGISTERID());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preModel.getVEHICLEBRAND());
-//        List<BikeCode> bikeCodes = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getVehiclebrand() + "\'" + " and " + "type=\'1\'");
+//        List<BikeCode> bikeCodes = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getVehiclebrand() + "\'"
+// + " and " + "type=\'1\'");
         List<BikeCode> bikeCodes = null;
         try {
-            bikeCodes = db.selector(BikeCode.class).where("code", "=", preModel.getVEHICLEBRAND()).and("type", "=", "1").findAll();
+            bikeCodes = db.selector(BikeCode.class).where("code", "=", preModel.getVEHICLEBRAND()).and("type", "=",
+                    "1").findAll();
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -1189,10 +1238,12 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         }
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getCOLORID());
-//        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" + " and " + "type=\'4\'");
+//        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" +
+// " and " + "type=\'4\'");
         List<BikeCode> bikeCodeList = null;
         try {
-            bikeCodeList = db.selector(BikeCode.class).where("code", "=", preModel.getCOLORID()).and("type", "=", "4").findAll();
+            bikeCodeList = db.selector(BikeCode.class).where("code", "=", preModel.getCOLORID()).and("type", "=",
+                    "4").findAll();
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -1216,10 +1267,12 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
     private void dealModel(PreModel preModel) {
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preModel.getPrerateID());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preModel.getVehiclebrand());
-//        List<BikeCode> bikeCodes = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getVehiclebrand() + "\'" + " and " + "type=\'1\'");
+//        List<BikeCode> bikeCodes = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getVehiclebrand() + "\'"
+// + " and " + "type=\'1\'");
         List<BikeCode> bikeCodes = null;
         try {
-            bikeCodes = db.selector(BikeCode.class).where("code", "=", preModel.getVehiclebrand()).and("type", "=", "1").findAll();
+            bikeCodes = db.selector(BikeCode.class).where("code", "=", preModel.getVehiclebrand()).and("type", "=",
+                    "1").findAll();
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -1228,10 +1281,12 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
         }
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getColorID());
-//        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" + " and " + "type=\'4\'");
+//        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" +
+// " and " + "type=\'4\'");
         List<BikeCode> bikeCodeList = null;
         try {
-            bikeCodeList = db.selector(BikeCode.class).where("code", "=", preModel.getColorID()).and("type", "=", "4").findAll();
+            bikeCodeList = db.selector(BikeCode.class).where("code", "=", preModel.getColorID()).and("type", "=",
+                    "4").findAll();
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -1284,7 +1339,8 @@ public class RegisterSecondActivity extends BaseActivity implements View.OnClick
                 bundle.putBoolean("isShow", true);
                 bundle.putBoolean("isPlateNumber", false);
                 bundle.putString("ButtonName", "输入自主预登记编号");
-                ActivityUtil.goActivityForResultWithBundle(this, QRCodeScanActivity.class, bundle, SCANNIN_GREQUEST_CODE);
+                ActivityUtil.goActivityForResultWithBundle(this, QRCodeScanActivity.class, bundle,
+                        SCANNIN_GREQUEST_CODE);
 
 //                intent.setClass(this, QRCodeScanActivity.class);
 //                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);

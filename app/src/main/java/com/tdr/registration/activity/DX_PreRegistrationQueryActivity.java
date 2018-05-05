@@ -14,23 +14,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.normal.RegisterFirstNormalActivity2;
 import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.DX_PreRegistrationModel;
-import com.tdr.registration.model.ElectricCarModel;
-import com.tdr.registration.model.PreRegistrationModel;
-import com.tdr.registration.model.ReturnModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
-import com.tdr.registration.util.PhotoUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
-import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +31,6 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

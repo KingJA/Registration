@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tdr.registration.R;
-import com.tdr.registration.activity.kunming.RegisterFirstKunMingActivity;
 import com.tdr.registration.base.BaseActivity;
 import com.tdr.registration.model.DistrainModel;
 import com.tdr.registration.model.ElectricCarModel;
@@ -133,7 +132,7 @@ public class SeizureShowActivity extends BaseActivity {
                 bundle.putString("InType","Registration");
                 bundle.putString("activity", "seizure");
                 bundle.putString("distrainCarListID", model.getListId());
-                ActivityUtil.goActivityWithBundle(SeizureShowActivity.this, RegisterSecondActivity.class, bundle);
+                ActivityUtil.goActivityWithBundle(SeizureShowActivity.this, RegisterPersonalActivity.class, bundle);
                 break;
         }
     }

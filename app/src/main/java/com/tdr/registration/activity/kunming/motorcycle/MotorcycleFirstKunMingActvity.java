@@ -31,7 +31,7 @@ import com.tdr.registration.R;
 import com.tdr.registration.activity.BrandActivity;
 import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.PreListActivity;
-import com.tdr.registration.activity.RegisterSecondActivity;
+import com.tdr.registration.activity.RegisterPersonalActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.base.BaseActivity;
@@ -382,7 +382,7 @@ public class MotorcycleFirstKunMingActvity extends BaseActivity implements View.
                 bundle.putString("InType","Registration");
                 bundle.putString("activity", activity);
                 bundle.putString("listId", listId);
-                ActivityUtil.goActivityWithBundle(MotorcycleFirstKunMingActvity.this, RegisterSecondActivity.class, bundle);
+                ActivityUtil.goActivityWithBundle(MotorcycleFirstKunMingActvity.this, RegisterPersonalActivity.class, bundle);
                 break;
         }
     }

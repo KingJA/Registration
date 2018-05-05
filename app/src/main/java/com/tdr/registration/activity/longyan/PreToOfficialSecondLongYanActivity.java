@@ -2,10 +2,8 @@ package com.tdr.registration.activity.longyan;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,18 +13,13 @@ import android.widget.TextView;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.LoginActivity;
-import com.tdr.registration.activity.RegisterThirdActivity;
 import com.tdr.registration.base.BaseActivity;
 import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.UploadInsuranceModel;
 import com.tdr.registration.util.ActivityUtil;
-import com.tdr.registration.util.AppManager;
-import com.tdr.registration.util.Base64;
-import com.tdr.registration.util.CRC16M;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.SharedPreferencesUtils;
-import com.tdr.registration.util.TendencyEncrypt;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
@@ -42,14 +35,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static android.R.id.list;
 
 /**
  * 预登记转备案

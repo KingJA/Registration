@@ -27,9 +27,9 @@ public class Constants {
     /**
      * Webservice参数
      */
-    public static final String WEBSERVER_URL = "http://ykgcapp.iotone.cn/OpenService.asmx";// WebServices访问地址，测试
-//    public static final String WEBSERVER_URL = "http://183.129.130.119:48012/OpenService.asmx";// WebServices访问地址，测试
-//    public static final String WEBSERVER_URL = "http://10.130.0.104:8012/OpenService.asmx";// WebServices访问地址，测试
+//    public static final String WEBSERVER_URL = "https://ykgcapp.iotone.cn/OpenService.asmx";// WebServices访问地址，测试
+//    public static final String WEBSERVER_URL = "http://183.129.130.119:48012/OpenService.asmx";// WebServices访问地址，测试====>外网
+    public static final String WEBSERVER_URL = "http://10.130.0.104:8012/OpenService.asmx";// WebServices访问地址，测试====>内网
 //    public static final String WEBSERVER_URL = "http://10.130.0.104:8071/OpenService.asmx";// WebServices访问地址，测试
 //    public static final String WEBSERVER_URL = "http://10.130.0.104:8812/OpenService.asmx";// WebServices访问地址，测试
 //    public static final String WEBSERVER_URL = "http://183.129.130.119:52000/OpenService.asmx";// WebServices访问地址，测试
@@ -108,6 +108,7 @@ public class Constants {
     public static final String HTTP_GetSetting = "/api/Cache/GetSetting";//获取配置信息
     public static final String HTTP_UploadPicture = "http://10.130.0.104:818/api/Picture/Upload2";//上传图片
     public static final String HTTP_GetPayBill = "api/PayBill/GetPayBill";//获取订单支付状态
+    public static final String HTTP_PolicyConfig = "/api/ElectricCar/PolicyConfig";//获取保险信息
 
 
 

@@ -8,20 +8,17 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
 import com.tdr.registration.model.DX_PreRegistrationModel;
-import com.tdr.registration.model.PreModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
@@ -35,7 +32,6 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
 import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 
@@ -168,7 +164,7 @@ public class QRCodeCreateActivity extends Activity {
                                     bundle.putString("InType","PreRegistration");
 //                                    bundle.putSerializable("PreRegistrationModel", PRList.get(0));
                                     TransferUtil.save("PreRegistrationModel",PRList.get(0));
-                                    ActivityUtil.goActivityWithBundle(QRCodeCreateActivity.this, RegisterSecondActivity.class, bundle);
+                                    ActivityUtil.goActivityWithBundle(QRCodeCreateActivity.this, RegisterPersonalActivity.class, bundle);
                                 }
                             }catch (JsonSyntaxException e){
                                 Utils.showToast(data);

@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import com.tdr.registration.R;
 import com.tdr.registration.activity.HomeActivity;
-import com.tdr.registration.activity.RegisterThirdActivity;
+import com.tdr.registration.activity.RegisterInsuranceActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.adapter.PhotoListAdapter;
@@ -501,7 +501,7 @@ public class PreToOfficialFirstLongYanActivity extends BaseActivity implements A
                     if(InsuranceModels==null||InsuranceModels.size()==0){
                         ActivityUtil.goActivityWithBundle(PreToOfficialFirstLongYanActivity.this, PreToOfficialSecondLongYanActivity.class, bundle);
                     }else{
-                        ActivityUtil.goActivityWithBundle(PreToOfficialFirstLongYanActivity.this, RegisterThirdActivity.class, bundle);
+                        ActivityUtil.goActivityWithBundle(PreToOfficialFirstLongYanActivity.this, RegisterInsuranceActivity.class, bundle);
                     }
                 }
 
@@ -539,7 +539,7 @@ public class PreToOfficialFirstLongYanActivity extends BaseActivity implements A
                             if(InsuranceModels==null||InsuranceModels.size()==0){
                                 ActivityUtil.goActivityWithBundle(PreToOfficialFirstLongYanActivity.this, PreToOfficialSecondLongYanActivity.class, bundle);
                             }else{
-                                ActivityUtil.goActivityWithBundle(PreToOfficialFirstLongYanActivity.this, RegisterThirdActivity.class, bundle);
+                                ActivityUtil.goActivityWithBundle(PreToOfficialFirstLongYanActivity.this, RegisterInsuranceActivity.class, bundle);
                             }
                         } else {
                             mProgressHUD.dismiss();

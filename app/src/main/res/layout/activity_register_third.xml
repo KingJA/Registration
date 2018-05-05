@@ -107,9 +107,10 @@
                 </RadioGroup>
             </LinearLayout>
             <Button
+                android:visibility="gone"
                 android:id="@+id/btn_submit"
                 style="@style/custom_button"
-                android:text="下一步" />
+                android:text="提交" />
 
         </LinearLayout>
 

@@ -90,6 +90,46 @@ public class HttpUtils {
             }
         });
     }
+
+    public static void postK(RequestParams RP, final HttpGetCallBack httpcallback) {
+        mLog.e("Token:"+(String) SharedPreferencesUtils.get("token", ""));
+        RP.addHeader("accessToken", (String) SharedPreferencesUtils.get("token", ""));
+        //设置联网超时时间
+        RP.setConnectTimeout(5000);
+        //设置重试次数
+        RP.setMaxRetryCount(3);
+        x.http().post(RP, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                httpcallback.onSuccess(result);
+                mLog.e("onSuccess:" + result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                httpcallback.onError(ex);
+                if(ex.getMessage().contains("Network is unreachable")){
+                    Utils.showToast("网络连接中断！请检查您的网络。");
+                }
+                if(ex.getMessage().contains("timeout")){
+                    Utils.showToast("访问网络超时。请检查网络状况并联系相关工作人员。");
+                }
+                mLog.e("onError:" + ex.toString());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                mLog.e("onCancelled:" + cex.toString());
+            }
+
+            @Override
+            public void onFinished() {
+                mLog.e("onFinished");
+            }
+        });
+    }
+
+
     public static void UploadFile(RequestParams RP, final HttpPostUpLoadFileCallBack httpcallback) {
         mLog.e("Token:"+(String) SharedPreferencesUtils.get("token", ""));
         RP.addHeader("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -134,9 +174,7 @@ public class HttpUtils {
 
     public interface HttpPostCallBack {
         void postcallback(String Finish, String paramString);
-
     }
-
     public interface HttpGetCallBack {
         void onSuccess(String result);
         void onError(Throwable ex);

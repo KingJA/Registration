@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,11 +33,11 @@ import com.tdr.registration.R;
 import com.tdr.registration.activity.BrandActivity;
 import com.tdr.registration.activity.ConfirmationInsuranceActivity;
 import com.tdr.registration.activity.HomeActivity;
-import com.tdr.registration.activity.LabelBindingCarQueryActivity;
 import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.activity.PayActivity;
 import com.tdr.registration.activity.PayQcodeActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
+import com.tdr.registration.activity.RegisterPersonalActivity;
 import com.tdr.registration.activity.UnpaidActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.adapter.PhotoListAdapter;
@@ -47,7 +46,6 @@ import com.tdr.registration.base.MyApplication;
 import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
-import com.tdr.registration.model.CarLabel;
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.PayInsurance;
 import com.tdr.registration.model.PhotoListInfo;
@@ -61,7 +59,6 @@ import com.tdr.registration.util.CharacterParser;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.DESCoder;
-import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.PhotoUtils;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
 import com.tdr.registration.util.SharedPreferencesUtils;
@@ -72,6 +69,7 @@ import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
 import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
+import com.tdr.registration.view.popwindow.RegistrPop;
 import com.umeng.analytics.MobclickAgent;
 
 
@@ -80,10 +78,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
-import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,9 +93,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 备案登记全国版
+ * 备案登记全国版 车辆信息
  */
-public class RegisterFirstNormalActivity2 extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class RegisterCarActivity extends BaseActivity implements AdapterView.OnItemClickListener, View
+        .OnClickListener, RegistrPop.OnRegistrPopClickListener {
 
     private final static int SCANNIN_GREQUEST_CODE = 1991;//二维码回调值
     private final static int SCANNIN_QR_CODE = 0514;//二维码回调值*
@@ -297,6 +294,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
     private String IsConfirm = "";
     private ConfirmInsuranceModel ConfirmInsuranceList;
     private String REGISTRATION;
+    private RegistrPop registrPop;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -329,7 +327,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         isScanLabel = (String) SharedPreferencesUtils.get("isScanLabel", "");
         isScanCard = (String) SharedPreferencesUtils.get("isScanCard", "");
         IsConfirm = (String) SharedPreferencesUtils.get("IsConfirm", "");
-        REGISTRATION= (String)SharedPreferencesUtils.get("REGISTRATION","");
+        REGISTRATION = (String) SharedPreferencesUtils.get("REGISTRATION", "");
         intent = new Intent();
         characterParser = CharacterParser.getInstance();
         mActivity = this;
@@ -351,7 +349,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
             ArrayList list = bundle.getParcelableArrayList("insurance");
             models = (List<UploadInsuranceModel>) list.get(0);
             ConfirmInsuranceList = (ConfirmInsuranceModel) list.get(1);
-            mLog.e("ConfirmInsuranceModel="+ConfirmInsuranceList.getInsurance().size());
+            mLog.e("ConfirmInsuranceModel=" + ConfirmInsuranceList.getInsurance().size());
 
         }
 
@@ -390,7 +388,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         ISDOUBLESIGN = (String) SharedPreferencesUtils.get("ISDOUBLESIGN", "");
 
         mLog.e("Pan", "车辆类型：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
-        CarRegular = (String) SharedPreferencesUtils.get("PlatenumberRegular" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE), "");
+        CarRegular = (String) SharedPreferencesUtils.get("PlatenumberRegular" + VehiclesStorageUtils.getVehiclesAttr
+                (VehiclesStorageUtils.VEHICLETYPE), "");
         mLog.e("Pan", "正则表达式：" + CarRegular);
 
         if (ISDOUBLESIGN.equals("") || REGULAR.equals("") || REGULAR2.equals("")) {
@@ -505,11 +504,18 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
      */
     private void initView() {
 
+//        }
+        imageScan.setVisibility(View.VISIBLE);
+        imageScan.setBackgroundResource(R.mipmap.register_pop);
+        registrPop = new RegistrPop(imageScan, mActivity);
+        registrPop.setOnRegistrPopClickListener(this);
+
+
         if (activity.equals("")) {
             String appName = (String) SharedPreferencesUtils.get("appName", "");
-            if(!REGISTRATION.equals("")){
+            if (!REGISTRATION.equals("")) {
                 textTitle.setText(REGISTRATION);
-            }else{
+            } else {
 
                 if (city.contains("温州")) {
                     textTitle.setText("登记备案");
@@ -528,22 +534,19 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         }
         SetViewForCity();
 
-        imageScan.setVisibility(View.GONE);
-        imageScan.setBackgroundResource(R.mipmap.qr_scan);
-
         ET_plateNumber.setTransformationMethod(new AllCapTransformationMethod(true));
         String IsScanDjh = (String) SharedPreferencesUtils.get("IsScanDjh", "");
         mLog.e("IsScanDjh=" + IsScanDjh);
-        String IsScanCjh = (String)SharedPreferencesUtils.get("IsScanCjh", "");
+        String IsScanCjh = (String) SharedPreferencesUtils.get("IsScanCjh", "");
         mLog.e("IsScanCjh=" + IsScanCjh);
-        if(IsScanCjh.equals("1")){
+        if (IsScanCjh.equals("1")) {
             IV_ScanFrameNumber.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             IV_ScanFrameNumber.setVisibility(View.GONE);
         }
-        if(IsScanDjh.equals("1")){
+        if (IsScanDjh.equals("1")) {
             IV_ScanMotorNumber.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             IV_ScanMotorNumber.setVisibility(View.GONE);
         }
         ET_frame.setTransformationMethod(new AllCapTransformationMethod(true));
@@ -577,7 +580,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                 }
             }
         });
-        if(!VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.BUYDATE).equals("")){
+        if (!VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.BUYDATE).equals("")) {
             TV_buyTime.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.BUYDATE));
         }
         timePickerView = new TimePickerView(this, TimePickerView.Type.YEAR_MONTH_DAY);
@@ -638,7 +641,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         ET_frame.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.SHELVESNO));
         ET_motor.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.ENGINENO));
         String time = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.BUYDATE);
-        mLog.e("time="+time);
+        mLog.e("time=" + time);
         if (!time.equals("")) {
             TV_buyTime.setText(time);
         }
@@ -659,15 +662,15 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         List<PhotoModel> photolist = new ArrayList<PhotoModel>();
         String preregisters = (String) SharedPreferencesUtils.get("preregisters", "");
         String preregistration = (String) SharedPreferencesUtils.get("preregistration", "");
-        mLog.e("Pan","preregisters="+preregisters);
-        mLog.e("Pan","preregistration="+preregistration);
-        if (preregisters.equals("")&&preregistration.equals("")) {
+        mLog.e("Pan", "preregisters=" + preregisters);
+        mLog.e("Pan", "preregistration=" + preregistration);
+        if (preregisters.equals("") && preregistration.equals("")) {
             return;
         }
-        if (!preregisters.equals("")){
+        if (!preregisters.equals("")) {
             preForKMModel = mGson.fromJson(preregisters, new TypeToken<PreRegistrationModel>() {
             }.getType());
-            mLog.e("Pan","preForKMModel="+preForKMModel.getColorName());
+            mLog.e("Pan", "preForKMModel=" + preForKMModel.getColorName());
 
             for (PhotoModel photoModel : preForKMModel.getPhotoListFile()) {
                 PhotoModel PM = new PhotoModel();
@@ -677,10 +680,10 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                 PM.setRemark(photoModel.getRemark());
                 pm.add(PM);
             }
-        }else if (!preregistration.equals("")){
+        } else if (!preregistration.equals("")) {
             List<PhotoModel> list = mGson.fromJson(preregistration, new TypeToken<List<PhotoModel>>() {
             }.getType());
-            mLog.e("Pan","list.size="+list.size());
+            mLog.e("Pan", "list.size=" + list.size());
 
             for (PhotoModel photoModel : list) {
                 PhotoModel PM = new PhotoModel();
@@ -695,14 +698,14 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
 
         for (int i = 0; i < PLI.size(); i++) {
             for (int j = 0; j < pm.size(); j++) {
-                mLog.e("Pan","i="+PLI.get(i).getINDEX()+"  j="+pm.get(j).getINDEX());
+                mLog.e("Pan", "i=" + PLI.get(i).getINDEX() + "  j=" + pm.get(j).getINDEX());
                 if (PLI.get(i).getINDEX().equals(pm.get(j).getINDEX())) {
-                    mLog.e("Pan",i+"  pm="+pm.get(i).getINDEX());
+                    mLog.e("Pan", i + "  pm=" + pm.get(i).getINDEX());
                     photolist.add(pm.get(j));
                 }
             }
         }
-        mLog.e("Pan","photolist.size="+photolist.size());
+        mLog.e("Pan", "photolist.size=" + photolist.size());
         for (PhotoModel PM : photolist) {
             mLog.e("Pan", "getINDEX=" + PM.getINDEX());
             initImages(PM.getINDEX(), PM.getPhoto());
@@ -716,7 +719,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
     private void initImages(final String index, String id) {
         HashMap<String, String> map = new HashMap<>();
         map.put("pictureGUID", id);
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPICTURE, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPICTURE, map, new WebServiceUtils.WebServiceCallBack() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void callBack(final String result) {
@@ -804,21 +808,25 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         }
     }
 
-    @OnClick({R.id.image_back, R.id.image_scan, R.id.tv_buyTime, R.id.rl_CarBrand, R.id.rl_vehicleColor, R.id.rl_vehicleColor2, R.id.iv_scanTheft, R.id.iv_scanTheft2, R.id.iv_scanPlate, R.id.btn_next, R.id.IV_ScanFrameNumber, R.id.IV_ScanMotorNumber})
+    @OnClick({R.id.image_back, R.id.image_scan, R.id.tv_buyTime, R.id.rl_CarBrand, R.id.rl_vehicleColor, R.id
+            .rl_vehicleColor2, R.id.iv_scanTheft, R.id.iv_scanTheft2, R.id.iv_scanPlate, R.id.btn_next, R.id
+            .IV_ScanFrameNumber, R.id.IV_ScanMotorNumber})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 onBackPressed();
                 break;
             case R.id.image_scan:
-                intent.setClass(this, QRCodeScanActivity.class);
-                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+//                intent.setClass(this, QRCodeScanActivity.class);
+//                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+                registrPop.showPopupWindowDownOffset();
+
                 break;
             case R.id.tv_buyTime:
                 timePickerView.show();
                 break;
             case R.id.rl_CarBrand:
-                intent.setClass(RegisterFirstNormalActivity2.this, BrandActivity.class);
+                intent.setClass(RegisterCarActivity.this, BrandActivity.class);
                 startActivityForResult(intent, BRAND_CODE);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
@@ -860,6 +868,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                     dialogShow(3, "确认车牌号");
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -877,7 +887,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         bundle.putBoolean("isShow", isshow);
         bundle.putBoolean("isPlateNumber", isPlate);
         bundle.putString("ButtonName", ButtonName);
-        ActivityUtil.goActivityForResultWithBundle(RegisterFirstNormalActivity2.this, QRCodeScanActivity.class, bundle, SCANNIN_QR_CODE);
+        ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this, QRCodeScanActivity.class, bundle,
+                SCANNIN_QR_CODE);
     }
 
     private void CheckPlate(String ButtonName) {
@@ -886,11 +897,16 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         bundle.putBoolean("isShow", true);
         bundle.putBoolean("isPlateNumber", true);
         bundle.putString("ButtonName", ButtonName);
-        ActivityUtil.goActivityForResultWithBundle(RegisterFirstNormalActivity2.this, QRCodeScanActivity.class, bundle, SCANNIN_GREQUEST_CODE);
+        ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this, QRCodeScanActivity.class, bundle,
+                SCANNIN_GREQUEST_CODE);
     }
 
     @Override
     public void onBackPressed() {
+        dialogShow(4, "信息编辑中，确认离开该页面？");
+    }
+
+    private void saveCarInfo() {
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ISCONFIRM, isConfirm);
         if (isManualInputPlate) {
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, ET_plateNumber.getText().toString());
@@ -903,7 +919,6 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2NAME, TV_vehicleColor2.getText().toString());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARTYPE, carType);
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, TV_buyTime.getText().toString());
-        finish();
     }
 
     private NiftyDialogBuilder dialogBuilder;
@@ -926,7 +941,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                     SharedPreferencesUtils.put("preregisters", "");
                     SharedPreferencesUtils.put("preregistration", "");
                     VehiclesStorageUtils.clearData();
-                    ActivityUtil.goActivityAndFinish(RegisterFirstNormalActivity2.this, HomeActivity.class);
+                    ActivityUtil.goActivityAndFinish(RegisterCarActivity.this, HomeActivity.class);
                 }
             }).show();
         } else if (flag == 1) {
@@ -1084,6 +1099,27 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                     checkPlateNumber(plateNumber);
                 }
             }).show();
+        } else if (flag == 4) {
+            effectstype = NiftyDialogBuilder.Effectstype.Fadein;
+            dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage("信息编辑中，确认离开该页面？")
+                    .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("取消")
+                    .setCustomView(R.layout.custom_view, mContext).withButton2Text("确认").setButton1Click(new View
+                    .OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder.dismiss();
+                }
+            }).setButton2Click(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder.dismiss();
+                    SharedPreferencesUtils.put("preregisters", "");
+                    SharedPreferencesUtils.put("preregistration", "");
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    TransferUtil.remove("PhotoList");
+                    finish();
+                }
+            }).show();
         }
     }
 
@@ -1098,8 +1134,10 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         mLog.e("plateNumber:" + plateNumber);
         mLog.e("plate:" + plate);
         if (plateNumber.equals(plate)) {
-            SendMSG();
-
+            //TODO
+//            SendMSG();
+            saveCarInfo();
+            ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
         } else {
             Utils.myToast(mContext, "请确认车牌无误！");
         }
@@ -1111,11 +1149,11 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         String Photoindex[] = PhotoUtils.mPicName.split(":");
         Drawable drawable = new BitmapDrawable(bitmap);
 
-        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList
+                .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
         my.Photo.setBackgroundDrawable(drawable);
         my.PhotoName.setTextColor(Color.WHITE);
         PLA.SevePhoto(Photoindex[1]);
-
 
 
     }
@@ -1125,15 +1163,13 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         String Photoindex[] = PhotoUtils.mPicName.split(":");
         Drawable drawable = new BitmapDrawable(bitmap);
 
-        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList
+                .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
         my.Photo.setBackgroundDrawable(drawable);
         my.PhotoName.setTextColor(Color.WHITE);
         PhotoUtils.sevephoto(bitmap);
         PLA.SevePhoto(Photoindex[1]);
     }
-
-
-
 
 
 //    private void UpDatePhotoItem() {
@@ -1148,7 +1184,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
 //        String Photoindex[] = name.split(":");
 ////        Log.e("Pan","Position="+Photoindex[2] + "  Index=" + Photoindex[1]);
 //        Drawable drawable = new BitmapDrawable(bitmap);
-//        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+//        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList
+// .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
 //        my.Photo.setBackgroundDrawable(drawable);
 //        my.PhotoName.setTextColor(Color.WHITE);
 //        PLA.SevePhoto(Photoindex[1]);
@@ -1160,7 +1197,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
 //        String photoStr = Utils.Byte2Str(Utils.Bitmap2Bytes(bitmap));
 //        Drawable drawable = new BitmapDrawable(bitmap);
 //        String Photoindex[] = PhotoUtils.mPicName.split(":");
-//        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+//        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList
+// .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
 //        my.Photo.setBackgroundDrawable(drawable);
 //        my.PhotoName.setTextColor(Color.WHITE);
 //        PhotoUtils.sevephoto(bitmap);
@@ -1181,7 +1219,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                         UpDatePhotoItem2(data);
                     }
                 } catch (Exception E) {
-                    MobclickAgent.reportError(mActivity, "临时缓存图片AbsolutePath：" + PhotoUtils.imageFile.getAbsolutePath());
+                    MobclickAgent.reportError(mActivity, "临时缓存图片AbsolutePath：" + PhotoUtils.imageFile.getAbsolutePath
+                            ());
                     MobclickAgent.reportError(mActivity, "UpDatePhotoItem" + E.toString());
                 }
             }
@@ -1203,7 +1242,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                     Bundle bundle = data.getExtras();
                     String scanResult = bundle.getString("result");
                     String isPlateNumber = bundle.getString("isPlateNumber");
-                    String plateNumberInput = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER);//用户输入的车牌
+                    String plateNumberInput = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER);
+                    //用户输入的车牌
                     if (isPlateNumber.equals("0")) {
                         if (scanResult.equals(plateNumberInput)) {
                             SendMSG();
@@ -1254,7 +1294,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                             Utils.myToast(mContext, "二维码不属于车牌");
                         }
                     } else if (ScanType.equals("ScanTheft1")) {
-                        mLog.e("labelNumber"+labelNumber);
+                        mLog.e("labelNumber" + labelNumber);
                         if (checkTheft(1, labelNumber)) {
                             TV_theftNo.setText(labelNumber);
                             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.THEFTNO, labelNumber);
@@ -1271,11 +1311,11 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                     }
                 }
             }
-        }else if(requestCode == CONFIRMATION_INSURANCE){
+        } else if (requestCode == CONFIRMATION_INSURANCE) {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
                 String isChecked = bundle.getString("isChecked");
-                if(isChecked.equals("1")){
+                if (isChecked.equals("1")) {
                     sendMsg();
                 }
             }
@@ -1300,7 +1340,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         if (labelNumber.equals("") || labelNumber == null) {
             Utils.showToast(msg1);
         } else {
-            mLog.e("REGULAR="+regular+"     labelNumber="+labelNumber);
+            mLog.e("REGULAR=" + regular + "     labelNumber=" + labelNumber);
             Pattern pat = Pattern.compile(regular);
             Matcher mat = pat.matcher(labelNumber + "");
             if (!mat.matches()) {
@@ -1312,28 +1352,30 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         return check;
     }
 
-    private void SendMSG(){
-        if(IsConfirm.equals("1")){
+    private void SendMSG() {
+        if (IsConfirm.equals("1")) {
             ConfirmInsuranceList.setPlateNumber(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER));
             ConfirmInsuranceList.setName(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.OWNERNAME));
             ConfirmInsuranceList.setCardType(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE));
             ConfirmInsuranceList.setCardID(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.IDENTITY));
             ConfirmInsuranceList.setPhone(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PHONE1));
-            mLog.e("PlateNumber="+ConfirmInsuranceList.getPlateNumber());
-            mLog.e("Name="+ConfirmInsuranceList.getName());
-            mLog.e("CardType="+ConfirmInsuranceList.getCardType());
-            mLog.e("CardID="+ConfirmInsuranceList.getCardID());
-            mLog.e("Phone="+ConfirmInsuranceList.getPhone());
+            mLog.e("PlateNumber=" + ConfirmInsuranceList.getPlateNumber());
+            mLog.e("Name=" + ConfirmInsuranceList.getName());
+            mLog.e("CardType=" + ConfirmInsuranceList.getCardType());
+            mLog.e("CardID=" + ConfirmInsuranceList.getCardID());
+            mLog.e("Phone=" + ConfirmInsuranceList.getPhone());
 
-            Bundle bundle=new Bundle();
+            Bundle bundle = new Bundle();
             ArrayList list = new ArrayList();
             list.add(ConfirmInsuranceList);
             bundle.putParcelableArrayList("ConfirmInsurance", list);
-            ActivityUtil.goActivityForResultWithBundle(RegisterFirstNormalActivity2.this, ConfirmationInsuranceActivity.class, bundle,CONFIRMATION_INSURANCE);
-        }else{
+            ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this, ConfirmationInsuranceActivity.class,
+                    bundle, CONFIRMATION_INSURANCE);
+        } else {
             sendMsg();
         }
     }
+
     private void sendMsg() {
 
         JSONObject obj = new JSONObject();
@@ -1429,6 +1471,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
             obj.put("POLICYS", jsonArray1);
 //            mLog.e("POLICYS:"+jsonArray1.toString());
             //代办人信息
+            //TODO
             obj.put("InvoiceOp", InvoiceType);
             obj.put("AGENTNAME", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COMMISSIONNAME));
             obj.put("AGENTCARDTYPE", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COMMISSIONCARDTYPE));
@@ -1453,7 +1496,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
 
         }
         mLog.e("apiUrl:" + (String) SharedPreferencesUtils.get("apiUrl", ""));
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), functionName, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), functionName,
+                map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 mLog.e("result:" + result);
@@ -1479,7 +1523,7 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                                     //二维码支付
                                     PayQcodeActivity.goActivity(mActivity, payInsurance.getContent(),
                                             payInsurance.getTotal_Amount(), payInsurance.getPlateNumber(),
-                                            payInsurance.getPayNo(),PayQcodeActivity.FORM_REGISTER);
+                                            payInsurance.getPayNo(), PayQcodeActivity.FORM_REGISTER);
                                 } else {
                                     //直接支付
                                     Bundle bundle = new Bundle();
@@ -1530,64 +1574,6 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
                     mProgressHUD.dismiss();
                     Utils.showToast("获取数据超时，请检查网络连接");
                 }
-
-//                mLog.e("result:" + result);
-//                Utils.LOGE("Pan", result);
-//                if (result != null) {
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(result);
-//                        int errorCode = jsonObject.getInt("ErrorCode");
-//                        String data = jsonObject.getString("Data");
-//                        if (errorCode == 0) {
-//                            mProgressHUD.dismiss();
-//                            if (checkJson(data) == 0) {
-//                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
-//                                }.getType());
-//                                SharedPreferencesUtils.put("preregisters", "");
-//                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("UnPaid", "0");
-////                                bundle.putString("PayDate", data);
-//                                ArrayList list = new ArrayList();
-//                                list.add(PI);
-//                                bundle.putParcelableArrayList("PayDate", list);
-//                                ActivityUtil.goActivityWithBundle(RegisterFirstNormalActivity2.this, PayActivity.class, bundle);
-//                                finish();
-//                            } else if (checkJson(data) == 1) {
-//                                List<PayInsurance> PI = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
-//                                }.getType());
-//                                SharedPreferencesUtils.put("preregisters", "");
-//                                SharedPreferencesUtils.put("preregistration", "");
-//                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("UnPaid", "2");
-////                                bundle.putString("PayDate", data);
-//                                ArrayList list = new ArrayList();
-//                                list.add(PI);
-//                                bundle.putParcelableArrayList("PayDate", list);
-//                                ActivityUtil.goActivityWithBundle(RegisterFirstNormalActivity2.this, UnpaidActivity.class, bundle);
-//                                finish();
-//                            } else {
-//                                dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER) + "  电动车信息上传成功！");
-//                            }
-//                        } else if (errorCode == 1) {
-//                            mProgressHUD.dismiss();
-//                            Utils.myToast(mContext, data);
-//                            SharedPreferencesUtils.put("token", "");
-//                            ActivityUtil.goActivityAndFinish(RegisterFirstNormalActivity2.this, LoginActivity.class);
-//                        } else {
-//                            Utils.myToast(mContext, data);
-//                            mProgressHUD.dismiss();
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        mProgressHUD.dismiss();
-//                        Utils.myToast(mContext, "JSON解析出错");
-//                    }
-//                } else {
-//                    mProgressHUD.dismiss();
-//                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
-//                }
 
             }
         });
@@ -1727,16 +1713,16 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
             }
             return false;
         }
-        if (models.size() == 0) {
-            Utils.myToast(mContext, "保险数据丢失，请返回并重新选择保险。");
-            return false;
-        }
-        for (UploadInsuranceModel model : models) {
-            if (model.getREMARKID() == null || model.getREMARKID().equals("")) {
-                Utils.myToast(mContext, "保险数据丢失，请返回并重新选择保险。");
-                return false;
-            }
-        }
+//        if (models.size() == 0) {
+//            Utils.myToast(mContext, "保险数据丢失，请返回并重新选择保险。");
+//            return false;
+//        }
+//        for (UploadInsuranceModel model : models) {
+//            if (model.getREMARKID() == null || model.getREMARKID().equals("")) {
+//                Utils.myToast(mContext, "保险数据丢失，请返回并重新选择保险。");
+//                return false;
+//            }
+//        }
 
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ISCONFIRM, isConfirm);
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, plateNum);
@@ -1758,7 +1744,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
         map.put("accessToken", DESCoder.encrypt("GETCITYLIST", Constants.DES_KEY));
         map.put("infoJsonStr", "" + "_" + "ANDROID");
 
-        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
+                WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
@@ -1802,4 +1789,8 @@ public class RegisterFirstNormalActivity2 extends BaseActivity implements Adapte
     }
 
 
+    @Override
+    public void onRegistrPop(int position) {
+        Utils.myToast(mContext, "添加");
+    }
 }

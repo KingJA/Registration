@@ -1,49 +1,31 @@
 package com.tdr.registration.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.normal.RegisterFirstNormalActivity2;
 import com.tdr.registration.adapter.HomePagerAdapter;
 import com.tdr.registration.fragment.BusinessFragment;
 import com.tdr.registration.fragment.InspectFragment;
 import com.tdr.registration.fragment.SettingFragment;
-import com.tdr.registration.model.CarLabel;
-import com.tdr.registration.model.PayInsurance;
-import com.tdr.registration.update.Util;
-import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.NoScrollViewPager;
 
-import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
