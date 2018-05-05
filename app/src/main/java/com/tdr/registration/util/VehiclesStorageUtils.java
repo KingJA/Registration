@@ -66,6 +66,7 @@ public class VehiclesStorageUtils {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(REGISTERID, "");
         editor.putString(CARTYPE, "");
+        editor.putString(CARDTYPEID, "");
         editor.putString(VEHICLETYPE, "");
         editor.putString(ISCONFIRM, "");
         editor.putString(PLATENUMBER, "");

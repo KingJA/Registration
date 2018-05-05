@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.RegisterData;
 import com.tdr.registration.model.UploadInsuranceModel;
@@ -102,7 +104,7 @@ public class MyApplication extends MultiDexApplication implements BleInterface.B
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Logger.addLogAdapter(new AndroidLogAdapter());
         x.Ext.init(this);
 //        Logger.addLogAdapter(new AndroidLogAdapter());
         context = this;

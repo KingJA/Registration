@@ -2,6 +2,8 @@ package com.tdr.registration.util;
 
 import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -63,6 +65,7 @@ public class HttpUtils {
             public void onSuccess(String result) {
                 httpcallback.postcallback(Success, result);
                 mLog.e("onSuccess:" + result);
+                Logger.json(result);
             }
 
             @Override
@@ -102,6 +105,7 @@ public class HttpUtils {
             @Override
             public void onSuccess(String result) {
                 httpcallback.onSuccess(result);
+                Logger.json(result);
                 mLog.e("onSuccess:" + result);
             }
 

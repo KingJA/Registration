@@ -28,6 +28,7 @@ import com.tdr.registration.activity.longyan.PreToOfficialSecondLongYanActivity;
 import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.adapter.InsuranceAdapter;
 import com.tdr.registration.base.BaseActivity;
+import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.DetailBean;
 import com.tdr.registration.model.InsuranceModel;
@@ -49,6 +50,7 @@ import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.LinearLayoutForListView;
 import com.tdr.registration.view.RadioGroupEx;
 import com.tdr.registration.view.ZProgressHUD;
+import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 import com.umeng.analytics.MobclickAgent;
 
 
@@ -135,7 +137,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
     private String Version = "";
     private String REGISTRATION;
     private ZProgressHUD mProgressHUD;
-    private RegisterUtil registerUtil;
     private List<UploadInsuranceModel> uploadInsuranceModels;
 
     @Override
@@ -143,7 +144,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_third);
         ButterKnife.bind(this);
-        registerUtil = new RegisterUtil(this);
         mContext = this;
         db = x.getDb(DBUtils.getDb());
         Version = (String) SharedPreferencesUtils.get("Version", "");
@@ -201,20 +201,12 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         }
 
         //TODO 从服务器获取保险数据
-
-//        List<InsuranceModel> InsuranceModels = null;
-//        InsuranceModels = db.findAll(InsuranceModel.class);
-//        if (InsuranceModels == null) {
-//            InsuranceModels = new ArrayList<InsuranceModel>();
-//        }
-//        insuranceModelsList = db.findAll(InsuranceModel.class);
-//        String CarType = (String) SharedPreferencesUtils.get("MyCarType", "");
         String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
         if (!TextUtils.isEmpty(insurancesStr)) {
-            insuranceModelsList = new Gson().fromJson(insurancesStr, new
+            List<InsuranceModel>  insurances = new Gson().fromJson(insurancesStr, new
                     TypeToken<List<InsuranceModel>>() {
                     }.getType());
-            fillInsuranceData(insuranceModelsList);
+            fillInsuranceData(insurances);
         } else {
             getInsuranceData();
         }
@@ -241,12 +233,12 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                     if (errorCode == 0) {
                         String data = jsonObject.getString("data");
                         if (!TextUtils.isEmpty(data)) {
-                            insuranceModelsList = new Gson().fromJson(data, new
+                            List<InsuranceModel>   insurances = new Gson().fromJson(data, new
                                     TypeToken<List<InsuranceModel>>() {
                                     }.getType());
-                            if (insuranceModelsList != null && insuranceModelsList.size() > 0) {
+                            if (insurances != null && insurances.size() > 0) {
                                 try {
-                                    fillInsuranceData(insuranceModelsList);
+                                    fillInsuranceData(insurances);
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }
@@ -273,26 +265,26 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         });
     }
 
-    private void fillInsuranceData(List<InsuranceModel> insuranceModels) throws DbException {
+    private void fillInsuranceData(List<InsuranceModel> insurances) throws DbException {
         btnSubmit.setVisibility(View.VISIBLE);
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.INSURANCES, new Gson().toJson(insuranceModels));
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.INSURANCES, new Gson().toJson(insurances));
 
-        for (int i = 0; i < insuranceModels.size(); i++) {
+        for (int i = 0; i < insurances.size(); i++) {
             mLog.e(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE) + "VehicleType:" +
-                    insuranceModels.get(i).getVehicleType());
-            if (insuranceModels.get(i).getVehicleType() == null || insuranceModels.get(i).getVehicleType().equals("")
-                    || insuranceModels.get(i).getVehicleType().equals("0")) {
-                insuranceModelsList.add(insuranceModels.get(i));
+                    insurances.get(i).getVehicleType());
+            if (insurances.get(i).getVehicleType() == null || insurances.get(i).getVehicleType().equals("")
+                    || insurances.get(i).getVehicleType().equals("0")) {
+                insuranceModelsList.add(insurances.get(i));
             } else {
-                if (insuranceModels.get(i).getVehicleType() != null && !insuranceModels.get(i).getVehicleType()
+                if (insurances.get(i).getVehicleType() != null && !insurances.get(i).getVehicleType()
                         .equals("")) {
 
-                    if (insuranceModels.get(i).getVehicleType().equals(VehiclesStorageUtils.getVehiclesAttr
+                    if (insurances.get(i).getVehicleType().equals(VehiclesStorageUtils.getVehiclesAttr
                             (VehiclesStorageUtils.VEHICLETYPE))) {
-                        insuranceModelsList.add(insuranceModels.get(i));
+                        insuranceModelsList.add(insurances.get(i));
                     }
                 } else {
-                    insuranceModelsList.add(insuranceModels.get(i));
+                    insuranceModelsList.add(insurances.get(i));
                 }
             }
         }
@@ -318,17 +310,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
 
         mAdapter = new InsuranceAdapter(mContext, insuranceModelsList);
         mLog.e("insuranceModelsList=" + insuranceModelsList.size());
-//        mAdapter.setOnCheckBoxClickLitener(new InsuranceAdapter.OnCheckBoxClickLitener() {
-//            @Override
-//            public void onCheckBoxClick(int position) {
-//                updataItem(position);
-//            }
-//
-//            @Override
-//            public void onRadioButtonClick(int position, RadioButton radiobutton) {
-//                updataItem2(position);
-//            }
-//        });
         listInsurance.setAdapter(mAdapter);
         if (insuranceModelsList.size() == 0) {
             listInsurance.setVisibility(View.GONE);
@@ -548,7 +529,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
             //TODO 照片上传
             List<PhotoListInfo> photoList = null;
             try {
-               photoList = registerUtil.getPhotoList();
+                photoList = getPhotoList();
             } catch (DbException e) {
                 e.printStackTrace();
             }
@@ -558,7 +539,8 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 JB = new JSONObject();
                 JB.put("INDEX", index);
                 JB.put("Photo", "");
-                JB.put("PhotoFile", PhotoFile);
+                JB.put("PhotoFile", "");
+//                JB.put("PhotoFile", PhotoFile);
                 JA.put(JB);
 //                Log.e("Pan", i + "  photo:" + index + "=\n" + PhotoFile);
             }
@@ -745,8 +727,51 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 });
     }
 
-    private void dialogShow(int i, String msg) {
+    private void dialogShow(int flag, String msg) {
+        final NiftyDialogBuilder   dialogBuilder = NiftyDialogBuilder.getInstance(this);
+        if (flag == 0) {
+            dialogBuilder.withTitle("提示")
+                    .withTitleColor("#333333")
+                    .withMessage(msg)
+                    .isCancelableOnTouchOutside(false)
+                    .withEffect(NiftyDialogBuilder.Effectstype.Fadein)
+                    .withButton1Text("確定")
+                    .setCustomView(R.layout.custom_view, this)
+                    .setButton1Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                            SharedPreferencesUtils.put("preregisters", "");
+                            SharedPreferencesUtils.put("preregistration", "");
+                            VehiclesStorageUtils.clearData();
+                            ActivityUtil.goActivityAndFinish(RegisterInsuranceActivity.this, HomeActivity.class);
+                        }
+                    }).show();
+        }
+    }
 
+    public List<PhotoListInfo> getPhotoList() throws DbException, JSONException {
+        List<PhotoListInfo> PLI = new ArrayList<>();
+        List<BaseInfo> ResultList = db.selector(BaseInfo.class).where("cityName", "=", (String)
+                SharedPreferencesUtils.get("locCityName", "")).findAll();
+        if (ResultList == null) {
+            return PLI;
+        }
+        JSONArray JA = new JSONArray(ResultList.get(0).getPhotoConfig());
+        JSONObject JB;
+        PhotoListInfo pli;
+        for (int i = 0; i < JA.length(); i++) {
+            JB = new JSONObject(JA.get(i).toString());
+            pli = new PhotoListInfo();
+            pli.setINDEX(JB.getString("INDEX"));
+            pli.setREMARK(JB.getString("REMARK"));
+            pli.setValid(JB.getBoolean("IsValid"));
+            pli.setRequire(JB.getBoolean("IsRequire"));
+            if (pli.isValid()) {
+                PLI.add(pli);
+            }
+        }
+        return PLI;
     }
 
     @Override

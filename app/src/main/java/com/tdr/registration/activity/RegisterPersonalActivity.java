@@ -9,8 +9,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,10 +31,12 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.base.BaseActivity;
+import com.tdr.registration.base.MyApplication;
 import com.tdr.registration.model.DX_PreRegistrationModel;
 import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.util.DBUtils;
@@ -319,7 +323,7 @@ public class RegisterPersonalActivity extends BaseActivity implements View.OnCli
 
     public void savePersonalInfo() {
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, editOwnerName.getText().toString().trim());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, mCardTypeId);
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPEID, mCardTypeId);
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, editOwnerIdentity.getText().toString()
                 .trim());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, editOwnerPhone1.getText().toString().trim());
@@ -331,8 +335,12 @@ public class RegisterPersonalActivity extends BaseActivity implements View.OnCli
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initData() {
-
-        mCardTypeId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE,"1");
+        mCardTypeId =VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPEID, "1");
+        //TODO 检查mCardTypeId莫名为空情况
+        if (TextUtils.isEmpty(mCardTypeId)) {
+            mCardTypeId="1";
+        }
+      Logger.d("mCardTypeId:"+mCardTypeId);
         try {
             cardList = db.selector(BikeCode.class).where("type", "=", "6").findAll();
         } catch (DbException e) {
@@ -342,7 +350,6 @@ public class RegisterPersonalActivity extends BaseActivity implements View.OnCli
             cardList = new ArrayList<BikeCode>();
         }
 
-        Log.e("Pan", "cardType:" + mCardTypeId);
         for (BikeCode bikeCode : cardList) {
             if (mCardTypeId.equals(bikeCode.getCode())) {
                 textCardType.setText(bikeCode.getName());
