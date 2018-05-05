@@ -101,6 +101,8 @@ public class VehiclesStorageUtils {
         editor.putString(PHOTOLIST2, "");
         editor.putString(PHOTOLIST3, "");
 
+        editor.putString(INSURANCES, "");
+
         editor.commit();
     }
 

@@ -28,7 +28,9 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.BrandActivity;
 import com.tdr.registration.activity.ConfirmationInsuranceActivity;
@@ -36,6 +38,7 @@ import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.activity.PayActivity;
 import com.tdr.registration.activity.PayQcodeActivity;
+import com.tdr.registration.activity.PreListActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.activity.RegisterPersonalActivity;
 import com.tdr.registration.activity.UnpaidActivity;
@@ -47,9 +50,11 @@ import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.ConfirmInsuranceModel;
+import com.tdr.registration.model.DX_PreRegistrationModel;
 import com.tdr.registration.model.PayInsurance;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
+import com.tdr.registration.model.PreModel;
 import com.tdr.registration.model.PreRegistrationModel;
 import com.tdr.registration.model.SortModel;
 import com.tdr.registration.model.UploadInsuranceModel;
@@ -71,7 +76,6 @@ import com.tdr.registration.view.ZProgressHUD;
 import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 import com.tdr.registration.view.popwindow.RegistrPop;
 import com.umeng.analytics.MobclickAgent;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,10 +102,12 @@ import butterknife.OnClick;
 public class RegisterCarActivity extends BaseActivity implements AdapterView.OnItemClickListener, View
         .OnClickListener, RegistrPop.OnRegistrPopClickListener {
 
+    private final static int SCANNIN_GREQUEST_CODE_CAR = 1996;//二维码回调值
     private final static int SCANNIN_GREQUEST_CODE = 1991;//二维码回调值
     private final static int SCANNIN_QR_CODE = 0514;//二维码回调值*
     private final static int BRAND_CODE = 2016;//品牌回调
     private final static int CONFIRMATION_INSURANCE = 1212;//确认保险
+    private final static int PRE_SHOW_CODE = 1314;//预登记展示回调值
 
     @BindView(R.id.text_title)
     TextView textTitle;
@@ -612,6 +618,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             RB_new_car.setChecked(true);
         } else if (carType.equals("1")) {
             RB_old_car.setChecked(true);
+        }else{
+            RB_old_car.setChecked(true);
         }
 
         plateType = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATETYPE);
@@ -624,6 +632,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             RB_formalPlate.setChecked(true);
         } else if (plateType.equals("0")) {
             RB_temporaryPlate.setChecked(true);
+        }else{
+            RB_formalPlate.setChecked(true);
         }
 
         TV_vehicleBrand.setText(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME));
@@ -820,7 +830,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 //                intent.setClass(this, QRCodeScanActivity.class);
 //                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
                 registrPop.showPopupWindowDownOffset();
-
                 break;
             case R.id.tv_buyTime:
                 timePickerView.show();
@@ -925,8 +934,10 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     private NiftyDialogBuilder.Effectstype effectstype;
 
     private void dialogShow(int flag, final String msg) {
-        if (dialogBuilder != null && dialogBuilder.isShowing())
+        if (dialogBuilder != null && dialogBuilder.isShowing()) {
+
             return;
+        }
 
         dialogBuilder = NiftyDialogBuilder.getInstance(this);
 
@@ -1120,6 +1131,250 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     finish();
                 }
             }).show();
+        } else if (flag == 7) {
+            effectstype = NiftyDialogBuilder.Effectstype.Fadein;
+            dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage(msg)
+                    .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("确定")
+                    .setCustomView(R.layout.custom_view, mContext).setButton1Click(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder.dismiss();
+                }
+            }).show();
+        } else if (flag == 10) {
+            //预登记查询
+            effectstype = NiftyDialogBuilder.Effectstype.Fadein;
+            LayoutInflater mInflater = LayoutInflater.from(this);
+            View identityView = mInflater.inflate(R.layout.layout_query_identity, null);
+            final EditText editQueryIdentity = (EditText) identityView
+                    .findViewById(R.id.edit_queryIdentity);
+
+            dialogBuilder.isCancelable(false);
+            dialogBuilder.setCustomView(identityView, mContext);
+            dialogBuilder.withTitle(msg).withTitleColor("#333333")
+                    .withButton1Text("取消").withButton2Text("选择")
+                    .withMessage(null).withEffect(effectstype)
+                    .setButton1Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+
+                        }
+                    }).setButton2Click(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder.dismiss();
+                    String queryIdentity = editQueryIdentity.getText().toString();
+                    queryPreByIdentity(queryIdentity);
+                }
+            }).show();
+        } else if (flag == 11) {
+            //登记号查询
+            showdialog(msg, "防盗号");
+        } else if (flag == 12) {
+            //车牌号预登记查询
+            showdialog(msg, "车牌号");
+        }
+    }
+
+    private void showdialog(final String msg, String textname) {
+        effectstype = NiftyDialogBuilder.Effectstype.Fadein;
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View identityView = mInflater.inflate(R.layout.layout_query_identity, null);
+        final EditText editQueryIdentity = (EditText) identityView
+                .findViewById(R.id.edit_queryIdentity);
+        final TextView textName = (TextView) identityView.findViewById(R.id.text_name);
+        textName.setText(textname);
+        dialogBuilder.isCancelable(false);
+        dialogBuilder.setCustomView(identityView, mContext);
+        dialogBuilder.withTitle(msg).withTitleColor("#333333")
+                .withButton1Text("取消").withButton2Text("查询")
+                .withMessage(null).withEffect(effectstype)
+                .setButton1Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+
+                    }
+                }).setButton2Click(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+                String plateNumber = editQueryIdentity.getText().toString();
+
+                queryPreByPlateNumber(plateNumber);
+            }
+        }).show();
+    }
+
+    private void queryPreByPlateNumber(String plateNumber) {
+        mProgressHUD.show();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
+        map.put("plateNumber", plateNumber);
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPREREGISTERS, map, new WebServiceUtils.WebServiceCallBack() {
+            @Override
+            public void callBack(String result) {
+                if (result != null) {
+                    mLog.e("车牌号预登记" + result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        int errorCode = json.getInt("ErrorCode");
+                        String data = json.getString("Data");
+                        if (errorCode == 0) {
+                            Logger.d("查询成功，请继续操作");
+                            mProgressHUD.dismiss();
+                            preForKMModel = mGson.fromJson(data, new TypeToken<PreRegistrationModel>() {
+                            }.getType());
+                            for (PhotoModel photoModel : preForKMModel.getPhotoListFile()) {
+                                photoModel.setPhotoFile("");
+                            }
+                            dealPreByPlateNumber(preForKMModel);
+                            SharedPreferencesUtils.put("preregisters", data);
+                        } else {
+                            mProgressHUD.dismiss();
+                            Utils.myToast(mContext, data);
+                        }
+                    } catch (JSONException e) {
+                        mProgressHUD.dismiss();
+                        Utils.myToast(mContext, "JSON解析错误");
+                    } catch (JsonSyntaxException e) {
+                        mProgressHUD.dismiss();
+                        Utils.myToast(mContext, "未查询到有效数据");
+                    }
+                } else {
+                    mProgressHUD.dismiss();
+                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+                }
+            }
+        });
+    }
+
+
+    private void dealPreByPlateNumber(PreRegistrationModel preForKMModel) {
+        String vehicleType = Utils.initNullStr(preForKMModel.getVEHICLETYPE());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preForKMModel.getREGISTERID());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preForKMModel.getPLATENUMBER());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, preForKMModel.getVEHICLEBRANDNAME
+                ());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preForKMModel.getVEHICLEBRAND());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, preForKMModel.getColorName());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preForKMModel.getCOLORID());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2ID, preForKMModel.getCOLORID2());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2NAME, preForKMModel.getCOLORNAME2());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preForKMModel.getSHELVESNO());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preForKMModel.getENGINENO());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, Utils.dateWithoutTime(preForKMModel
+                .getBUYDATE()));
+        if (Utils.initNullStr(preForKMModel.getCARDTYPE()).equals("")) {
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, "1");
+        } else {
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, preForKMModel.getCARDTYPE());
+        }
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, preForKMModel.getOWNERNAME());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, preForKMModel.getCARDID());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, preForKMModel.getPHONE1());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE2, preForKMModel.getPHONE2());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, preForKMModel.getADDRESS());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REMARK, preForKMModel.getREMARK());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, vehicleType);
+
+        mLog.e("照片列表：" + preForKMModel.getPhotoListFile().toString());
+        initData();
+    }
+
+    //app内自主预登记的model
+    private List<PreRegistrationModel> preRegistrationModels = new ArrayList<>();
+
+    /**
+     * 预登记查询通过身份证
+     *
+     * @param queryIdentity
+     */
+    private void queryPreByIdentity(String queryIdentity) {
+        mProgressHUD.show();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
+        map.put("cardid", queryIdentity);
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPREREGISTERSBYCARDID, map, new WebServiceUtils.WebServiceCallBack() {
+            @Override
+            public void callBack(String result) {
+                if (result != null) {
+                    mLog.e("证件号查询：" + result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        int errorCode = json.getInt("ErrorCode");
+                        String data = json.getString("Data");
+                        if (errorCode == 0) {
+                            mProgressHUD.dismiss();
+                            preRegistrationModels = mGson.fromJson(data, new TypeToken<List<PreRegistrationModel>>() {
+                            }.getType());
+                            if (preRegistrationModels.size() > 1) {
+                                Bundle bundle = new Bundle();
+                                ArrayList list = new ArrayList();
+                                list.add(preRegistrationModels);
+                                bundle.putParcelableArrayList("electricCarModelList", list);
+
+                                ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this,
+                                        PreListActivity.class, bundle, PRE_SHOW_CODE);
+                            } else if (preRegistrationModels.size() == 1) {
+                                dealPreByPolice(preRegistrationModels.get(0));
+                            }
+                        } else {
+                            mProgressHUD.dismiss();
+                            Utils.myToast(mContext, data);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        mProgressHUD.dismiss();
+                        Utils.myToast(mContext, "JSON解析出错");
+                    }catch (JsonSyntaxException e) {
+                        mProgressHUD.dismiss();
+                        Utils.myToast(mContext, "未查到有效数据");
+                    }
+                } else {
+                    mProgressHUD.dismiss();
+                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+                }
+            }
+        });
+    }
+
+    private void dealPreByPolice(PreRegistrationModel preRegistrationModel) {
+        String VEHICLETYPE = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE);
+        String vehicleType = Utils.initNullStr(preRegistrationModel.getVEHICLETYPE());
+        if (!vehicleType.equals(VEHICLETYPE)) {
+            Utils.myToast(mContext, "预登记车辆类型与所选类型不符，请重新选择车辆类型登记");
+            return;
+        } else {
+            SharedPreferencesUtils.put("preregistration", mGson.toJson(preRegistrationModel.getPhotoListFile()));
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preRegistrationModel.getREGISTERID());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preRegistrationModel
+                    .getPLATENUMBER());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, preRegistrationModel
+                    .getVEHICLEBRANDNAME());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preRegistrationModel
+                    .getVEHICLEBRAND());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, preRegistrationModel.getColorName());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preRegistrationModel.getCOLORID());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2ID, preRegistrationModel.getCOLORID2());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR2NAME, preRegistrationModel.getCOLORNAME2());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preRegistrationModel.getSHELVESNO());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preRegistrationModel.getENGINENO());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, Utils.dateWithoutTime
+                    (preRegistrationModel.getBUYDATE()));
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, preRegistrationModel.getCARDTYPE());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, preRegistrationModel.getOWNERNAME());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, preRegistrationModel.getCARDID());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, preRegistrationModel.getPHONE1());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE2, preRegistrationModel.getPHONE2());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, preRegistrationModel.getADDRESS
+                    ());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REMARK, preRegistrationModel.getREMARK());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, vehicleType);
+            initData();
         }
     }
 
@@ -1319,9 +1574,246 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     sendMsg();
                 }
             }
+        } else if (requestCode == SCANNIN_GREQUEST_CODE_CAR) {
+            if (resultCode == RESULT_OK) {
+                if (data == null) {
+                    Utils.myToast(mContext, "没有扫描到二维码");
+                    return;
+                } else {
+                    mProgressHUD.show();
+                    Bundle bundle = data.getExtras();
+                    String scanResult = bundle.getString("result");
+                    mLog.e("预登记SCANNIN_GREQUEST_CODE: " + scanResult);
+                    if (scanResult.startsWith("TDR_APP")) {
+                        query(scanResult);
+                    } else {
+                        getPre(scanResult);
+                    }
+                }
+            }
+        } else if (requestCode == PRE_SHOW_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (data == null) {
+                    Utils.myToast(mContext, "没有选择预登记车辆");
+                    return;
+                } else {
+                    Bundle bundle = data.getExtras();
+                    PreRegistrationModel preRegistrationModel = (PreRegistrationModel) bundle.getSerializable
+                            ("preModels");
+                    dealPreByPolice(preRegistrationModel);
+                }
+            }
         }
     }
 
+    private PreModel preModel = new PreModel();
+
+    /**
+     * 获取预登记
+     *
+     * @param content
+     */
+    private void getPre(String content) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("PrerateID", content);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final HashMap<String, String> map = new HashMap<>();
+        map.put("token", (String) SharedPreferencesUtils.get("token", ""));
+        map.put("taskId", "");
+        map.put("encryption", "");
+        map.put("DataTypeCode", "GetPreRateOne");
+        map.put("content", jsonObject.toString());
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_CARDHOLDER, map, new WebServiceUtils.WebServiceCallBack() {
+            @Override
+            public void callBack(String result) {
+                if (result != null) {
+                    mLog.e(result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        int resultCode = json.getInt("ResultCode");
+                        String resultText = json.getString("ResultText");
+                        if (resultCode == 0) {
+                            mProgressHUD.dismiss();
+                            String content = json.getString("Content");
+                            preModel = mGson.fromJson(content, new TypeToken<PreModel>() {
+                            }.getType());
+                            String state = preModel.getState();
+                            if (state.equals("0")) {
+                                dealModel(preModel);
+                            } else {
+                                Utils.myToast(mContext, "该预登记车辆已被登记");
+                            }
+                        } else {
+                            mProgressHUD.dismiss();
+                            Utils.myToast(mContext, resultText);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        mProgressHUD.dismiss();
+                        Utils.myToast(mContext, "JSON解析出错");
+                    }
+                } else {
+                    mProgressHUD.dismiss();
+                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+                }
+            }
+        });
+    }
+
+    List<DX_PreRegistrationModel> PRList;
+
+    /**
+     * 获取电信预登记
+     */
+    private void query(String registerId) {
+        mProgressHUD.show();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
+        map.put("plateNumber", "");
+        map.put("cardid", "");
+        map.put("phone", "");
+        map.put("registerId", registerId.substring(7));
+        mLog.e("Pan", "map=" + map);
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPREREGISTERLIST, map, new WebServiceUtils.WebServiceCallBack() {
+            @Override
+            public void callBack(String result) {
+                Utils.LOGE("Pan", result);
+                if (result != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        int errorCode = jsonObject.getInt("ErrorCode");
+                        String data = jsonObject.getString("Data");
+                        if (errorCode == 0) {
+                            mProgressHUD.dismiss();
+                            try {
+                                PRList = mGson.fromJson(data, new TypeToken<List<DX_PreRegistrationModel>>() {
+                                }.getType());
+                                if (PRList.get(0) != null) {
+                                    if (VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE).equals
+                                            (PRList.get(0).getVEHICLETYPE())) {
+                                        dealModel(PRList.get(0));
+                                    } else {
+                                        dialogShow(7, "扫码获得的车辆类型与您选择的车辆类型不符，请退出登记重新选择车辆类型或者扫描相对应的车辆类型的二维码。");
+                                    }
+                                }
+                            } catch (JsonSyntaxException e) {
+                                Utils.showToast(data);
+                            }
+
+                        } else {
+                            mProgressHUD.dismiss();
+                            Utils.showToast(data);
+                        }
+                    } catch (JSONException e) {
+                        mProgressHUD.dismiss();
+                        e.printStackTrace();
+                        Utils.showToast("JSON解析出错");
+                    }catch (JsonSyntaxException e) {
+                        mProgressHUD.dismiss();
+                        e.printStackTrace();
+                        Utils.showToast("未查到有效数据");
+                    }
+                } else {
+                    mProgressHUD.dismiss();
+                    Utils.showToast("获取数据超时，请检查网络连接");
+                }
+            }
+        });
+
+    }
+
+    private void dealModel(DX_PreRegistrationModel preModel) {
+        TransferUtil.save("PhotoList", preModel.getPhotoListFile());
+
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preModel.getPLATENUMBER());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, preModel.getVEHICLETYPE());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preModel.getREGISTERID());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preModel.getVEHICLEBRAND());
+//        List<BikeCode> bikeCodes = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getVehiclebrand() + "\'"
+// + " and " + "type=\'1\'");
+        List<BikeCode> bikeCodes = null;
+        try {
+            bikeCodes = db.selector(BikeCode.class).where("code", "=", preModel.getVEHICLEBRAND()).and("type", "=",
+                    "1").findAll();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        if (bikeCodes == null) {
+            bikeCodes = new ArrayList<BikeCode>();
+        }
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getCOLORID());
+//        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" +
+// " and " + "type=\'4\'");
+        List<BikeCode> bikeCodeList = null;
+        try {
+            bikeCodeList = db.selector(BikeCode.class).where("code", "=", preModel.getCOLORID()).and("type", "=",
+                    "4").findAll();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        if (bikeCodeList == null) {
+            bikeCodeList = new ArrayList<BikeCode>();
+        }
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, bikeCodeList.get(0).getName());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preModel.getSHELVESNO());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preModel.getENGINENO());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, preModel.getCARDTYPE());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, preModel.getOWNERNAME());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, preModel.getCARDID());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, preModel.getPHONE1());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE2, preModel.getPHONE2());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CURRENTADDRESS, preModel.getADDRESS());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, preModel.getBUYDATE());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REMARK, preModel.getREMARK());
+        initData();
+    }
+
+    private void dealModel(PreModel preModel) {
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preModel.getPrerateID());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preModel.getVehiclebrand());
+//        List<BikeCode> bikeCodes = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getVehiclebrand() + "\'"
+// + " and " + "type=\'1\'");
+        List<BikeCode> bikeCodes = null;
+        try {
+            bikeCodes = db.selector(BikeCode.class).where("code", "=", preModel.getVehiclebrand()).and("type", "=",
+                    "1").findAll();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        if (bikeCodes == null) {
+            bikeCodes = new ArrayList<BikeCode>();
+        }
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getColorID());
+//        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" +
+// " and " + "type=\'4\'");
+        List<BikeCode> bikeCodeList = null;
+        try {
+            bikeCodeList = db.selector(BikeCode.class).where("code", "=", preModel.getColorID()).and("type", "=",
+                    "4").findAll();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        if (bikeCodeList == null) {
+            bikeCodeList = new ArrayList<BikeCode>();
+        }
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, bikeCodeList.get(0).getName());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preModel.getShelvesno());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preModel.getEngineno());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, preModel.getCardType());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, preModel.getOwnerName());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, preModel.getCardid());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, preModel.getPhone1());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE2, preModel.getPhone2());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REMARK, preModel.getRemark());
+        initData();
+    }
 
     private boolean checkTheft(int type, String labelNumber) {
         boolean check = false;
@@ -1498,85 +1990,85 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         mLog.e("apiUrl:" + (String) SharedPreferencesUtils.get("apiUrl", ""));
         WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), functionName,
                 map, new WebServiceUtils.WebServiceCallBack() {
-            @Override
-            public void callBack(String result) {
-                mLog.e("result:" + result);
-                Utils.LOGE("Pan", result);
-                if (result != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        if (errorCode == 0) {
-                            mProgressHUD.dismiss();
-                            List<PayInsurance> payInsurances = mGson.fromJson(data, new
-                                    TypeToken<List<PayInsurance>>
-                                            () {
-                                    }.getType());
+                    @Override
+                    public void callBack(String result) {
+                        mLog.e("result:" + result);
+                        Utils.LOGE("Pan", result);
+                        if (result != null) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                int errorCode = jsonObject.getInt("ErrorCode");
+                                String data = jsonObject.getString("Data");
+                                if (errorCode == 0) {
+                                    mProgressHUD.dismiss();
+                                    List<PayInsurance> payInsurances = mGson.fromJson(data, new
+                                            TypeToken<List<PayInsurance>>
+                                                    () {
+                                            }.getType());
 
-                            if (payInsurances == null) {
-                                return;
-                            }
-                            if (payInsurances.size() == 1) {
-                                PayInsurance payInsurance = payInsurances.get(0);
-                                if (payInsurance.getPaymentWay() == 2) {
-                                    //二维码支付
-                                    PayQcodeActivity.goActivity(mActivity, payInsurance.getContent(),
-                                            payInsurance.getTotal_Amount(), payInsurance.getPlateNumber(),
-                                            payInsurance.getPayNo(), PayQcodeActivity.FORM_REGISTER);
-                                } else {
-                                    //直接支付
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("UnPaid", "0");
-                                    bundle.putString("PayDate", data);
-                                    ArrayList list = new ArrayList();
-                                    list.add(payInsurances);
-                                    bundle.putParcelableArrayList("PayDate", list);
-                                    ActivityUtil.goActivityWithBundle(mActivity, PayActivity.class, bundle);
-                                }
+                                    if (payInsurances == null) {
+                                        return;
+                                    }
+                                    if (payInsurances.size() == 1) {
+                                        PayInsurance payInsurance = payInsurances.get(0);
+                                        if (payInsurance.getPaymentWay() == 2) {
+                                            //二维码支付
+                                            PayQcodeActivity.goActivity(mActivity, payInsurance.getContent(),
+                                                    payInsurance.getTotal_Amount(), payInsurance.getPlateNumber(),
+                                                    payInsurance.getPayNo(), PayQcodeActivity.FORM_REGISTER);
+                                        } else {
+                                            //直接支付
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("UnPaid", "0");
+                                            bundle.putString("PayDate", data);
+                                            ArrayList list = new ArrayList();
+                                            list.add(payInsurances);
+                                            bundle.putParcelableArrayList("PayDate", list);
+                                            ActivityUtil.goActivityWithBundle(mActivity, PayActivity.class, bundle);
+                                        }
 
-                            } else if (payInsurances.size() > 1) {
-                                List<PayInsurance> PI = mGson.fromJson(data, new
-                                        TypeToken<List<PayInsurance>>() {
-                                        }.getType());
-                                SharedPreferencesUtils.put("preregisters", "");
-                                SharedPreferencesUtils.put("preregistration", "");
-                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
-                                        (VehiclesStorageUtils
+                                    } else if (payInsurances.size() > 1) {
+                                        List<PayInsurance> PI = mGson.fromJson(data, new
+                                                TypeToken<List<PayInsurance>>() {
+                                                }.getType());
+                                        SharedPreferencesUtils.put("preregisters", "");
+                                        SharedPreferencesUtils.put("preregistration", "");
+                                        Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
+                                                (VehiclesStorageUtils
+                                                        .PLATENUMBER) + "  电动车信息上传成功！");
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("UnPaid", "2");
+                                        ArrayList list = new ArrayList();
+                                        list.add(PI);
+                                        bundle.putParcelableArrayList("PayDate", list);
+                                        ActivityUtil.goActivityWithBundle(mActivity, UnpaidActivity.class, bundle);
+                                        mActivity.finish();
+
+                                    } else {
+                                        dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils
                                                 .PLATENUMBER) + "  电动车信息上传成功！");
-                                Bundle bundle = new Bundle();
-                                bundle.putString("UnPaid", "2");
-                                ArrayList list = new ArrayList();
-                                list.add(PI);
-                                bundle.putParcelableArrayList("PayDate", list);
-                                ActivityUtil.goActivityWithBundle(mActivity, UnpaidActivity.class, bundle);
-                                mActivity.finish();
-
-                            } else {
-                                dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils
-                                        .PLATENUMBER) + "  电动车信息上传成功！");
+                                    }
+                                } else if (errorCode == 1) {
+                                    mProgressHUD.dismiss();
+                                    Utils.showToast(data);
+                                    SharedPreferencesUtils.put("token", "");
+                                    ActivityUtil.goActivityAndFinish(mActivity, LoginActivity.class);
+                                } else {
+                                    Utils.showToast(data);
+                                    mProgressHUD.dismiss();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                mProgressHUD.dismiss();
+                                Utils.showToast("JSON解析出错");
                             }
-                        } else if (errorCode == 1) {
-                            mProgressHUD.dismiss();
-                            Utils.showToast(data);
-                            SharedPreferencesUtils.put("token", "");
-                            ActivityUtil.goActivityAndFinish(mActivity, LoginActivity.class);
                         } else {
-                            Utils.showToast(data);
                             mProgressHUD.dismiss();
+                            Utils.showToast("获取数据超时，请检查网络连接");
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        mProgressHUD.dismiss();
-                        Utils.showToast("JSON解析出错");
-                    }
-                } else {
-                    mProgressHUD.dismiss();
-                    Utils.showToast("获取数据超时，请检查网络连接");
-                }
 
-            }
-        });
+                    }
+                });
     }
 
     @Override
@@ -1746,51 +2238,77 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
         WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
                 WebServiceUtils.WebServiceCallBack() {
-            @Override
-            public void callBack(String result) {
-                if (result != null) {
-                    mLog.e("更新数据：" + result);
+                    @Override
+                    public void callBack(String result) {
+                        if (result != null) {
+                            mLog.e("更新数据：" + result);
 //                    Log.e("Pan","getBaseData_result= "+result);
 //                    Utils.LOGE("Pan", result);
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        List<BaseInfo> baseInfos = new ArrayList<BaseInfo>();
-                        if (errorCode == 0) {
-                            baseInfos = mGson.fromJson(data, new TypeToken<List<BaseInfo>>() {
-                            }.getType());
-                            if (baseInfos.size() > 0 && baseInfos != null) {
-                                for (int i = 0; i < baseInfos.size(); i++) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                int errorCode = jsonObject.getInt("ErrorCode");
+                                String data = jsonObject.getString("Data");
+                                List<BaseInfo> baseInfos = new ArrayList<BaseInfo>();
+                                if (errorCode == 0) {
+                                    baseInfos = mGson.fromJson(data, new TypeToken<List<BaseInfo>>() {
+                                    }.getType());
+                                    if (baseInfos.size() > 0 && baseInfos != null) {
+                                        for (int i = 0; i < baseInfos.size(); i++) {
 //                                    Log.e("Pan","getPhotoConfig= "+ baseInfos.get(i).getPhotoConfig());
-                                    db.deleteById(BaseInfo.class, baseInfos.get(i).getListId());
-                                    db.save(baseInfos.get(i));
+                                            db.deleteById(BaseInfo.class, baseInfos.get(i).getListId());
+                                            db.save(baseInfos.get(i));
+                                        }
+                                    }
+                                    getPhotoConfig();
+                                    mProgressHUD.dismiss();
+                                } else {
+                                    mProgressHUD.dismiss();
+                                    Utils.myToast(mContext, data);
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                mProgressHUD.dismiss();
+                                Utils.myToast(mContext, "JSON解析出错");
+                            } catch (DbException e) {
+                                e.printStackTrace();
                             }
-                            getPhotoConfig();
-                            mProgressHUD.dismiss();
                         } else {
                             mProgressHUD.dismiss();
-                            Utils.myToast(mContext, data);
+                            Utils.myToast(mContext, "获取数据超时，请检查网络连接");
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        mProgressHUD.dismiss();
-                        Utils.myToast(mContext, "JSON解析出错");
-                    } catch (DbException e) {
-                        e.printStackTrace();
                     }
-                } else {
-                    mProgressHUD.dismiss();
-                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
-                }
-            }
-        });
+                });
     }
 
 
     @Override
     public void onRegistrPop(int position) {
-        Utils.myToast(mContext, "添加");
+        switch (position) {
+            case 0:
+                Bundle bundle = new Bundle();
+                bundle.putInt("ScanType", 0);
+                bundle.putBoolean("isShow", true);
+                bundle.putBoolean("isPlateNumber", false);
+                bundle.putString("ButtonName", "输入自主预登记编号");
+                ActivityUtil.goActivityForResultWithBundle(this, QRCodeScanActivity.class, bundle,
+                        SCANNIN_GREQUEST_CODE_CAR);
+
+//                intent.setClass(this, QRCodeScanActivity.class);
+//                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+                break;
+            case 1:
+                dialogShow(10, "预登记查询");
+                break;
+            case 2:
+                dialogShow(11, "登记号查询");
+                break;
+            case 3:
+                dialogShow(12, "车牌号预登记查询");
+                break;
+            default:
+                break;
+
+        }
+        registrPop.dismiss();
     }
 }

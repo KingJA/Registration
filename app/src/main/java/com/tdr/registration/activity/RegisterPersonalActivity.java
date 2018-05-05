@@ -9,11 +9,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -36,18 +34,12 @@ import com.tdr.registration.R;
 import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.base.BaseActivity;
-import com.tdr.registration.base.MyApplication;
-import com.tdr.registration.model.DX_PreRegistrationModel;
-import com.tdr.registration.model.PhotoModel;
-import com.tdr.registration.util.DBUtils;
-import com.tdr.registration.util.PinyinComparator;
-import com.tdr.registration.util.TransferUtil;
-import com.tdr.registration.util.mLog;
-
 import com.tdr.registration.model.BikeCode;
+import com.tdr.registration.model.DX_PreRegistrationModel;
 import com.tdr.registration.model.DetailBean;
 import com.tdr.registration.model.ElectricCarModel;
 import com.tdr.registration.model.InsuranceModel;
+import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.model.PreModel;
 import com.tdr.registration.model.PreRegistrationModel;
 import com.tdr.registration.model.SortModel;
@@ -56,15 +48,18 @@ import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.AllCapTransformationMethod;
 import com.tdr.registration.util.CharacterParser;
 import com.tdr.registration.util.Constants;
+import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.PhotoUtils;
+import com.tdr.registration.util.PinyinComparator;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
+import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
 import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 import com.tdr.registration.view.popwindow.RegistrPop;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -323,7 +318,7 @@ public class RegisterPersonalActivity extends BaseActivity implements View.OnCli
 
     public void savePersonalInfo() {
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.OWNERNAME, editOwnerName.getText().toString().trim());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPEID, mCardTypeId);
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, mCardTypeId);
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IDENTITY, editOwnerIdentity.getText().toString()
                 .trim());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PHONE1, editOwnerPhone1.getText().toString().trim());
@@ -335,12 +330,12 @@ public class RegisterPersonalActivity extends BaseActivity implements View.OnCli
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initData() {
-        mCardTypeId =VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPEID, "1");
+        mCardTypeId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE, "1");
         //TODO 检查mCardTypeId莫名为空情况
         if (TextUtils.isEmpty(mCardTypeId)) {
-            mCardTypeId="1";
+            mCardTypeId = "1";
         }
-      Logger.d("mCardTypeId:"+mCardTypeId);
+        Logger.d("mCardTypeId:" + mCardTypeId);
         try {
             cardList = db.selector(BikeCode.class).where("type", "=", "6").findAll();
         } catch (DbException e) {
@@ -577,6 +572,8 @@ public class RegisterPersonalActivity extends BaseActivity implements View.OnCli
                         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.THEFTNO, labelNumber);
                     }
                 }
+                break;
+            default:
                 break;
         }
     }

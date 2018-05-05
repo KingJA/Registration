@@ -24,8 +24,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.longyan.PreToOfficialSecondLongYanActivity;
-import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.adapter.InsuranceAdapter;
 import com.tdr.registration.base.BaseActivity;
 import com.tdr.registration.model.BaseInfo;
@@ -39,8 +37,6 @@ import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.HttpUtils;
-import com.tdr.registration.util.PhotoUtils;
-import com.tdr.registration.util.RegisterUtil;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
@@ -53,7 +49,6 @@ import com.tdr.registration.view.ZProgressHUD;
 import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 import com.umeng.analytics.MobclickAgent;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,7 +57,9 @@ import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -212,10 +209,16 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         }
     }
 
+    public String getCurrentDate() {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       return sdf.format(d);
+    }
+
     private void getInsuranceData() {
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("BuyDate", "2018-04-24");
+        map.put("BuyDate", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.BUYDATE,getCurrentDate()));
         JSONObject JB = new JSONObject(map);
         RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_PolicyConfig);
@@ -539,8 +542,8 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 JB = new JSONObject();
                 JB.put("INDEX", index);
                 JB.put("Photo", "");
-                JB.put("PhotoFile", "");
-//                JB.put("PhotoFile", PhotoFile);
+//                JB.put("PhotoFile", "");
+                JB.put("PhotoFile", PhotoFile);
                 JA.put(JB);
 //                Log.e("Pan", i + "  photo:" + index + "=\n" + PhotoFile);
             }
