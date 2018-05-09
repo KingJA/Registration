@@ -100,7 +100,7 @@ public class BusinessFragment extends Fragment {
             R.mipmap.ic_insurance_claims, R.mipmap.ic_return,
             R.mipmap.ic_appointment, R.mipmap.ic_visit,
             R.mipmap.ic_insurance_claims, R.mipmap.registration_tj,
-            R.mipmap.registration_tj_query,R.mipmap.ic_binding};
+            R.mipmap.registration_tj_query, R.mipmap.ic_binding};
     private String[] funTitles = {
             "车辆报废", "车牌补办",
             "车辆过户", "车辆布控",
@@ -108,7 +108,7 @@ public class BusinessFragment extends Fragment {
             "被盗申报", "车辆发还",
             "预约查询", "车辆回访",
             "服务延期", "登记上牌",
-            "登记上牌查询","标签绑定"};//ic小标签
+            "登记上牌查询", "标签绑定"};//ic小标签
     private int[] funInsurance = {R.mipmap.ic_insurance_modify};
     private String[] funInsuranceTitles = {"套餐变更"};
     private int[] funImgsNone = {R.mipmap.ic_none};
@@ -122,7 +122,7 @@ public class BusinessFragment extends Fragment {
             "113", "1300106",
             "600", "199",
             "114", "2713",
-            "2714","122"};
+            "2714", "122"};
 
     private MainRecyclerAdapter MRAdapter;
     private RecyclerAdapter mRecyclerAdapter;
@@ -147,7 +147,7 @@ public class BusinessFragment extends Fragment {
     private List<ItemModel> listModel = new ArrayList<ItemModel>();
     private ArrayList<String> MainrolePowers;
     private ArrayList<String> hot_new_mvp;
-    private boolean IsDX_PR=false;
+    private boolean IsDX_PR = false;
     private String city;
     private String REGISTRATION;
     private Activity mActivity;
@@ -156,16 +156,17 @@ public class BusinessFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = x.view().inject(this, inflater, container);
-        mActivity=this.getActivity();
+        mActivity = this.getActivity();
         setTitileName();
         initView();
         initData();
         return v;
     }
+
     /**
      * 设置标题
      */
-    private void setTitileName(){
+    private void setTitileName() {
         String appName = (String) SharedPreferencesUtils.get("appName", "");
         if (appName.equals("")) {
             imageAppName.setVisibility(View.VISIBLE);
@@ -179,17 +180,18 @@ public class BusinessFragment extends Fragment {
             SpannableString spanString = new SpannableString("icon");
             spanString.setSpan(imgSpan, 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textAppName.setText(spanString);
-            textAppName.append("   "+appName);
+            textAppName.append("   " + appName);
             if (appName.contains("防盗")) {
                 image_desc.setBackgroundResource(R.mipmap.home_desc_fd);
             }
         }
     }
+
     public void initData() {
         SharedPreferencesUtils.put("preregisters", "");
         SharedPreferencesUtils.put("preregistration", "");
         cardTypes = (String) SharedPreferencesUtils.get("CarTypesList", "");
-        if(cardTypes.equals("")){
+        if (cardTypes.equals("")) {
             getdata();
         }
 
@@ -229,34 +231,33 @@ public class BusinessFragment extends Fragment {
             @Override
             public void onRegisterationClick(int position) {
                 VehiclesStorageUtils.clearData();
-                String type=CarTypeList.get(position).getCode();
-                mLog.e("CarType="+type);
+                String type = CarTypeList.get(position).getCode();
+                mLog.e("CarType=" + type);
                 VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, type);
-               if(IsDX_PR){
-                   ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
-               }else{
-                   Bundle bundle=new Bundle();
-                   if (mAdapter.Name.equals(Register)) {
-                       ActivityUtil.goActivity(getActivity(), RegisterCarActivity.class);
-                   } else if (mAdapter.Name.equals(PreRegister)) {
-                       if (locCityName.contains("昆明")) {
-                           ActivityUtil.goActivity(getActivity(), JustFuckForKMActivity.class);
-                       } else {
-                           bundle.putString("in", "");
-                           ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class,bundle);
+                if (IsDX_PR) {
+                    ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
+                } else {
+                    Bundle bundle = new Bundle();
+                    if (mAdapter.Name.equals(Register)) {
+                        ActivityUtil.goActivity(getActivity(), RegisterCarActivity.class);
+                    } else if (mAdapter.Name.equals(PreRegister)) {
+                        if (locCityName.contains("昆明")) {
+                            ActivityUtil.goActivity(getActivity(), JustFuckForKMActivity.class);
+                        } else {
+                            bundle.putString("in", "");
+                            ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundle);
 
-                       }
-                   }else if(mAdapter.Name.equals(PreRegister_TJ)){
-                       bundle.putString("in", "TJ");
-                       ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class,bundle);
-                   }
-               }
-                mLog.e("VEHICLETYPE="+ VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
+                        }
+                    } else if (mAdapter.Name.equals(PreRegister_TJ)) {
+                        bundle.putString("in", "TJ");
+                        ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundle);
+                    }
+                }
+                mLog.e("VEHICLETYPE=" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
                 dialogRegistration.dismiss();
             }
         });
     }
-
 
 
     private void initView() {
@@ -265,13 +266,14 @@ public class BusinessFragment extends Fragment {
         locCityName = (String) SharedPreferencesUtils.get("locCityName", "");
         rolePowers = (String) SharedPreferencesUtils.get("rolePowers", "");
         city = (String) SharedPreferencesUtils.get("locCityName", "");
-        REGISTRATION= (String)SharedPreferencesUtils.get("REGISTRATION","");
-        if(!REGISTRATION.equals("")){
-            Register=REGISTRATION;
+        REGISTRATION = (String) SharedPreferencesUtils.get("REGISTRATION", "");
+        if (!REGISTRATION.equals("")) {
+            Register = REGISTRATION;
         }
         mLog.e("rolePowers=" + rolePowers);
         try {
-            baseInfos = db.selector(BaseInfo.class).where("cityName", "=", SharedPreferencesUtils.get("locCityName", "")).findAll();
+            baseInfos = db.selector(BaseInfo.class).where("cityName", "=", SharedPreferencesUtils.get("locCityName",
+                    "")).findAll();
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -292,46 +294,46 @@ public class BusinessFragment extends Fragment {
             }
         }
 
-        MainrolePowers=new ArrayList<String>();
-        hot_new_mvp=new ArrayList<String>();
+        MainrolePowers = new ArrayList<String>();
+        hot_new_mvp = new ArrayList<String>();
 
-        boolean a=false;
-        boolean b=false;
-        boolean c=false;
+        boolean a = false;
+        boolean b = false;
+        boolean c = false;
         for (String power : powers) {
-            if(power.equals("4001")){
-                a=true;
+            if (power.equals("4001")) {
+                a = true;
             }
-            if(power.equals("4002")){
-                b=true;
+            if (power.equals("4002")) {
+                b = true;
             }
         }
-        if(a&&b){
-            c=true;
+        if (a && b) {
+            c = true;
         }
 
         for (String power : powers) {
             for (Constants.Jurisdiction jurisdiction : Constants.JURISDICTIONS) {
-                if(jurisdiction.getJur().equals(power)){
+                if (jurisdiction.getJur().equals(power)) {
 
-                    if(power.equals("101")){
+                    if (power.equals("101")) {
                         MainrolePowers.add(power);
                         hot_new_mvp.add("hot");
-                    }else if(power.equals("4001")){
-                        if(!c){
+                    } else if (power.equals("4001")) {
+                        if (!c) {
                             MainrolePowers.add(power);
                             hot_new_mvp.add("");
                         }
-                    }else {
+                    } else {
                         MainrolePowers.add(power);
                         hot_new_mvp.add("");
                     }
                 }
             }
         }
-        mLog.e("MainrolePowers"+MainrolePowers.size());
+        mLog.e("MainrolePowers" + MainrolePowers.size());
         for (String mainrolePower : MainrolePowers) {
-            mLog.e("MainrolePowers="+mainrolePower);
+            mLog.e("MainrolePowers=" + mainrolePower);
         }
 
 
@@ -352,31 +354,31 @@ public class BusinessFragment extends Fragment {
             listModel.add(model);
         }
 
-        setMainRecycler(MainrolePowers,hot_new_mvp);
+        setMainRecycler(MainrolePowers, hot_new_mvp);
         setStaggeredGridLayoutRecyclerView();
 
 
-        Order CAR=new Order();
+        Order CAR = new Order();
         CAR.setName("Car");
         CAR.setOrder(1);
 
-        Order Personnel=new Order();
+        Order Personnel = new Order();
         Personnel.setName("Personnel");
         Personnel.setOrder(2);
 
-        Order Insurance=new Order();
+        Order Insurance = new Order();
         Insurance.setName("Insurance");
         Insurance.setOrder(3);
 
-        List<Order> ListO=new ArrayList<>();
+        List<Order> ListO = new ArrayList<>();
         ListO.add(CAR);
         ListO.add(Personnel);
         ListO.add(Insurance);
-        Gson G=new Gson();
+        Gson G = new Gson();
         SharedPreferencesUtils.put("Order", G.toJson(ListO));
     }
 
-    private void setMainRecycler(List<String> J,List<String> C) {
+    private void setMainRecycler(List<String> J, List<String> C) {
         //使用RecyclerView提供的默认的动画效果
         manager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //设置布局管理器
@@ -384,8 +386,10 @@ public class BusinessFragment extends Fragment {
         //使用RecyclerView提供的默认的动画效果
         RL_square.setItemAnimator(new DefaultItemAnimator());
         //为Item添加分割线
-        RL_square.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider, LinearLayoutManager.VERTICAL));
-        RL_square.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider, LinearLayoutManager.HORIZONTAL));
+        RL_square.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider,
+                LinearLayoutManager.VERTICAL));
+        RL_square.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider,
+                LinearLayoutManager.HORIZONTAL));
         MRAdapter = new MainRecyclerAdapter(getActivity(), J, C);
         MRAdapter.setOnItemClickLitener(new MainRecyclerAdapter.OnItemClickLitener() {
             @Override
@@ -403,22 +407,22 @@ public class BusinessFragment extends Fragment {
         switch (Jurisdiction) {
             case Constants.JURISDICTION_PRE_REGISTRATION://电信预登记
 //                Utils.showToast("电信预登记");
-                IsDX_PR=true;
+                IsDX_PR = true;
                 goPreRegistration();
 //                ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
                 break;
             case Constants.JURISDICTION_PRE_REGISTRATION_QUERY://电信预登记查询
 //                Utils.showToast("电信预登记查询");
-                Bundle bundlet=new Bundle();
+                Bundle bundlet = new Bundle();
                 bundlet.putString("in", "");
-                ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class,bundlet);
+                ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class, bundlet);
                 break;
             case Constants.JURISDICTION_PRE_REGISTRATION_STATISTICS://电信预登记统计
 //                Utils.showToast("电信预登记统计");
                 ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Activity.class);
                 break;
             case Constants.JURISDICTION_REGISTRATION://备案登记
-                IsDX_PR=false;
+                IsDX_PR = false;
                 goRegistration();
                 break;
             case Constants.JURISDICTION_CHANGE_REGISTRATION://备案登记信息变更
@@ -429,10 +433,12 @@ public class BusinessFragment extends Fragment {
                 bundle.putString("rolePower", "");
                 ActivityUtil.goActivity(getActivity(), PersonalStatisticActivity.class);
                 break;
+            default:
+                break;
         }
     }
 
-    private void goRegistration(){
+    private void goRegistration() {
         VehiclesStorageUtils.clearData();
         String hasPreregister = (String) SharedPreferencesUtils.get("hasPreregister", "");
         if (hasPreregister.equals("1")) {
@@ -443,9 +449,9 @@ public class BusinessFragment extends Fragment {
                 mAdapter.setName(Register);
                 dialogRegistration.show();
             } else {
-                if(CarType[0].equals("")){
+                if (CarType[0].equals("")) {
                     Utils.showToast("车辆类型数据被清除，请重新登录以获取最新数据。");
-                }else{
+                } else {
                     VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
 //                    ActivityUtil.goActivity(getActivity(), RegisterPersonalActivity.class);//人员信息
                     ActivityUtil.goActivity(getActivity(), RegisterCarActivity.class);//车辆信息
@@ -456,7 +462,8 @@ public class BusinessFragment extends Fragment {
 //                        ((MyApplication) mActivity.getApplicationContext()).setACList(new ArrayList<Activity>());
 //                        ((MyApplication) mActivity.getApplicationContext()).getRD().setVEHICLETYPE(CarType[0]);
 //
-//                        List<Order> listOrder = new Gson().fromJson((String) SharedPreferencesUtils.get("Order", ""), new TypeToken<List<Order>>() {
+//                        List<Order> listOrder = new Gson().fromJson((String) SharedPreferencesUtils.get("Order",
+// ""), new TypeToken<List<Order>>() {
 //                        }.getType());
 //                        for (Order order : listOrder) {
 //                            if(order.getName().equals("Car")&&order.getOrder()==1){
@@ -477,17 +484,19 @@ public class BusinessFragment extends Fragment {
             mLog.e("MyCarType=" + CarType[0]);
         }
     }
-    private void goPreRegistration(){
+
+    private void goPreRegistration() {
         VehiclesStorageUtils.clearData();
-            if (CarType.length > 1) {
-                mAdapter.setName(Register);
-                dialogRegistration.show();
-            } else {
-                VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
-                ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
-            }
-            mLog.e("MyCarType=" + CarType[0]);
+        if (CarType.length > 1) {
+            mAdapter.setName(PreRegister);
+            dialogRegistration.show();
+        } else {
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
+            ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
+        }
+        mLog.e("MyCarType=" + CarType[0]);
     }
+
     private void setStaggeredGridLayoutRecyclerView() {
         manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         //设置布局管理器
@@ -495,8 +504,10 @@ public class BusinessFragment extends Fragment {
         //使用RecyclerView提供的默认的动画效果
         RV_func.setItemAnimator(new DefaultItemAnimator());
         //为Item添加分割线
-        RV_func.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider, LinearLayoutManager.VERTICAL));
-        RV_func.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider, LinearLayoutManager.HORIZONTAL));
+        RV_func.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider,
+                LinearLayoutManager.VERTICAL));
+        RV_func.addItemDecoration(new ItemDecorationDivider(getActivity(), R.drawable.recycler_divider,
+                LinearLayoutManager.HORIZONTAL));
         // 创建Adapter，并指定数据集
         mRecyclerAdapter = new RecyclerAdapter(getActivity(), listModel);
         // 为Item具体实例点击3种事件
@@ -556,7 +567,7 @@ public class BusinessFragment extends Fragment {
 
                     case "2700"://民警现场预登记
                         VehiclesStorageUtils.clearData();
-                        IsDX_PR=false;
+                        IsDX_PR = false;
                         if (CarType.length > 1) {
                             mAdapter.setName(PreRegister);
                             dialogRegistration.show();
@@ -565,9 +576,9 @@ public class BusinessFragment extends Fragment {
                             if (locCityName.contains("昆明")) {
                                 ActivityUtil.goActivity(getActivity(), JustFuckForKMActivity.class);
                             } else {
-                                Bundle bundlet=new Bundle();
+                                Bundle bundlet = new Bundle();
                                 bundlet.putString("in", "");
-                                ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class,bundlet);
+                                ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundlet);
                             }
                         }
                         mLog.e("MyCarType=" + CarType[0]);
@@ -594,22 +605,23 @@ public class BusinessFragment extends Fragment {
                         ActivityUtil.goActivityWithBundle(getActivity(), ElectricInfoSearchActivity.class, bundle);
                         break;
                     case "2713"://天津车辆预登记（登记上牌）
-                        IsDX_PR=false;
+                        IsDX_PR = false;
                         if (CarType.length > 1) {
                             mAdapter.setName(PreRegister_TJ);
                             dialogRegistration.show();
                         } else {
                             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
-                            Bundle bundlet=new Bundle();
+                            Bundle bundlet = new Bundle();
                             bundlet.putString("in", "TJ");
-                            ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class,bundlet);
+                            ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundlet);
                         }
                         mLog.e("MyCarType=" + CarType[0]);
                         break;
                     case "2714"://天津车辆预登记查询
-                        Bundle bundlet=new Bundle();
+                        Bundle bundlet = new Bundle();
                         bundlet.putString("in", "TJ");
-                        ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class,bundlet);
+                        ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class,
+                                bundlet);
                         break;
                     case "122"://更换标签
 
@@ -660,8 +672,9 @@ public class BusinessFragment extends Fragment {
         }
 
     }
+
     private void getdata() {
-       String city=(String)SharedPreferencesUtils.get("locCityName", "");
+        String city = (String) SharedPreferencesUtils.get("locCityName", "");
         List<BaseInfo> resultList = new ArrayList<BaseInfo>();
         try {
             resultList = db.selector(BaseInfo.class).where("cityName", "=", city).findAll();

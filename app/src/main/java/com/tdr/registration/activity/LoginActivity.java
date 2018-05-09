@@ -911,7 +911,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         } else {
                             RL_Loding.setVisibility(View.GONE);
-                            dialogShow("获取城市配置列表超时，请检查网络连接。");
+                            Utils.myToast(mContext, "获取城市配置列表超时，请检查网络连接。");
                         }
                     }
                 });
@@ -986,7 +986,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
 //                    mProgressHUD.dismiss();
                             RL_Loding.setVisibility(View.GONE);
-                            dialogShow("获取城市列表数据超时，请检查网络连接。");
+                            Utils.myToast(mContext, "获取城市列表数据超时，请检查网络连接。");
 //                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
                         }
                     }

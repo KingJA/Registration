@@ -569,8 +569,10 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
             obj.put("Photo3File", "");
             obj.put("Photo4File", "");
             obj.put("REGISTERID", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.REGISTERID));
-            obj.put("CARTYPE", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARTYPE));
-            obj.put("ISCONFIRM", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.ISCONFIRM));
+            String carType = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARTYPE);
+            obj.put("CARTYPE",TextUtils.isEmpty(carType)?"1":carType );
+            String isConfirm = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.ISCONFIRM);
+            obj.put("ISCONFIRM", TextUtils.isEmpty(isConfirm)?"0":isConfirm);
             obj.put("VehicleBrand", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND));
             obj.put("PlateNumber", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER));
             String platetype = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATETYPE);

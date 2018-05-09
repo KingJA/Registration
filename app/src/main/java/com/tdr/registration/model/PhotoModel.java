@@ -44,4 +44,14 @@ public class PhotoModel implements Serializable {
     public void setRemark(String remark) {
         Remark = remark;
     }
+
+    @Override
+    public String toString() {
+        return "PhotoModel{" +
+                "INDEX='" + INDEX + '\'' +
+                ", Photo='" + Photo + '\'' +
+                ", PhotoFile='" + PhotoFile + '\'' +
+                ", Remark='" + Remark + '\'' +
+                '}';
+    }
 }

@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
+import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.model.DX_PreRegistrationModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
@@ -162,9 +163,9 @@ public class QRCodeCreateActivity extends Activity {
                                 if(PRList.get(0)!=null){
                                     Bundle bundle=new Bundle();
                                     bundle.putString("InType","PreRegistration");
-//                                    bundle.putSerializable("PreRegistrationModel", PRList.get(0));
+                                    bundle.putSerializable("PreRegistrationModel", PRList.get(0));
                                     TransferUtil.save("PreRegistrationModel",PRList.get(0));
-                                    ActivityUtil.goActivityWithBundle(QRCodeCreateActivity.this, RegisterPersonalActivity.class, bundle);
+                                    ActivityUtil.goActivityWithBundle(QRCodeCreateActivity.this, RegisterCarActivity.class, bundle);
                                 }
                             }catch (JsonSyntaxException e){
                                 Utils.showToast(data);

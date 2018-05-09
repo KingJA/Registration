@@ -51,6 +51,7 @@ import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.DX_PreRegistrationModel;
+import com.tdr.registration.model.ElectricCarModel;
 import com.tdr.registration.model.PayInsurance;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
@@ -301,6 +302,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     private ConfirmInsuranceModel ConfirmInsuranceList;
     private String REGISTRATION;
     private RegistrPop registrPop;
+    private DX_PreRegistrationModel prm;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -310,10 +312,22 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         setContentView(R.layout.activity_register_first_normal2);
         ButterKnife.bind(this);
         Version = (String) SharedPreferencesUtils.get("Version", "");
+/*获取预登记传递的信息*/
+        Bundle bundle = (Bundle) getIntent().getExtras();
+        if (bundle != null) {
+            String   InType = bundle.getString("InType");
+            if (InType.equals("PreRegistration")) {
+                prm = (DX_PreRegistrationModel) TransferUtil.retrieve("PreRegistrationModel");
+                TransferUtil.retrieve("PreRegistrationModel");
+
+            }
+        }
         GetReady();
-//        SetPhotoList();
+
         initView();
         initData();
+        dealModel(prm);
+        SetPhotoList();
 
     }
 
@@ -348,16 +362,15 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
         ecId = UUID.randomUUID().toString().toUpperCase();
         Bundle bundle = (Bundle) getIntent().getExtras();
-        if (bundle != null) {
-            activity = bundle.getString("activity");
-            listId = bundle.getString("distrainCarListID");
-            InvoiceType = bundle.getString("InvoiceType");
-            ArrayList list = bundle.getParcelableArrayList("insurance");
-            models = (List<UploadInsuranceModel>) list.get(0);
-            ConfirmInsuranceList = (ConfirmInsuranceModel) list.get(1);
-            mLog.e("ConfirmInsuranceModel=" + ConfirmInsuranceList.getInsurance().size());
-
-        }
+//        if (bundle != null) {
+//            activity = bundle.getString("activity");
+//            listId = bundle.getString("distrainCarListID");
+//            InvoiceType = bundle.getString("InvoiceType");
+//            ArrayList list = bundle.getParcelableArrayList("insurance");
+//            models = (List<UploadInsuranceModel>) list.get(0);
+//            ConfirmInsuranceList = (ConfirmInsuranceModel) list.get(1);
+//            mLog.e("ConfirmInsuranceModel=" + ConfirmInsuranceList.getInsurance().size());
+//        }
 
 
         for (UploadInsuranceModel uploadInsuranceModel : models) {
@@ -1230,8 +1243,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                             for (PhotoModel photoModel : preForKMModel.getPhotoListFile()) {
                                 photoModel.setPhotoFile("");
                             }
-                            dealPreByPlateNumber(preForKMModel);
                             SharedPreferencesUtils.put("preregisters", data);
+                            dealPreByPlateNumber(preForKMModel);
                         } else {
                             mProgressHUD.dismiss();
                             Utils.myToast(mContext, data);
@@ -2152,6 +2165,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         Pattern pattern = Pattern.compile(CarRegular);
         Matcher matcher = pattern.matcher(plateNum + "");
         if (!matcher.matches()) {
+            Logger.d("车牌正则不匹配:"+plateNum+"-"+plateNum);
             Utils.myToast(mContext, "输入的车牌有误，请重新确认");
             return false;
         }
