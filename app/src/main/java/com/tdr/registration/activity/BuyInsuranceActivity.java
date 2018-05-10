@@ -354,6 +354,7 @@ public class BuyInsuranceActivity extends BaseActivity implements View.OnClickLi
                             } else if (checkJson(data) == 1) {
                                 SharedPreferencesUtils.put("preregisters", "");
                                 SharedPreferencesUtils.put("preregistration", "");
+                                SharedPreferencesUtils.put("PhotoListFile", "");
                                 Bundle bundle = new Bundle();
                                 bundle.putString("UnPaid", "2");
                                 bundle.putString("PayDate", data);

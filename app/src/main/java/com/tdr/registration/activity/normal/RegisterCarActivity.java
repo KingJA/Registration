@@ -85,6 +85,7 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -314,21 +315,27 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         Version = (String) SharedPreferencesUtils.get("Version", "");
 /*获取预登记传递的信息*/
         Bundle bundle = (Bundle) getIntent().getExtras();
+
+
         if (bundle != null) {
-            String   InType = bundle.getString("InType");
+            String InType = bundle.getString("InType");
             if (InType.equals("PreRegistration")) {
                 prm = (DX_PreRegistrationModel) TransferUtil.retrieve("PreRegistrationModel");
                 TransferUtil.retrieve("PreRegistrationModel");
+//                prm  = (DX_PreRegistrationModel) bundle.getSerializable("PreRegistrationModel");
 
             }
         }
         GetReady();
-
         initView();
         initData();
-        dealModel(prm);
-        SetPhotoList();
-
+        if (prm != null) {
+            Logger.d("prm有数据");
+            dealModel(prm);
+            SetPhotoList();
+        } else {
+            Logger.d("prm没数据");
+        }
     }
 
     @Override
@@ -479,6 +486,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (PhotoList == null) {
             PhotoList = new ArrayList<>();
         }
+        Logger.d("PhotoList:" + PhotoList.size());
+        Logger.d("PLI:" + PhotoList.size());
         for (int i = 0; i < PLI.size(); i++) {
             String plateNumStr = (String) SharedPreferencesUtils.get("Photo:" + PLI.get(i).getINDEX(), "");
 //            Log.e("Pan",plateNumStr.equals("")?"读取图片为空":"读取图片不为空");
@@ -631,7 +640,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             RB_new_car.setChecked(true);
         } else if (carType.equals("1")) {
             RB_old_car.setChecked(true);
-        }else{
+        } else {
             RB_old_car.setChecked(true);
         }
 
@@ -645,7 +654,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             RB_formalPlate.setChecked(true);
         } else if (plateType.equals("0")) {
             RB_temporaryPlate.setChecked(true);
-        }else{
+        } else {
             RB_formalPlate.setChecked(true);
         }
 
@@ -685,9 +694,13 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         List<PhotoModel> photolist = new ArrayList<PhotoModel>();
         String preregisters = (String) SharedPreferencesUtils.get("preregisters", "");
         String preregistration = (String) SharedPreferencesUtils.get("preregistration", "");
+        String photoListFile = (String) SharedPreferencesUtils.get("PhotoListFile", "");
+
+
         mLog.e("Pan", "preregisters=" + preregisters);
         mLog.e("Pan", "preregistration=" + preregistration);
-        if (preregisters.equals("") && preregistration.equals("")) {
+        mLog.e("Pan", "photoListFile=" + photoListFile);
+        if (preregisters.equals("") && preregistration.equals("") && photoListFile.equals("")) {
             return;
         }
         if (!preregisters.equals("")) {
@@ -707,6 +720,19 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             List<PhotoModel> list = mGson.fromJson(preregistration, new TypeToken<List<PhotoModel>>() {
             }.getType());
             mLog.e("Pan", "list.size=" + list.size());
+
+            for (PhotoModel photoModel : list) {
+                PhotoModel PM = new PhotoModel();
+                PM.setINDEX(photoModel.getINDEX());
+                PM.setPhoto(photoModel.getPhoto());
+                PM.setPhotoFile(photoModel.getPhotoFile());
+                PM.setRemark(photoModel.getRemark());
+                pm.add(PM);
+            }
+        } else if (!photoListFile.equals("")) {
+            List<PhotoModel> list = mGson.fromJson(photoListFile, new TypeToken<List<PhotoModel>>() {
+            }.getType());
+            Logger.d("|photoList:" + list.size());
 
             for (PhotoModel photoModel : list) {
                 PhotoModel PM = new PhotoModel();
@@ -964,6 +990,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     dialogBuilder.dismiss();
                     SharedPreferencesUtils.put("preregisters", "");
                     SharedPreferencesUtils.put("preregistration", "");
+                    SharedPreferencesUtils.put("PhotoListFile", "");
                     VehiclesStorageUtils.clearData();
                     ActivityUtil.goActivityAndFinish(RegisterCarActivity.this, HomeActivity.class);
                 }
@@ -1139,6 +1166,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     dialogBuilder.dismiss();
                     SharedPreferencesUtils.put("preregisters", "");
                     SharedPreferencesUtils.put("preregistration", "");
+                    SharedPreferencesUtils.put("PhotoListFile", "");
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     TransferUtil.remove("PhotoList");
                     finish();
@@ -1343,7 +1371,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                         e.printStackTrace();
                         mProgressHUD.dismiss();
                         Utils.myToast(mContext, "JSON解析出错");
-                    }catch (JsonSyntaxException e) {
+                    } catch (JsonSyntaxException e) {
                         mProgressHUD.dismiss();
                         Utils.myToast(mContext, "未查到有效数据");
                     }
@@ -1726,7 +1754,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                         mProgressHUD.dismiss();
                         e.printStackTrace();
                         Utils.showToast("JSON解析出错");
-                    }catch (JsonSyntaxException e) {
+                    } catch (JsonSyntaxException e) {
                         mProgressHUD.dismiss();
                         e.printStackTrace();
                         Utils.showToast("未查到有效数据");
@@ -1741,7 +1769,13 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     }
 
     private void dealModel(DX_PreRegistrationModel preModel) {
-        TransferUtil.save("PhotoList", preModel.getPhotoListFile());
+//        TransferUtil.save("PhotoList", preModel.getPhotoListFile());
+
+        List<PhotoModel> photoListFile = preModel.getPhotoListFile();
+
+        Logger.d("照片存储前:"+new Gson().toJson(photoListFile));
+
+        SharedPreferencesUtils.put("PhotoListFile", new Gson().toJson(photoListFile));
 
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preModel.getPLATENUMBER());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, preModel.getVEHICLETYPE());
@@ -2046,6 +2080,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                                                 }.getType());
                                         SharedPreferencesUtils.put("preregisters", "");
                                         SharedPreferencesUtils.put("preregistration", "");
+                                        SharedPreferencesUtils.put("PhotoListFile", "");
                                         Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
                                                 (VehiclesStorageUtils
                                                         .PLATENUMBER) + "  电动车信息上传成功！");
@@ -2165,7 +2200,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         Pattern pattern = Pattern.compile(CarRegular);
         Matcher matcher = pattern.matcher(plateNum + "");
         if (!matcher.matches()) {
-            Logger.d("车牌正则不匹配:"+plateNum+"-"+plateNum);
+            Logger.d("车牌正则不匹配:" + plateNum + "-" + plateNum);
             Utils.myToast(mContext, "输入的车牌有误，请重新确认");
             return false;
         }

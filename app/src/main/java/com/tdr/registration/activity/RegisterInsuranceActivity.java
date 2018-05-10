@@ -690,6 +690,8 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                                                 }.getType());
                                         SharedPreferencesUtils.put("preregisters", "");
                                         SharedPreferencesUtils.put("preregistration", "");
+                                        SharedPreferencesUtils.put("PhotoListFile", "");
+
                                         Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
                                                 (VehiclesStorageUtils
                                                         .PLATENUMBER) + "  电动车信息上传成功！");
@@ -748,6 +750,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                             dialogBuilder.dismiss();
                             SharedPreferencesUtils.put("preregisters", "");
                             SharedPreferencesUtils.put("preregistration", "");
+                            SharedPreferencesUtils.put("PhotoListFile", "");
                             VehiclesStorageUtils.clearData();
                             ActivityUtil.goActivityAndFinish(RegisterInsuranceActivity.this, HomeActivity.class);
                         }

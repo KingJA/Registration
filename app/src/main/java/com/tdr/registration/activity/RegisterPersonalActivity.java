@@ -982,6 +982,7 @@ public class RegisterPersonalActivity extends BaseActivity implements View.OnCli
                     dialogBuilder.dismiss();
                     SharedPreferencesUtils.put("preregisters", "");
                     SharedPreferencesUtils.put("preregistration", "");
+                    SharedPreferencesUtils.put("PhotoListFile", "");
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     TransferUtil.remove("PhotoList");
                     if (InType.equals("PreRegistration")) {

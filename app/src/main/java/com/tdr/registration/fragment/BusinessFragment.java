@@ -190,6 +190,7 @@ public class BusinessFragment extends Fragment {
     public void initData() {
         SharedPreferencesUtils.put("preregisters", "");
         SharedPreferencesUtils.put("preregistration", "");
+        SharedPreferencesUtils.put("PhotoListFile", "");
         cardTypes = (String) SharedPreferencesUtils.get("CarTypesList", "");
         if (cardTypes.equals("")) {
             getdata();
@@ -626,6 +627,9 @@ public class BusinessFragment extends Fragment {
                     case "122"://更换标签
 
                         ActivityUtil.goActivity(getActivity(), LabelBindingCarQueryActivity.class);
+                        break;
+
+                    default:
                         break;
                 }
             }
