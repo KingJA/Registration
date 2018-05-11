@@ -230,13 +230,6 @@
                         android:text="车牌号" />
 
                 </LinearLayout>
-
-                <EditText
-                    android:id="@+id/edit_plateNumber"
-                    style="@style/inputText"
-                    android:layout_toRightOf="@id/linear_plateNumber"
-                    android:hint="请输入电动车车牌" />
-
                 <ImageView
                     android:id="@+id/image_scanPlateNumber"
                     android:layout_width="15dp"
@@ -245,6 +238,15 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
                     android:background="@mipmap/ic_scan" />
+                <EditText
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@id/image_scanPlateNumber"
+                    android:id="@+id/edit_plateNumber"
+                    style="@style/inputText"
+                    android:layout_toRightOf="@id/linear_plateNumber"
+                    android:hint="请输入电动车车牌" />
+
+
 
             </RelativeLayout>
 
@@ -276,9 +278,15 @@
 
                 <EditText
                     android:id="@+id/edit_frame"
-                    style="@style/inputText"
+                    style="@style/inputText_weight"
                     android:hint="如若不清用*代替" />
-
+                <ImageView
+                    android:id="@+id/IV_ScanFrameNumber"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/ic_scan" />
             </LinearLayout>
 
             <ImageView style="@style/dividerLine" />
@@ -310,8 +318,17 @@
 
                 <EditText
                     android:id="@+id/edit_motor"
-                    style="@style/inputText"
+                    style="@style/inputText_weight"
                     android:hint="如若不清用*代替" />
+
+                <ImageView
+                    android:id="@+id/IV_ScanMotorNumber"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/ic_scan" />
 
             </LinearLayout>
 

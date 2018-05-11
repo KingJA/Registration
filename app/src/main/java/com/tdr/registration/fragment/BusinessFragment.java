@@ -20,15 +20,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
+import com.tdr.registration.activity.DX_PreRegistrationQueryActivity;
 import com.tdr.registration.activity.DX_PreRegistration_Car_Activity;
 import com.tdr.registration.activity.DX_PreRegistration_Statistics_Activity;
 import com.tdr.registration.activity.ElectricInfoSearchActivity;
 import com.tdr.registration.activity.LabelBindingCarQueryActivity;
 import com.tdr.registration.activity.PersonalStatisticActivity;
 import com.tdr.registration.activity.PreFirstActivity;
-import com.tdr.registration.activity.DX_PreRegistrationQueryActivity;
-import com.tdr.registration.activity.RegisterPersonalActivity;
 import com.tdr.registration.activity.StatisticActivity;
 import com.tdr.registration.activity.VehicleMonitorActivity;
 import com.tdr.registration.activity.Visit_1_Activity;
@@ -54,7 +54,6 @@ import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ItemDecorationDivider;
 import com.tdr.registration.view.MyRecyclerView;
 import com.tdr.registration.view.dialog.DialogRegistration;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,6 +108,15 @@ public class BusinessFragment extends Fragment {
             "预约查询", "车辆回访",
             "服务延期", "登记上牌",
             "登记上牌查询", "标签绑定"};//ic小标签
+
+    private String[] funTitlesTJ = {
+            "车辆报废", "车牌补办",
+            "车辆过户", "车辆布控",
+            "备案统计", "车辆预登记",
+            "被盗申报", "车辆发还",
+            "预约查询", "车辆回访",
+            "服务延期", "免费上牌",
+            "免费上牌查询", "标签绑定"};//ic小标签
     private int[] funInsurance = {R.mipmap.ic_insurance_modify};
     private String[] funInsuranceTitles = {"套餐变更"};
     private int[] funImgsNone = {R.mipmap.ic_none};
@@ -288,7 +296,12 @@ public class BusinessFragment extends Fragment {
                     mLog.e("权限=" + powers[i]);
                     ItemModel model = new ItemModel();
                     model.setRolePower(s1[j]);
-                    model.setItemName(funTitles[j]);
+                    if (locCityName.startsWith("天津")) {
+                        model.setItemName(funTitlesTJ[j]);
+                    } else {
+                        model.setItemName(funTitles[j]);
+                    }
+
                     model.setItemBitResc(funImgs[j]);
                     listModel.add(model);
                 }
@@ -316,7 +329,7 @@ public class BusinessFragment extends Fragment {
         for (String power : powers) {
             for (Constants.Jurisdiction jurisdiction : Constants.JURISDICTIONS) {
                 if (jurisdiction.getJur().equals(power)) {
-
+                    Logger.d("power:" + power);
                     if (power.equals("101")) {
                         MainrolePowers.add(power);
                         hot_new_mvp.add("hot");
@@ -791,6 +804,8 @@ public class BusinessFragment extends Fragment {
                             String ChangeType = jsonObject.getString("value");
                             SharedPreferencesUtils.put("ChangeType", ChangeType);
                             mLog.e("ChangeType" + ChangeType);
+                            break;
+                        default:
                             break;
                     }
 

@@ -563,10 +563,18 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         SetViewForCity();
 
         ET_plateNumber.setTransformationMethod(new AllCapTransformationMethod(true));
+
+        String isScanCard = (String) SharedPreferencesUtils.get("isScanCard", "");
+        mLog.e("isScanCard=" + isScanCard);
         String IsScanDjh = (String) SharedPreferencesUtils.get("IsScanDjh", "");
         mLog.e("IsScanDjh=" + IsScanDjh);
         String IsScanCjh = (String) SharedPreferencesUtils.get("IsScanCjh", "");
         mLog.e("IsScanCjh=" + IsScanCjh);
+        if (isScanCard.equals("1")) {
+            IV_scanPlate.setVisibility(View.VISIBLE);
+        } else {
+            IV_scanPlate.setVisibility(View.GONE);
+        }
         if (IsScanCjh.equals("1")) {
             IV_ScanFrameNumber.setVisibility(View.VISIBLE);
         } else {

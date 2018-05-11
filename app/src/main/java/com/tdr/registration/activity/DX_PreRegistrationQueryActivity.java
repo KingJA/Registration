@@ -36,6 +36,8 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 电信预登记查询
  */
@@ -56,6 +58,7 @@ public class DX_PreRegistrationQueryActivity extends Activity {
     private EditText ET_phone;
     @ViewInject(R.id.BT_query)
     private Button BT_query;
+
 
     private ZProgressHUD mProgressHUD;
 
@@ -88,7 +91,7 @@ public class DX_PreRegistrationQueryActivity extends Activity {
             in="";
         }
         if (in.equals("TJ")) {
-            TV_Title.setText("登记上牌查询");
+            TV_Title.setText("免费上牌查询");
 
         }
         IV_Scan.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +117,8 @@ public class DX_PreRegistrationQueryActivity extends Activity {
                 finish();
             }
         });
+
+
     }
 
     private void query() {
