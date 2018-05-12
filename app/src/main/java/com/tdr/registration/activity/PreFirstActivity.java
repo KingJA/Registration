@@ -317,6 +317,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         List<PhotoListAdapter.DrawableList> DrawableList = new ArrayList<PhotoListAdapter.DrawableList>();
         for (int i = 0; i < PLI.size(); i++) {
             String plateNumStr = (String) SharedPreferencesUtils.get("Photo:" + PLI.get(i).getINDEX(), "");
+            com.orhanobut.logger.Logger.d("读取 Photo:" + PLI.get(i).getINDEX()+"="+plateNumStr);
 //            Log.e("Pan",plateNumStr.equals("")?"读取图片为空":"读取图片不为空");
             if (!plateNumStr.equals("")) {
                 Bitmap bitmap = Utils.stringtoBitmap(plateNumStr);
@@ -332,6 +333,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             @Override
             public void onItemClick(View view, int position) {
                 String PhotoName = "Photo:" + PLI.get(position).getINDEX() + ":" + position;
+
                 if (PhotoUtils.CurrentapiVersion > 20) {
                     PhotoUtils.TakePicture(mActivity, PhotoName);
                 } else {
@@ -449,6 +451,12 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
                 @Override
                 public void onClick(View v) {
                     dialogBuilder.dismiss();
+
+                    for (int i = 0; i < PLI.size(); i++) {
+                        SharedPreferencesUtils.put("Photo:" + PLI.get(i).getINDEX(), "");
+                        com.orhanobut.logger.Logger.d("清理 Photo:" + PLI.get(i).getINDEX());
+                    }
+
                     Intent intent = new Intent();
                     intent.setClass(mContext, HomeActivity.class);
                     startActivity(intent);

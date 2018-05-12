@@ -53,6 +53,7 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -445,6 +446,7 @@ public class PreSecondActivity extends BaseActivity implements AdapterView.OnIte
 
                     for (int i = 0; i < PLI.size(); i++) {
                         SharedPreferencesUtils.put("Photo:" + PLI.get(i).getINDEX(), "");
+                        com.orhanobut.logger.Logger.d("清理 Photo:" + PLI.get(i).getINDEX());
                     }
 
                     clearData();
