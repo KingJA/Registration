@@ -129,7 +129,7 @@ public class PersonalStatisticActivity extends BaseActivity {
     }
 
     private void initView() {
-        textTitle.setText("个人统计");
+        textTitle.setText(getIntent().getStringExtra("title"));
         imageScan.setBackgroundResource(R.mipmap.ic_refresh);
         imageScan.setVisibility(View.VISIBLE);
         startTime = new TimePickerView(this, TimePickerView.Type.YEAR_MONTH_DAY);
@@ -174,8 +174,8 @@ public class PersonalStatisticActivity extends BaseActivity {
         mProgressHUD.show();
         final HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
-        map.put("startDate", textStartTime.getText().toString().trim());
-        map.put("endDate", textEndTime.getText().toString().trim());
+        map.put("startDate", textStartTime.getText().toString().trim()+" 00:00:00");
+        map.put("endDate", textEndTime.getText().toString().trim()+" 23:59:59");
         WebServiceUtils.callWebService(mActivity,(String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETREGISTRATIONSTATISTICSBYUSER, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
@@ -274,5 +274,11 @@ public class PersonalStatisticActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         finish();
+    }
+
+    public static void goActivity(Context context, String title) {
+        Intent intent = new Intent(context, PersonalStatisticActivity.class);
+        intent.putExtra("title",title);
+        context.startActivity(intent);
     }
 }

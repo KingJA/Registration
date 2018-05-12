@@ -197,8 +197,8 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);
         if (in.equals("TJ")) {
             textTitle.setText("免费上牌");
-            relativeVehicleColor2.setVisibility(GONE);
-            textPlateNumber.setVisibility(GONE);
+//            relativeVehicleColor2.setVisibility(GONE);
+//            textPlateNumber.setVisibility(GONE);
         } else {
             textTitle.setText("车辆预登记");
         }

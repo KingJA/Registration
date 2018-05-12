@@ -124,7 +124,7 @@ public class AutoRegister_Car_Activity extends Activity implements View.OnClickL
      */
     @ViewInject(R.id.rl_plateNumber)
     RelativeLayout RL_plateNumber;
-    @ViewInject(R.id.tv_Plate)
+    @ViewInject(R.id.et_Plate)
     TextView TV_Plate;
     @ViewInject(R.id.iv_scanPlate)
     ImageView IV_scanPlate;

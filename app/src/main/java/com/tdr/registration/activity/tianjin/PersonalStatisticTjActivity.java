@@ -1,17 +1,12 @@
-package com.tdr.registration.activity;
+package com.tdr.registration.activity.tianjin;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,32 +15,23 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
+import com.tdr.registration.activity.HomeActivity;
+import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.adapter.InsuranceShowAdapter;
 import com.tdr.registration.base.BaseActivity;
-import com.tdr.registration.gprinter.Util;
-import com.tdr.registration.model.AreaModel;
-import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.ResultInsuranceModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
-import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.WebServiceUtils;
-import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.LinearLayoutForShowInsurance;
 import com.tdr.registration.view.ZProgressHUD;
 
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.DbManager;
-import org.xutils.ex.DbException;
-import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,9 +41,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 备案统计
+ * 个人备案统计
  */
-public class StatisticActivity extends BaseActivity {
+public class PersonalStatisticTjActivity extends BaseActivity {
     private static final String TAG = "StatisticActivity";
     @BindView(R.id.image_back)
     ImageView imageBack;
@@ -116,23 +102,15 @@ public class StatisticActivity extends BaseActivity {
     @BindView(R.id.relative_totalWithoutAntitheft)
     RelativeLayout relativeTotalWithoutAntitheft;
 
+    private ZProgressHUD mProgressHUD;
+    private Context mContext;
+    private Gson mGson;
     private InsuranceShowAdapter mAdapter;
 
     private List<ResultInsuranceModel.ItemsBean> itemsBeanList = new ArrayList<>();
     private List<List<ResultInsuranceModel.ItemsBean.SubItemsBean>> subItemsBeanList = new ArrayList<>();
     private List<ResultInsuranceModel.ItemsBean.SubItemsBean> itemsBeans = new ArrayList<>();
     private List<ResultInsuranceModel.ItemsBean.SubItemsBean> newBeans = new ArrayList<>();
-
-    private Context mContext;
-    private DbManager db;
-    private Gson mGson;
-    private Intent intent;
-    private ZProgressHUD mProgressHUD;
-
-    private List<AreaModel> areaModels = new ArrayList<>();
-
-    private final static int AREA_CODE = 2016;//品牌回调
-    private String areaValue = "";
 
     private TimePickerView startTime;
     private TimePickerView endTime;
@@ -142,20 +120,18 @@ public class StatisticActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistic);
+        setContentView(R.layout.activity_statistic_tj);
         ButterKnife.bind(this);
         mContext = this;
         mActivity=this;
         mGson = new Gson();
-        db = x.getDb(DBUtils.getDb());
         locCityName = (String) SharedPreferencesUtils.get("locCityName", "");
-        intent = new Intent();
         initView();
         initData();
     }
 
     private void initView() {
-        textTitle.setText("防盗统计");
+        textTitle.setText(getIntent().getStringExtra("title"));
         imageScan.setBackgroundResource(R.mipmap.ic_refresh);
         imageScan.setVisibility(View.VISIBLE);
         startTime = new TimePickerView(this, TimePickerView.Type.YEAR_MONTH_DAY);
@@ -186,9 +162,9 @@ public class StatisticActivity extends BaseActivity {
         textEndTime.setText(Utils.getNowDate());
         textRegistrationName.setText((String) SharedPreferencesUtils.get("regionName", ""));
         textRegistrationNumber.setText((String) SharedPreferencesUtils.get("regionNo", ""));
-        textRegistrationArea.setText((String) SharedPreferencesUtils.get("regionName", ""));
 
-        areaValue = (String) SharedPreferencesUtils.get("regionId", "");
+        imageRegistrationArea.setVisibility(View.GONE);
+        textRegistrationArea.setText((String) SharedPreferencesUtils.get("regionName", ""));
 
         if (locCityName.contains("昆明")){
             imageTotalWithoutAntitheft.setVisibility(View.GONE);
@@ -197,89 +173,16 @@ public class StatisticActivity extends BaseActivity {
     }
 
     private void initData() {
-        try {
-            areaModels = db.findAll(AreaModel.class);
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-        if(areaModels==null){
-            areaModels=new ArrayList<AreaModel>();
-        }
-        if (areaModels.equals("") || areaModels.size() == 0 || areaModels == null) {
-            mProgressHUD.show();
-            WebServiceUtils.callWebService(mActivity,(String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETXQANDPCS, null, new WebServiceUtils.WebServiceCallBack() {
-                @Override
-                public void callBack(String result) {
-                    if (result != null) {
-//                        mLog.e("辖区和派出所"+result);
-                        Utils.LOGE("Pan","辖区和派出所"+result);
-                        try {
-                            JSONObject jsonObject = new JSONObject(result);
-                            int errorCode = jsonObject.getInt("ErrorCode");
-                            String data = jsonObject.getString("Data");
-                            List<AreaModel> areaModels = new ArrayList<AreaModel>();
-                            if (errorCode == 0) {
-                                areaModels = mGson.fromJson(data, new TypeToken<List<AreaModel>>() {
-                                }.getType());
-//                                JSONArray JA=new JSONArray(data);
-//                                JSONObject JB;
-//                                for (int i = 0; i <JA.length() ; i++) {
-//                                    JB=new JSONObject(JA.get(i).toString());
-//                                    AreaModel AM=new AreaModel();
-//                                    AM.setValue(JB.getString("value"));
-//                                    AM.setName(JB.getString("name"));
-//                                    AM.setPvalue(JB.getString("pvalue"));
-//                                    AM.setIsdirect(JB.getString("isdirect"));
-//                                    AM.setType(JB.getString("type"));
-//                                    AM.setUnitno(JB.getString("unitno"));
-//                                    areaModels.add(AM);
-//                                }
-
-                                if (areaModels.size() > 0 && areaModels != null) {
-                                    for (AreaModel areaModel : areaModels) {
-                                        mLog.e("name="+areaModel.getName());
-                                        mLog.e("Value="+areaModel.getValue());
-                                    }
-                                    for (int i = 0; i < areaModels.size(); i++) {
-                                        db.deleteById(BaseInfo.class, areaModels.get(i).getValue());
-                                        db.save(areaModels.get(i));
-                                    }
-                                    mProgressHUD.dismiss();
-                                } else {
-                                    mProgressHUD.dismiss();
-                                    Utils.myToast(mContext, data);
-                                }
-                            }
-                        } catch (JSONException e) {
-                            mProgressHUD.dismiss();
-                            e.printStackTrace();
-                            Utils.myToast(mContext, "JSON解析出错");
-                        } catch (DbException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        mProgressHUD.dismiss();
-                        Utils.myToast(mContext, "获取数据超时，请检查网络连接");
-                    }
-                }
-            });
-        }
-
-        getStatistic();
-    }
-
-    private void getStatistic() {
         mProgressHUD.show();
         final HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
-        map.put("startDate", textStartTime.getText().toString().trim()+" 00:00:00");
-        map.put("endDate", textEndTime.getText().toString().trim()+" 23:59:59");
-        map.put("unitid", areaValue);
-        WebServiceUtils.callWebService(mActivity,(String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETREGISTRATIONSTATISTICS, map, new WebServiceUtils.WebServiceCallBack() {
+        map.put("startDate", textStartTime.getText().toString().trim());
+        map.put("endDate", textEndTime.getText().toString().trim());
+        WebServiceUtils.callWebService(mActivity,(String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETREGISTRATIONSTATISTICSBYUSER, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
-                    mLog.e( result);
+                    Log.e(TAG, result);
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         int errorCode = jsonObject.getInt("ErrorCode");
@@ -300,9 +203,6 @@ public class StatisticActivity extends BaseActivity {
                             String items = object.getString("Items");
                             itemsBeanList = mGson.fromJson(items, new TypeToken<List<ResultInsuranceModel.ItemsBean>>() {
                             }.getType());
-                            if(itemsBeanList==null){
-                                itemsBeanList=new ArrayList<ResultInsuranceModel.ItemsBean>();
-                            }
                             for (ResultInsuranceModel.ItemsBean model : itemsBeanList) {
                                 subItemsBeanList.add(model.getSubItems());
                             }
@@ -326,8 +226,8 @@ public class StatisticActivity extends BaseActivity {
                         } else if (errorCode == 1) {
                             mProgressHUD.dismiss();
                             Utils.myToast(mContext, data);
-                            SharedPreferencesUtils.put("token","");
-                            ActivityUtil.goActivityAndFinish(StatisticActivity.this, LoginActivity.class);
+                            SharedPreferencesUtils.put("token", "");
+                            ActivityUtil.goActivityAndFinish(PersonalStatisticTjActivity.this, LoginActivity.class);
                         } else {
                             mProgressHUD.dismiss();
                             Utils.myToast(mContext, data);
@@ -337,22 +237,22 @@ public class StatisticActivity extends BaseActivity {
                         mProgressHUD.dismiss();
                         Utils.myToast(mContext, "JSON解析出错");
                     }
+                } else {
+                    mProgressHUD.dismiss();
+                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
                 }
             }
         });
     }
 
-    @OnClick({R.id.image_back, R.id.image_scan, R.id.relative_startTime, R.id.relative_endTime, R.id.relative_registrationArea})
+    @OnClick({R.id.image_back, R.id.image_scan, R.id.relative_startTime, R.id.relative_endTime})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 onBackPressed();
                 break;
             case R.id.image_scan:
-                if (!checkData()) {
-                    break;
-                }
-                getStatistic();
+                initData();
                 break;
             case R.id.relative_startTime:
                 startTime.show();
@@ -360,49 +260,6 @@ public class StatisticActivity extends BaseActivity {
             case R.id.relative_endTime:
                 endTime.show();
                 break;
-            case R.id.relative_registrationArea:
-                intent.setClass(StatisticActivity.this, AreaActivity.class);
-                startActivityForResult(intent, AREA_CODE);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                break;
-
-        }
-    }
-
-    private boolean checkData() {
-        String startTime = textStartTime.getText().toString();
-        String endTime = textEndTime.getText().toString();
-        if (TextUtils.isEmpty(startTime)) {
-            Utils.myToast(mContext, "请选择查询的起始日期！");
-            return false;
-        }
-        if (TextUtils.isEmpty(endTime)) {
-            Utils.myToast(mContext, "请选择查询的终止日期！");
-            return false;
-        }
-        if (Long.valueOf(startTime.replaceAll("-", ""))
-                - Long.valueOf(endTime.replaceAll("-", "")) > 0) {
-            Utils.myToast(mContext, "起始日期不能大于截止日期！");
-            return false;
-        }
-
-        if (Utils.isDateOk(startTime, endTime)) {
-            Utils.myToast(mContext, "只支持一个月内的数据查询！");
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AREA_CODE) {
-            if (resultCode == RESULT_OK) {
-                String areaName = data.getStringExtra("areaName");
-                textRegistrationArea.setText(areaName);
-                areaValue = data.getStringExtra("areaValue");
-
-            }
         }
     }
 
@@ -421,4 +278,9 @@ public class StatisticActivity extends BaseActivity {
         finish();
     }
 
+    public static void goActivity(Context context, String title) {
+        Intent intent = new Intent(context, PersonalStatisticTjActivity.class);
+        intent.putExtra("title",title);
+        context.startActivity(intent);
+    }
 }

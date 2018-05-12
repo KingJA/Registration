@@ -156,7 +156,7 @@ public class PreSecondActivity extends BaseActivity implements AdapterView.OnIte
         }
         if(in.equals("TJ") ){
             TV_Name.setText("购买人姓名");
-            textTitle.setText("登记上牌");
+            textTitle.setText("免费上牌");
         }
     }
 
@@ -442,6 +442,11 @@ public class PreSecondActivity extends BaseActivity implements AdapterView.OnIte
                     SharedPreferencesUtils.put("applicationForm", "");
                     SharedPreferencesUtils.put("invoice", "");
                     SharedPreferencesUtils.put("install", "");
+
+                    for (int i = 0; i < PLI.size(); i++) {
+                        SharedPreferencesUtils.put("Photo:" + PLI.get(i).getINDEX(), "");
+                    }
+
                     clearData();
                     ActivityUtil.goActivityAndFinish(PreSecondActivity.this, HomeActivity.class);
                 }

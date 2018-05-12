@@ -51,7 +51,6 @@ import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.ConfirmInsuranceModel;
 import com.tdr.registration.model.DX_PreRegistrationModel;
-import com.tdr.registration.model.ElectricCarModel;
 import com.tdr.registration.model.PayInsurance;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
@@ -85,7 +84,6 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -162,8 +160,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
      */
     @BindView(R.id.rl_plateNumber)
     RelativeLayout RL_plateNumber;
-    @BindView(R.id.tv_Plate)
-    TextView TV_Plate;
+    @BindView(R.id.et_Plate)
+    EditText TV_Plate;
     @BindView(R.id.iv_scanPlate)
     ImageView IV_scanPlate;
 
@@ -1550,8 +1548,10 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     //用户输入的车牌
                     if (isPlateNumber.equals("0")) {
                         if (scanResult.equals(plateNumberInput)) {
-                            SendMSG();
-
+//                            SendMSG();
+//TODO
+                            saveCarInfo();
+                            ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
                         } else {
                             Utils.myToast(mContext, "输入的车牌有误，请重新确认");
                             return;
@@ -1781,7 +1781,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
         List<PhotoModel> photoListFile = preModel.getPhotoListFile();
 
-        Logger.d("照片存储前:"+new Gson().toJson(photoListFile));
+        Logger.d("照片存储前:" + new Gson().toJson(photoListFile));
 
         SharedPreferencesUtils.put("PhotoListFile", new Gson().toJson(photoListFile));
 

@@ -86,9 +86,19 @@
             android:name=".activity.BlackCarInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <activity
+            android:name=".activity.tianjin.PersonalStatisticTjActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <!-- 标签绑定-->
         <activity
             android:name=".activity.CarLabelBindingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <activity
+            android:name=".activity.tianjin.DX_PreRegistration_Statistics_Tj_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <!-- 标签绑定查询-->

@@ -280,7 +280,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_Plate"
+                    android:id="@+id/et_Plate"
                     style="@style/inputText"
                     android:layout_toRightOf="@id/ll_scanPlate"
                     android:hint="请扫描车牌号" />

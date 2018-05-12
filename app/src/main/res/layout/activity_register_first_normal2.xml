@@ -279,11 +279,12 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_Plate"
+                <EditText
+                    android:singleLine="true"
+                    android:id="@+id/et_Plate"
                     style="@style/inputText"
                     android:layout_toRightOf="@id/ll_scanPlate"
-                    android:hint="请扫描车牌号" />
+                    android:hint="请输入车牌号" />
 
                 <ImageView
                     android:id="@+id/iv_scanPlate"
