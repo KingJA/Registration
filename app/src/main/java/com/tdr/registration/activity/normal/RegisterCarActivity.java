@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -750,16 +751,29 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             }
         }
 
+       Logger.d("PLI.size()"+PLI.size());
+       Logger.d("pm.size()"+pm.size());
 
         for (int i = 0; i < PLI.size(); i++) {
             for (int j = 0; j < pm.size(); j++) {
                 mLog.e("Pan", "i=" + PLI.get(i).getINDEX() + "  j=" + pm.get(j).getINDEX());
                 if (PLI.get(i).getINDEX().equals(pm.get(j).getINDEX())) {
-                    mLog.e("Pan", i + "  pm=" + pm.get(i).getINDEX());
                     photolist.add(pm.get(j));
                 }
             }
         }
+
+//        for (int i = 0; i < PLI.size(); i++) {
+//            for (int j = 0; j < pm.size(); j++) {
+//                mLog.e("Pan", "i=" + PLI.get(i).getINDEX() + "  j=" + pm.get(j).getINDEX());
+//                if (PLI.get(i).getINDEX().equals(pm.get(j).getINDEX())) {
+//                    mLog.e("Pan", i + "  pm=" + pm.get(i).getINDEX());
+//                    photolist.add(pm.get(j));
+//                }
+//            }
+//        }
+
+
         mLog.e("Pan", "photolist.size=" + photolist.size());
         for (PhotoModel PM : photolist) {
             mLog.e("Pan", "getINDEX=" + PM.getINDEX());
