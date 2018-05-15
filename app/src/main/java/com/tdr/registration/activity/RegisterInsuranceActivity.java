@@ -232,9 +232,9 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(result);
-                    int errorCode = jsonObject.getInt("error");
+                    int errorCode = jsonObject.getInt("ErrorCode");
                     if (errorCode == 0) {
-                        String data = jsonObject.getString("data");
+                        String data = jsonObject.getString("Data");
                         if (!TextUtils.isEmpty(data)) {
                             List<InsuranceModel>   insurances = new Gson().fromJson(data, new
                                     TypeToken<List<InsuranceModel>>() {

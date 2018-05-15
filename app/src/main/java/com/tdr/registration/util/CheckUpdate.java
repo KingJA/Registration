@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.BuildConfig;
 import com.tdr.registration.R;
 import com.tdr.registration.update.Util;
@@ -80,6 +81,8 @@ public class CheckUpdate {
         WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_CHECKVERSION, update, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(final String result) {
+                Logger.d("检查版本更新:"+result);
+
                 if (result != null) {
                     mLog.e(  "GetVersionCode= " + result);
                     try {

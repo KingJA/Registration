@@ -819,8 +819,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
             Utils.CompleteConfig();//补齐缺失字段
-
-
             SharedPreferencesUtils.put("appName", resultList.get(0).getAppName());
             SharedPreferencesUtils.put("CarTypesList", resultList.get(0).getCardType());
             SharedPreferencesUtils.put("fullSpell", resultList.get(0).getFullSpell());
@@ -854,6 +852,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //获取显示名字配置信息
 //            getFieldSetting(resultList.get(0).getListId());
 //        getNewApk();
+            com.orhanobut.logger.Logger.d("开始准备更新");
             new CheckUpdate(mActivity).UpdateAPK();
         } else {
             if (!cityName.equals("")) {

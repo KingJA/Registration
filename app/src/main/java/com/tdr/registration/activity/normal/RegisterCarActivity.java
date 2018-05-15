@@ -747,7 +747,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
         for (int i = 0; i < PLI.size(); i++) {
             for (int j = 0; j < pm.size(); j++) {
-                mLog.e("Pan", "i=" + PLI.get(i).getINDEX() + "  j=" + pm.get(j).getINDEX());
                 if (PLI.get(i).getINDEX().equals(pm.get(j).getINDEX())) {
                     mLog.e("Pan", i + "  pm=" + pm.get(i).getINDEX());
                     photolist.add(pm.get(j));
