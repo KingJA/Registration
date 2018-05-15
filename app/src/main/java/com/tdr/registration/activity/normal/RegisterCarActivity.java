@@ -1573,8 +1573,9 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     } else {
                         String plateNumberRead = mQR.plateNumber(scanResult);
                         if (plateNumberRead.equals(plateNumberInput)) {
-                            SendMSG();
-
+//                            SendMSG();
+                            saveCarInfo();
+                            ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
                         } else if (plateNumberRead.equals("-1")) {
                             Utils.myToast(mContext, "校验不通过，请确认车牌合法正确性");
 
