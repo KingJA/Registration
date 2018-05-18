@@ -35,7 +35,7 @@ import com.google.gson.reflect.TypeToken;
 import com.inuker.bluetooth.library.model.BleGattProfile;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.ShowPhotoAdapter;
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 import com.tdr.registration.data.PacketData;
 import com.tdr.registration.model.BlackCarModel;
 import com.tdr.registration.model.ElectricCarModel;
@@ -135,7 +135,7 @@ public class SeekActivity2 extends Activity implements OnClickListener, ConnectB
     private PacketData mData = BLE_Util.instance.getmData();
     private String BleName;
     private String BleMAC;
-    private MyApplication BA;
+    private App BA;
     private String bluetoothReglar;
     private byte[] SendMSG;
     private int Circular_W = R.drawable.shape_circular2;
@@ -212,7 +212,7 @@ public class SeekActivity2 extends Activity implements OnClickListener, ConnectB
         mProgressHUD.setMessage("");
         mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);
 
-        BA = ((MyApplication) mActivity.getApplicationContext());
+        BA = ((App) mActivity.getApplicationContext());
         bluetoothReglar = (String) SharedPreferencesUtils.get("key", "");
         setSignal(0, 0);
         setSignal(0, 1);

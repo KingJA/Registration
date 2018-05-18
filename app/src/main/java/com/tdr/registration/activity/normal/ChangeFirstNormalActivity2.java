@@ -80,8 +80,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.OnClick;
-
 /**
  * 信息变更全国版
  */
@@ -189,7 +187,7 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
      */
     @ViewInject(R.id.ll_Frame_number)
     LinearLayout LL_Frame_number;
-    @ViewInject(R.id.et_frame)
+    @ViewInject(R.id.et_shelvesNo)
     TextView ET_frame;
     @ViewInject(R.id.IV_ScanFrameNumber)
     ImageView IV_ScanFrameNumber;
@@ -200,7 +198,7 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
      */
     @ViewInject(R.id.ll_MotorNumber)
     LinearLayout LL_MotorNumber;
-    @ViewInject(R.id.et_motor)
+    @ViewInject(R.id.et_engineNo)
     TextView ET_motor;
     @ViewInject(R.id.IV_ScanMotorNumber)
     ImageView IV_ScanMotorNumber;

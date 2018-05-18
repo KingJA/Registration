@@ -27,7 +27,7 @@ import com.inuker.bluetooth.library.model.BleGattProfile;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.AuditingAdapter;
 import com.tdr.registration.adapter.BlackCarAdapter;
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 import com.tdr.registration.data.PacketData;
 import com.tdr.registration.model.BlackCarList;
 import com.tdr.registration.model.BlackCarModel;
@@ -125,7 +125,7 @@ public class PatrolActivity2 extends Activity implements
     private String BleName;
     private String BleMAC;
 
-    private MyApplication BA;
+    private App BA;
     private byte[] SendBlackCarMSG;
     private boolean BleState = false;
     private boolean isFirst = true;
@@ -143,7 +143,7 @@ public class PatrolActivity2 extends Activity implements
 
         initView();
         initData();
-        BA = ((MyApplication) mContext.getApplicationContext());
+        BA = ((App) mContext.getApplicationContext());
         isBle();
 
         mLog.e("蓝牙缓存：" + BLE.isConnection());

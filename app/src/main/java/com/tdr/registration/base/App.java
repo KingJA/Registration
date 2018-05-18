@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Linus_Xie on 2016/9/9.
  */
-public class MyApplication extends MultiDexApplication implements BleInterface.BleStatusListener {
+public class App extends MultiDexApplication implements BleInterface.BleStatusListener {
 
     public static Context context;
     private static SharedPreferences mSharedPreferences;

@@ -34,7 +34,7 @@ import com.umeng.analytics.MobclickAgent;
  */
 public class BaseActivity extends AppCompatActivity {
     private  final String TAG = getClass().getSimpleName();
-    private MyApplication mBaseApp = null;
+    private App mBaseApp = null;
     private boolean mIsAddedView;
 
     //屏幕宽度
@@ -73,7 +73,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.e(TAG, "当前Activit ");
         ActivityCollection.addActivity(this);
-        mBaseApp = (MyApplication) getApplication();
+        mBaseApp = (App) getApplication();
 
         mIsAddedView = false;
         bdInfo = new ImageDBInfo();
@@ -107,7 +107,7 @@ public class BaseActivity extends AppCompatActivity {
         ActivityCollection.removeActivity(this);
     }
 
-    public MyApplication getApp() {
+    public App getApp() {
         return mBaseApp;
     }
 

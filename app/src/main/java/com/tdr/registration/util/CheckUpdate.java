@@ -84,14 +84,11 @@ public class CheckUpdate {
                 Logger.d("检查版本更新:"+result);
 
                 if (result != null) {
-                    mLog.e(  "GetVersionCode= " + result);
                     try {
                         JSONObject json = new JSONObject(result);
                         int errorCode = json.getInt("ErrorCode");
                         String data = json.getString("Data");
-                        mLog.e( "callBack: " + data);
                         if (errorCode == 0) {//已是最新版本
-                            mLog.e("已是最新版本");
                         } else if (errorCode == 2) {//需要升级
                             showNoticeDialog();
                         } else if (errorCode == 7) {//版本号没上传

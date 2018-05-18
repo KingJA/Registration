@@ -1,4 +1,4 @@
-package com.tdr.registration.activity;
+package com.tdr.registration.activity.tianjin;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,10 +29,18 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
+import com.tdr.registration.activity.BrandActivity;
+import com.tdr.registration.activity.HomeActivity;
+import com.tdr.registration.activity.PreFirstActivity;
+import com.tdr.registration.activity.PreSecondActivity;
+import com.tdr.registration.activity.QRCodeScanActivity;
+import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.adapter.PhotoListAdapter;
 import com.tdr.registration.base.BaseActivity;
+import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.PhotoListInfo;
@@ -56,7 +64,6 @@ import com.tdr.registration.view.ZProgressHUD;
 import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 import com.umeng.analytics.MobclickAgent;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,10 +84,9 @@ import static android.view.View.GONE;
 
 /**
  * 民警现场预登记
-
  */
 
-public class PreFirstActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class PreFirstActivity_TJ extends BaseActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.image_back)
     ImageView imageBack;
@@ -127,6 +133,10 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
 
     @BindView(R.id.rv_PhotoList)
     RecyclerView RV_PhotoList;
+    @BindView(R.id.IV_ScanFrameNumber)
+    ImageView IV_ScanFrameNumber;
+    @BindView(R.id.IV_ScanMotorNumber)
+    ImageView IV_ScanMotorNumber;
     private LinearLayout layoutPhotoList;
 
     private final static int BRAND_CODE = 2016;//品牌回调
@@ -160,28 +170,30 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
     private List<PhotoListInfo> PLI;
     private PhotoListAdapter PLA;
     private Activity mActivity;
-    private int num=0;
-    private String in="";
+    private int num = 0;
+    private String in = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_first_kunming);
+        setContentView(R.layout.activity_register_first_tj);
         ButterKnife.bind(this);
+
         initView();
     }
 
     private void initView() {
         db = x.getDb(DBUtils.getDb());
-        mActivity=this;
-        mGson=new Gson();
+        mQR = new ParsingQR();
+        mActivity = this;
+        mGson = new Gson();
         city = (String) SharedPreferencesUtils.get("locCityName", "");
         intent = new Intent();
 
-        if(getIntent().getExtras()==null){
-            in="";
-        }else{
-            in=getIntent().getExtras().getString("in");
+        if (getIntent().getExtras() == null) {
+            in = "";
+        } else {
+            in = getIntent().getExtras().getString("in");
         }
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
@@ -189,11 +201,11 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         mProgressHUD = new ZProgressHUD(mContext);
         mProgressHUD.setMessage("");
         mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);
-        if(in.equals("TJ")){
-            textTitle.setText("登记上牌");
-            relativeVehicleColor2.setVisibility(GONE);
-            textPlateNumber.setVisibility(GONE);
-        }else{
+        if (in.equals("TJ")) {
+            textTitle.setText("免费上牌");
+//            relativeVehicleColor2.setVisibility(GONE);
+//            textPlateNumber.setVisibility(GONE);
+        } else {
             textTitle.setText("车辆预登记");
         }
         textPhotoList.setVisibility(GONE);
@@ -202,7 +214,28 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         rbNewVehicle.setText("电动车");
         rbOldVehicle.setText("摩托车");
 
-        imageScanPlateNumber.setVisibility(GONE);
+//        imageScanPlateNumber.setVisibility(GONE);
+        String isScanCard = (String) SharedPreferencesUtils.get("isScanCard", "");
+        Logger.d("isScanCard=" + isScanCard);
+        String IsScanDjh = (String) SharedPreferencesUtils.get("IsScanDjh", "");
+        Logger.d("IsScanDjh=" + IsScanDjh);
+        String IsScanCjh = (String) SharedPreferencesUtils.get("IsScanCjh", "");
+        Logger.d("IsScanCjh=" + IsScanCjh);
+        if (isScanCard.equals("1")) {
+            imageScanPlateNumber.setVisibility(View.VISIBLE);
+        } else {
+            imageScanPlateNumber.setVisibility(View.GONE);
+        }
+        if (IsScanCjh.equals("1")) {
+            IV_ScanFrameNumber.setVisibility(View.VISIBLE);
+        } else {
+            IV_ScanFrameNumber.setVisibility(View.GONE);
+        }
+        if (IsScanDjh.equals("1")) {
+            IV_ScanMotorNumber.setVisibility(View.VISIBLE);
+        } else {
+            IV_ScanMotorNumber.setVisibility(View.GONE);
+        }
 
         editPlateNumber.setTransformationMethod(new AllCapTransformationMethod(true));
         editFrame.setTransformationMethod(new AllCapTransformationMethod(true));
@@ -237,6 +270,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         });
         getPhotoConfig();
     }
+
     private void getPhotoConfig() {
         PLI = new ArrayList<PhotoListInfo>();
 //        List<BaseInfo> ResultList = db.findAllByWhere(BaseInfo.class, " cityName=\"" + city + "\"");
@@ -254,7 +288,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             JSONArray JA = new JSONArray(BI.getPrephotoConfig());
             JSONObject JB;
             PhotoListInfo pli;
-            mLog.e("PrephotoConfig:"+BI.getPrephotoConfig());
+            mLog.e("PrephotoConfig:" + BI.getPrephotoConfig());
             for (int i = 0; i < JA.length(); i++) {
                 JB = new JSONObject(JA.get(i).toString());
                 pli = new PhotoListInfo();
@@ -268,13 +302,14 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             }
         } catch (Exception e) {
             mLog.e("数据异常3");
-            if(num<3){
+            if (num < 3) {
                 getBaseData();
             }
             e.printStackTrace();
         }
         SetPhotoList();
     }
+
     /**
      * 加载图片列表
      */
@@ -288,6 +323,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         List<PhotoListAdapter.DrawableList> DrawableList = new ArrayList<PhotoListAdapter.DrawableList>();
         for (int i = 0; i < PLI.size(); i++) {
             String plateNumStr = (String) SharedPreferencesUtils.get("Photo:" + PLI.get(i).getINDEX(), "");
+            Logger.d("读取 Photo:" + PLI.get(i).getINDEX()+"="+plateNumStr);
 //            Log.e("Pan",plateNumStr.equals("")?"读取图片为空":"读取图片不为空");
             if (!plateNumStr.equals("")) {
                 Bitmap bitmap = Utils.stringtoBitmap(plateNumStr);
@@ -303,6 +339,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             @Override
             public void onItemClick(View view, int position) {
                 String PhotoName = "Photo:" + PLI.get(position).getINDEX() + ":" + position;
+
                 if (PhotoUtils.CurrentapiVersion > 20) {
                     PhotoUtils.TakePicture(mActivity, PhotoName);
                 } else {
@@ -319,15 +356,17 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         });
         RV_PhotoList.setAdapter(PLA);
     }
-
-    @OnClick({R.id.image_back, R.id.relative_vehicleBrand, R.id.relative_vehicleColor, R.id.text_buyTime, R.id.relative_vehicleColor2, R.id.btn_next})
+    private String ScanType = "";//扫描类型
+    @OnClick({R.id.image_back, R.id.relative_vehicleBrand, R.id.relative_vehicleColor, R.id.text_buyTime, R.id
+            .relative_vehicleColor2, R.id.btn_next, R.id.IV_ScanFrameNumber, R.id.IV_ScanMotorNumber, R.id
+            .image_scanPlateNumber})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 onBackPressed();
                 break;
             case R.id.relative_vehicleBrand:
-                intent.setClass(PreFirstActivity.this, BrandActivity.class);
+                intent.setClass(this, BrandActivity.class);
                 startActivityForResult(intent, BRAND_CODE);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
@@ -341,15 +380,53 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
                 timePickerView.show();
                 break;
             case R.id.btn_next:
-                mLog.e("VEHICLETYPE="+ VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
+                mLog.e("VEHICLETYPE=" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
                 if (!checkData()) {
                     break;
                 }
-                Bundle bundle=new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("in", in);
-                ActivityUtil.goActivityWithBundle(PreFirstActivity.this, PreSecondActivity.class,bundle);
+                ActivityUtil.goActivityWithBundle(this, PreSecondActivity.class, bundle);
+                break;
+            case R.id.image_scanPlateNumber:
+                Logger.d("车牌号");
+                ScanType = "ScanPlate";
+                Scan(0, true, true, "请输入车牌号");
+                break;
+            case R.id.IV_ScanFrameNumber:
+                Logger.d("车架号");
+                ScanType = "ScanFrame";
+                Scan(1, false, false, "请输入车架号");
+                break;
+            case R.id.IV_ScanMotorNumber:
+                Logger.d("电机号");
+                ScanType = "ScanMotor";
+                Scan(1, false, false, "请输入电机号");
+                break;
+
+
+
+            default:
                 break;
         }
+    }
+    private final static int SCANNIN_QR_CODE = 0514;//二维码回调值*
+    /**
+     * 扫码
+     *
+     * @param ScanType   扫描类型
+     * @param isshow     是否显示录入框
+     * @param isPlate    是否扫描车牌
+     * @param ButtonName 按钮文本
+     */
+    private void Scan(int ScanType, boolean isshow, boolean isPlate, String ButtonName) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("ScanType", ScanType);
+        bundle.putBoolean("isShow", isshow);
+        bundle.putBoolean("isPlateNumber", isPlate);
+        bundle.putString("ButtonName", ButtonName);
+        ActivityUtil.goActivityForResultWithBundle(this, QRCodeScanActivity.class, bundle,
+                SCANNIN_QR_CODE);
     }
 
     @Override
@@ -370,7 +447,8 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             effectstype = NiftyDialogBuilder.Effectstype.Fadein;
             dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage("信息编辑中，确认离开该页面？")
                     .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("取消")
-                    .setCustomView(R.layout.custom_view, mContext).withButton2Text("确认").setButton1Click(new View.OnClickListener() {
+                    .setCustomView(R.layout.custom_view, mContext).withButton2Text("确认").setButton1Click(new View
+                    .OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialogBuilder.dismiss();
@@ -379,6 +457,12 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
                 @Override
                 public void onClick(View v) {
                     dialogBuilder.dismiss();
+
+                    for (int i = 0; i < PLI.size(); i++) {
+                        SharedPreferencesUtils.put("Photo:" + PLI.get(i).getINDEX(), "");
+                        Logger.d("清理 Photo:" + PLI.get(i).getINDEX());
+                    }
+
                     Intent intent = new Intent();
                     intent.setClass(mContext, HomeActivity.class);
                     startActivity(intent);
@@ -401,12 +485,12 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             list_colors1.setAdapter(colorsAdapter);
 //            colorList = db.findAllByWhere(BikeCode.class, " type='4'");
             try {
-                colorList = db.selector(BikeCode.class).where("type","=","4").findAll();
+                colorList = db.selector(BikeCode.class).where("type", "=", "4").findAll();
             } catch (DbException e) {
                 e.printStackTrace();
             }
-            if(colorList==null){
-                colorList=new ArrayList<BikeCode>();
+            if (colorList == null) {
+                colorList = new ArrayList<BikeCode>();
             }
             mLog.e("颜色数量：", "" + colorList.size());
             for (int i = 0; i < colorList.size(); i++) {
@@ -464,12 +548,12 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             list_colors2.setAdapter(colorsAdapter);
 //            colorList = db.findAllByWhere(BikeCode.class, " type='4'");
             try {
-                colorList = db.selector(BikeCode.class).where("type","=","4").findAll();
+                colorList = db.selector(BikeCode.class).where("type", "=", "4").findAll();
             } catch (DbException e) {
                 e.printStackTrace();
             }
-            if(colorList==null){
-                colorList=new ArrayList<BikeCode>();
+            if (colorList == null) {
+                colorList = new ArrayList<BikeCode>();
             }
             mLog.e("颜色数量：", "" + colorList.size());
             for (int i = 0; i < colorList.size(); i++) {
@@ -514,7 +598,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             }).show();
         }
     }
-
+    private ParsingQR mQR;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -526,7 +610,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
                 VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, brandCode);
                 SharedPreferencesUtils.put("brandName", brandName);//存储显示的车辆品牌
             }
-        }else if (requestCode == PhotoUtils.CAMERA_REQESTCODE) {
+        } else if (requestCode == PhotoUtils.CAMERA_REQESTCODE) {
             if (resultCode == RESULT_OK) {
                 mLog.e("系统API版本:" + PhotoUtils.CurrentapiVersion);
 //                Utils.myToast(mContext, "系统API版本"+PhotoUtils.CurrentapiVersion);
@@ -537,34 +621,69 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
                         UpDatePhotoItem2(data);
                     }
                 } catch (Exception E) {
-                    MobclickAgent.reportError(mActivity, "临时缓存图片AbsolutePath：" + PhotoUtils.imageFile.getAbsolutePath());
+                    MobclickAgent.reportError(mActivity, "临时缓存图片AbsolutePath：" + PhotoUtils.imageFile.getAbsolutePath
+                            ());
                     MobclickAgent.reportError(mActivity, "UpDatePhotoItem" + E.toString());
+                }
+            }
+        }else if (requestCode == SCANNIN_QR_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (data == null) {
+                    Utils.myToast(mContext, "没有扫描到二维码");
+                    return;
+                } else {
+                    Bundle bundle = data.getExtras();
+                    String labelNumber = bundle.getString("result");
+                    if (ScanType.equals("ScanPlate")) {
+                        String num = "";
+                        boolean isScan = bundle.getBoolean("isScan");
+                        if (isScan) {
+                            num = labelNumber;
+                        } else {
+                            num = mQR.plateNumber(labelNumber);
+                        }
+                        if (!num.equals("-1")) {
+                            editPlateNumber.setText(num);
+                        } else {
+                            Utils.myToast(mContext, "二维码不属于车牌");
+                        }
+                    }else if (ScanType.equals("ScanFrame")) {
+                        //车架号
+                        editFrame.setText(labelNumber);
+                    } else if (ScanType.equals("ScanMotor")) {
+                        //电机号
+                        editMotor.setText(labelNumber);
+                    }
                 }
             }
         }
     }
 
     private void UpDatePhotoItem() {
-        Bitmap bitmap= PhotoUtils.getPhotoBitmap();
+        Bitmap bitmap = PhotoUtils.getPhotoBitmap();
         String Photoindex[] = PhotoUtils.mPicName.split(":");
         Drawable drawable = new BitmapDrawable(bitmap);
 
-        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList
+                .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
         my.Photo.setBackgroundDrawable(drawable);
         my.PhotoName.setTextColor(Color.WHITE);
         PLA.SevePhoto(Photoindex[1]);
     }
+
     private void UpDatePhotoItem2(Intent data) {
-        Bitmap bitmap= PhotoUtils.getPhotoBitmap(data);
+        Bitmap bitmap = PhotoUtils.getPhotoBitmap(data);
         String Photoindex[] = PhotoUtils.mPicName.split(":");
         Drawable drawable = new BitmapDrawable(bitmap);
 
-        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList
+                .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
         my.Photo.setBackgroundDrawable(drawable);
         my.PhotoName.setTextColor(Color.WHITE);
         PhotoUtils.sevephoto(bitmap);
         PLA.SevePhoto(Photoindex[1]);
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
@@ -599,25 +718,13 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             Utils.myToast(mContext, "请选择车辆品牌");
             return false;
         }
-        String platenumber =  textPlateNumber.getText().toString().trim().toUpperCase();
-        if(textPlateNumber.getVisibility()!=View.GONE){
+        String platenumber = textPlateNumber.getText().toString().trim().toUpperCase();
+        if (textPlateNumber.getVisibility() != View.GONE) {
             if (platenumber.equals("") || platenumber == null) {
                 Utils.myToast(mContext, "请输入车牌号");
                 return false;
             }
         }
-
-
-//        String frame = editFrame.getText().toString().trim().toUpperCase();
-//        if (frame.equals("") || frame == null) {
-//            Utils.myToast(mContext, "请输入车架号");
-//            return false;
-//        }
-//        String motor = editMotor.getText().toString().trim().toUpperCase();
-//        if (motor.equals("") || motor == null) {
-//            Utils.myToast(mContext, "请输入电机号");
-//            return false;
-//        }
         String shelvesNo = editFrame.getText().toString().toUpperCase().trim();
         if (!RegularChecker.checkShelvesNoRegular(shelvesNo)) {
             return false;
@@ -626,8 +733,6 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         if (!RegularChecker.checkEngineNoRegular(engineNo)) {
             return false;
         }
-
-
         String colorId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COLOR1ID);
         if (colorId.equals("") || colorId == null) {
             Utils.myToast(mContext, "请选择电动车颜色");
@@ -638,7 +743,7 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
             Utils.myToast(mContext, "请选择车辆购买时间");
             return false;
         }
-        if(!Utils.CheckBuyTime(buyTime)){
+        if (!Utils.CheckBuyTime(buyTime)) {
             Utils.myToast(mContext, "您选择的时间已超过当前时间");
             return false;
         }
@@ -652,7 +757,9 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
 
         return true;
     }
+
     private ZProgressHUD mProgressHUD;
+
     private void getBaseData() {
         num++;
         mLog.e("BaseData");
@@ -660,49 +767,51 @@ public class PreFirstActivity extends BaseActivity implements AdapterView.OnItem
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", DESCoder.encrypt("GETCITYLIST", Constants.DES_KEY));
-        map.put("infoJsonStr",  "_ANDROID");
+        map.put("infoJsonStr", "_ANDROID");
 
-        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new WebServiceUtils.WebServiceCallBack() {
-            @Override
-            public void callBack(String result) {
-                if (result != null) {
-                    mLog.e("更新数据：");
+        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
+                WebServiceUtils.WebServiceCallBack() {
+                    @Override
+                    public void callBack(String result) {
+                        if (result != null) {
+                            mLog.e("更新数据：");
 //                    Log.e("Pan","getBaseData_result= "+result);
-                    Utils.LOGE("Pan", result);
-                    try {
-                        db.dropTable(BaseInfo.class);
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        List<BaseInfo> baseInfos = new ArrayList<BaseInfo>();
-                        if (errorCode == 0) {
-                            baseInfos = mGson.fromJson(data, new TypeToken<List<BaseInfo>>() {
-                            }.getType());
-                            if (baseInfos.size() > 0 && baseInfos != null) {
-                                for (int i = 0; i < baseInfos.size(); i++) {
-                                    db.save(baseInfos.get(i));
+                            Utils.LOGE("Pan", result);
+                            try {
+                                db.dropTable(BaseInfo.class);
+                                JSONObject jsonObject = new JSONObject(result);
+                                int errorCode = jsonObject.getInt("ErrorCode");
+                                String data = jsonObject.getString("Data");
+                                List<BaseInfo> baseInfos = new ArrayList<BaseInfo>();
+                                if (errorCode == 0) {
+                                    baseInfos = mGson.fromJson(data, new TypeToken<List<BaseInfo>>() {
+                                    }.getType());
+                                    if (baseInfos.size() > 0 && baseInfos != null) {
+                                        for (int i = 0; i < baseInfos.size(); i++) {
+                                            db.save(baseInfos.get(i));
+                                        }
+                                    }
+                                    getPhotoConfig();
+                                    mProgressHUD.dismiss();
+                                } else {
+                                    mProgressHUD.dismiss();
+                                    Utils.myToast(mContext, data);
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                mProgressHUD.dismiss();
+                                Utils.myToast(mContext, "JSON解析出错");
+                            } catch (DbException e) {
+                                e.printStackTrace();
                             }
-                            getPhotoConfig();
-                            mProgressHUD.dismiss();
                         } else {
                             mProgressHUD.dismiss();
-                            Utils.myToast(mContext, data);
+                            Utils.myToast(mContext, "获取数据超时，请检查网络连接");
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        mProgressHUD.dismiss();
-                        Utils.myToast(mContext, "JSON解析出错");
-                    } catch (DbException e) {
-                        e.printStackTrace();
                     }
-                } else {
-                    mProgressHUD.dismiss();
-                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
-                }
-            }
-        });
+                });
     }
+
     @Override
     protected void onResume() {
         super.onResume();

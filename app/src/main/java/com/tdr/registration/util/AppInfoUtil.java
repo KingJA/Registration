@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 
 /**
  * Created by Linus_Xie on 2016/9/19.
  */
 public class AppInfoUtil {
-    private static Context context = MyApplication.getContext();
+    private static Context context = App.getContext();
 
     private static PackageInfo getAppInfo() {
         PackageInfo packageInfo = null;

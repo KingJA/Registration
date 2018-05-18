@@ -2,10 +2,10 @@ package com.tdr.registration.util;
 
 import android.content.SharedPreferences;
 
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 
 public class SharedPreferencesUtils {
-    private static SharedPreferences sharedPreferences = MyApplication.getSP();
+    private static SharedPreferences sharedPreferences = App.getSP();
 
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法

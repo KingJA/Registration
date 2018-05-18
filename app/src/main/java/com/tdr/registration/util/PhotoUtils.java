@@ -1,7 +1,6 @@
 package com.tdr.registration.util;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,25 +10,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.support.v4.print.PrintHelper;
-import android.util.Base64;
 import android.view.WindowManager;
 
-import com.google.gson.reflect.TypeToken;
-import com.tdr.registration.activity.LabelBindingCarQueryActivity;
-import com.tdr.registration.activity.LoginActivity;
-import com.tdr.registration.base.MyApplication;
-import com.tdr.registration.model.CarLabel;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
@@ -44,11 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 //import id.zelory.compressor.Compressor;
@@ -292,10 +277,10 @@ public class PhotoUtils {
             int degree = readPictureDegree();
         Bitmap b = getBitmapFromFile(imageFile);
 //        Bitmap b = compressBitmap(zoomImg(imageFile,400,600));
-//            Bitmap b1 = new Compressor(MyApplication.getContext()).compressToBitmap(imageFile);
+//            Bitmap b1 = new Compressor(App.getContext()).compressToBitmap(imageFile);
 
-//            Bitmap b= zoomImg(new Compressor(MyApplication.getContext()).compressToBitmap(imageFile),480,640);
-//            Bitmap b = new Compressor(MyApplication.getContext())
+//            Bitmap b= zoomImg(new Compressor(App.getContext()).compressToBitmap(imageFile),480,640);
+//            Bitmap b = new Compressor(App.getContext())
 //                    .setMaxWidth(480)
 //                    .setMaxHeight(640)
 //                    .setQuality(50)
@@ -305,8 +290,8 @@ public class PhotoUtils {
 //                    .compressToBitmap(imageFile);
 //            seve(b,"test");
             mLog.e("=======1==========" );
-//            Bitmap b= new Compressor(MyApplication.getContext()).compressToBitmap(imageFile);
-//            uploadfile(new Compressor(MyApplication.getContext()).compressToFile(imageFile));
+//            Bitmap b= new Compressor(App.getContext()).compressToBitmap(imageFile);
+//            uploadfile(new Compressor(App.getContext()).compressToFile(imageFile));
             Bitmap bitmap = rotaingImageView(degree, b );
 //            sevephoto(bitmap);
             mPicName = Utils.getFileName(imageFile.getPath());

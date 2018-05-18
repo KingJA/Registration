@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
@@ -71,18 +72,12 @@ import cn.jpush.android.api.JPushInterface;
 /**
  * 登陆
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
 
 
-    private Context mContext;
     private Gson mGson;
-
-    //    private LocationTask mLocationTask;
     private String cityName = "";
-
-    //获取城市的回调值
     private final static int CITY = 1991;
-
     @BindView(R.id.linear_city)
     RelativeLayout linearCity;
     @BindView(R.id.text_cityName)
@@ -99,28 +94,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnLogin;
     @BindView(R.id.LOGO)
     ImageView LOGO;
-
     @BindView(R.id.RL_Loding)
     RelativeLayout RL_Loding;
-
     @BindView(R.id.TV_min)
     TextView TV_min;
-
-//    private ZProgressHUD mProgressHUD;
-
     private String[] permissionArray = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION};
-
-    private String version = "";
-
     private Intent intent;
-
     private DbManager db;
-
-    private String apkName = "Registration";//需要更新的apk名字
-
-    //    private String loginVersion = "";//登录调用的方法
-    private Activity mActivity;
     private boolean getBaseDataing = true;
 
     @Override
@@ -128,33 +109,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         String token = (String) SharedPreferencesUtils.get("token", "");
         String LoginSuccess = (String) SharedPreferencesUtils.get("LoginSuccess", "");
-        mLog.e("token=" + token);
-        mLog.e("LoginSuccess=" + LoginSuccess);
         if (!"".equals(token) && !"".equals(LoginSuccess) && "Success".equals(LoginSuccess)) {
             ActivityUtil.goActivityAndFinish(LoginActivity.this, HomeActivity.class);
         }
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        mActivity = this;
-        mContext = this;
         mGson = new Gson();
         intent = new Intent();
         db = x.getDb(DBUtils.getDb());
-//        DBUtils.deletedb();
         PermissionUtils.checkPermissionArray(LoginActivity.this, permissionArray, PermissionUtils
                 .PERMISSION_REQUEST_CODE);
-//        mLocationTask = LocationTask.getInstance(getApplicationContext());
-//        mLocationTask.setOnLocationGetListener(this);
-//        mLocationTask.startSingleLocate();
-//        mProgressHUD = new ZProgressHUD(mContext);
-//        mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);
         TV_min.setText("初始化数据...");
-        cityName = (String) SharedPreferencesUtils.get("locCityName", "");
-        if (!cityName.equals("")) {
-            textCityName.setText(cityName);
-        }
-        //获取基础数据
+        textCityName.setText((String) SharedPreferencesUtils.get("locCityName", ""));
         getBaseData();
 
     }
@@ -162,20 +128,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        JPushInterface.onResume(mContext);
+        JPushInterface.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        JPushInterface.onPause(mContext);
+        JPushInterface.onPause(this);
         MobclickAgent.onPause(this);
     }
 
 
     @OnClick({R.id.linear_city, R.id.btn_login, R.id.RL_Loding})
-    public void onClick(View view) {
+    public void click(View view) {
         switch (view.getId()) {
             case R.id.linear_city:
                 intent.setClass(LoginActivity.this, CityPickerActivity.class);
@@ -186,40 +152,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Login();
                 break;
             case R.id.RL_Loding:
-
+                break;
+            default:
                 break;
 
         }
     }
 
-    /**
-     * 登录
-     */
+
     private void Login() {
         String userName = clearUserName.getText().toString().trim();
         if (userName.equals("")) {
-            Utils.myToast(mContext, "请输入用户名");
+            Utils.myToast(this, "请输入用户名");
             return;
         }
         String userPwd = clearUserPwd.getText().toString();
         if (userPwd.equals("")) {
-            Utils.myToast(mContext, "请输入密码");
+            Utils.myToast(this, "请输入密码");
             return;
         }
-        TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager
                 .PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         String imei = tm.getDeviceId();
-//        mProgressHUD.show();
         TV_min.setText("正在登陆...");
         RL_Loding.setVisibility(View.VISIBLE);
         JSONObject jsonObject = new JSONObject();
@@ -232,69 +190,57 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } else {
                 jsonObject.put("version", AppInfoUtil.getVersionCode() + "_ANDROID");
             }
-            jsonObject.put("ChannelID", JPushInterface.getRegistrationID(mContext));
+            jsonObject.put("ChannelID", JPushInterface.getRegistrationID(this));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         HashMap<String, String> map = new HashMap<>();
         map.put("userInfo", jsonObject.toString());
-        Log.e("Pan", "apiUrl=" + (String) SharedPreferencesUtils.get("apiUrl", ""));
-        Log.e("Pan", "userInfo=" + map.toString());
-        Log.e("Pan", "LOGIN=" + Constants.WEBSERVER_LOGIN_V2);
 
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+        WebServiceUtils.callWebService(this, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
                 .WEBSERVER_LOGIN_V2, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
-                mLog.e("Login=" + result);
-//                        Utils.LOGE("Pan",result);
+                Logger.json(result);
                 if (result != null) {
-                    LoginModel model = mGson.fromJson(result, new TypeToken<LoginModel>() {
+                    LoginModel loginModel = mGson.fromJson(result, new TypeToken<LoginModel>() {
                     }.getType());
-                    if (model.getErrorCode().equals("0")) {
-//                        mProgressHUD.dismiss();
+                    if (loginModel.getErrorCode().equals("0")) {
                         RL_Loding.setVisibility(View.GONE);
-
-                        SharedPreferencesUtils.put("userId", model.getUserID());
-                        SharedPreferencesUtils.put("userName", model.getUserName());
-                        SharedPreferencesUtils.put("rolePowers", model.getRolePowers());
-                        SharedPreferencesUtils.put("token", model.getAccessToken());
-                        SharedPreferencesUtils.put("codeVersion", model.getCodeVersion());
-                        SharedPreferencesUtils.put("regionNo", Utils.initNullStr(model.getRegionNo()));
-                        SharedPreferencesUtils.put("regionName", Utils.initNullStr(model.getRegionName()));
-                        SharedPreferencesUtils.put("city", Utils.initNullStr(model.getCity()));
-                        SharedPreferencesUtils.put("regionId", Utils.initNullStr(model.getRegionID()));
-                        SharedPreferencesUtils.put("UserType", Utils.initNullStr(model.getUserType()));
-                        mLog.e("UserType=" + Utils.initNullStr(model.getUserType()));
-                        if (model.getRegionNo() == null) {
-                            model.setRegionNo("3");
+                        SharedPreferencesUtils.put("userId", loginModel.getUserID());
+                        SharedPreferencesUtils.put("userName", loginModel.getUserName());
+                        SharedPreferencesUtils.put("rolePowers", loginModel.getRolePowers());
+                        SharedPreferencesUtils.put("token", loginModel.getAccessToken());
+                        SharedPreferencesUtils.put("codeVersion", loginModel.getCodeVersion());
+                        SharedPreferencesUtils.put("regionNo", Utils.initNullStr(loginModel.getRegionNo()));
+                        SharedPreferencesUtils.put("regionName", Utils.initNullStr(loginModel.getRegionName()));
+                        SharedPreferencesUtils.put("city", Utils.initNullStr(loginModel.getCity()));
+                        SharedPreferencesUtils.put("regionId", Utils.initNullStr(loginModel.getRegionID()));
+                        SharedPreferencesUtils.put("UserType", Utils.initNullStr(loginModel.getUserType()));
+                        if (loginModel.getRegionNo() == null) {
+                            loginModel.setRegionNo("3");
                         }
-                        if (model.getRegionNo() != null && model.getRegionNo().length() == 4) {//市级帐号
+                        if (loginModel.getRegionNo() != null && loginModel.getRegionNo().length() == 4) {//市级帐号
                             SharedPreferencesUtils.put("roleLevel", "1");
-                        } else if (model.getRegionNo().length() == 6) {//区、县帐号
+                        } else if (loginModel.getRegionNo().length() == 6) {//区、县帐号
                             SharedPreferencesUtils.put("roleLevel", "2");
                         } else {
                             SharedPreferencesUtils.put("roleLevel", "3");
                         }
-                        //ActivityUtil.goActivityAndFinish(LoginActivity.this, HomeActivity.class);
                         //获取保险
                         String userName = clearUserName.getText().toString().trim();
                         String userPwd = clearUserPwd.getText().toString();
-                        SharedPreferencesUtils.put("UP", model.getCity() + ":" + userName + ":" + userPwd);
+                        SharedPreferencesUtils.put("UP", loginModel.getCity() + ":" + userName + ":" + userPwd);
                         getInsuranceConfigure();
-                    } else if (model.getErrorCode().equals("")) {
-                        //重新登陆
-//                        mProgressHUD.dismiss();
+                    } else if (loginModel.getErrorCode().equals("")) {
                         RL_Loding.setVisibility(View.GONE);
                     } else {
-//                        mProgressHUD.dismiss();
                         RL_Loding.setVisibility(View.GONE);
-                        Utils.myToast(mContext, model.getData());
+                        Utils.myToast(LoginActivity.this, loginModel.getData());
                     }
                 } else {
-//                    mProgressHUD.dismiss();
                     RL_Loding.setVisibility(View.GONE);
-                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+                    Utils.myToast(LoginActivity.this, "获取数据超时，请检查网络连接");
                 }
             }
         });
@@ -305,17 +251,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 获取保险数据
      */
     private void getInsuranceConfigure() {
-//        mProgressHUD.show();
         TV_min.setText("获取保险数据...");
         RL_Loding.setVisibility(View.VISIBLE);
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
-//        Log.e("Pan","apiUrl="+(String) SharedPreferencesUtils.get("apiUrl", ""));
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+        WebServiceUtils.callWebService(this, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
                 .WEBSERVER_GETINSURANCECONFIGURE, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
-                mLog.e("保险：" + result);
+                Logger.json(result);
                 DownloadInsurance DI = new DownloadInsurance(result);
                 DI.execute();
             }
@@ -326,19 +270,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 下载编码表
      */
     private void downLoadData() {
-//        mProgressHUD.show();
         TV_min.setText("获取配置字典表...");
         RL_Loding.setVisibility(View.VISIBLE);
         HashMap<String, String> map = new HashMap<>();
         map.put("lastUpdateTime", (String) SharedPreferencesUtils.get("codeUpdateTime", ""));
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+        WebServiceUtils.callWebService(this, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
                 .WEBSERVER_GETCODETABLE, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
                     DownloadData download3 = new DownloadData(result);
                     download3.execute();
-
                 }
             }
         });
@@ -355,7 +297,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected String doInBackground(String... params) {
             if (result != null) {
-                mLog.e("保险接口返回=" + result);
+                Logger.json(result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     int errorCode = jsonObject.getInt("ErrorCode");
@@ -365,9 +307,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (errorCode == 0) {
                         listInsurance = mGson.fromJson(data, new TypeToken<List<InsuranceModel>>() {
                         }.getType());
-//                        for (int i = 0; i < listInsurance.size(); i++) {
-//                            mLog.e("listInsurance=" + listInsurance.get(i).getDetail().get(0).getName());
-//                        }
                         MAX = listInsurance.size();
                         db.dropTable(InsuranceModel.class);
                         db.dropTable(DetailBean.class);
@@ -386,11 +325,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                         return "完成";
                     } else {
-                        Utils.myToast(mContext, data);
+                        Utils.myToast(LoginActivity.this, data);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utils.myToast(mContext, "JSON解析出错");
+                    Utils.myToast(LoginActivity.this, "JSON解析出错");
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
@@ -409,7 +348,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             super.onPostExecute(s);
             RL_Loding.setVisibility(View.GONE);
             if (s.equals("失败")) {
-                Utils.myToast(mContext, "获取保险数据超时，请检查网络连接");
+                Utils.myToast(LoginActivity.this, "获取保险数据超时，请检查网络连接");
             }
             downLoadData();
         }
@@ -426,7 +365,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected String doInBackground(String... params) {
             if (result != null) {
-                Utils.LOGE("Pan", result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     int errorCode = jsonObject.getInt("ErrorCode");
@@ -454,16 +392,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                         return "完成";
                     } else {
-                        Utils.myToast(mContext, data);
+                        Utils.myToast(LoginActivity.this, data);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utils.myToast(mContext, "JSON解析出错");
+                    Utils.myToast(LoginActivity.this, "JSON解析出错");
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
             } else {
-                Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+                Utils.myToast(LoginActivity.this, "获取数据超时，请检查网络连接");
             }
             return "失败";
         }
@@ -607,33 +546,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-//        mLocationTask.onDestroy();
     }
 
-    /*  2017年8月2日，去除登录自动定位功能
-    @Override
-      public void onLocationGet(PositionEntity entity) {
-          cityName = entity.city;
-          textCityName.setText(cityName);
-          SharedPreferencesUtils.put("locCityName", cityName);
-  //        Log.e("Pan","onLocationGet");
-          getBaseData();
-
-      }
-
-      @Override
-      public void onRegecodeGet(PositionEntity entity) {
-          cityName = entity.city;
-          textCityName.setText(cityName);
-          SharedPreferencesUtils.put("locCityName", cityName);
-          getBaseData();
-  //        Log.e("Pan","onRegecodeGet");
-      }
-  */
     //相关参数设置
     private void initData() {
-//        List<BaseInfo> resultList = db.findAllByWhere(BaseInfo.class, " cityName=\"" + locCityName + "\"");
         List<BaseInfo> resultList = new ArrayList<BaseInfo>();
         try {
             resultList = db.selector(BaseInfo.class).where("cityName", "=", cityName).findAll();
@@ -643,10 +559,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (resultList == null) {
             resultList = new ArrayList<BaseInfo>();
         }
-//        Log.e("Pan","resultList:"+resultList.toString());
         if (resultList.size() != 0) {
             String plateNumberRegular = resultList.get(0).getPlatenumberRegular();
-//            Log.e("Pan","plateNumberRegular="+plateNumberRegular);
             try {
                 JSONArray array = new JSONArray(plateNumberRegular);
                 for (int i = 0; i < array.length(); i++) {
@@ -660,17 +574,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 e.printStackTrace();
             }
             String bluetoothRegular = resultList.get(0).getBluetooth_Regular();
-            Log.e("Pan", "bluetoothRegular=" + bluetoothRegular);
             try {
                 JSONArray jsonArray = new JSONArray(bluetoothRegular);
                 for (int i = 0; i < jsonArray.length(); i++) {
-// [{"KEY":"100000000188",
-// "DEVICETYPE":"8001,8002",
-// "CONTENT":"ELDER",
-// "PCCODE":"0802",
-// "PROVINCEABBR":"GX",
-// "CITYABBR":"LZ",
-// "XQCode":""}]
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String key = jsonObject.getString("KEY");
                     SharedPreferencesUtils.put("key", key);
@@ -691,7 +597,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 e.printStackTrace();
             }
             String appConfig = resultList.get(0).getAppConfig();
-//            Log.e("Pan","appConfig="+appConfig);
             SharedPreferencesUtils.put("isChecked", "");
             SharedPreferencesUtils.put("whiteListUrl", "");
             SharedPreferencesUtils.put("hasPreregister", "");
@@ -712,7 +617,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             SharedPreferencesUtils.put("IsScanCjh", "");
             try {
                 JSONArray jsonArray = new JSONArray(appConfig);
-//                Log.e("Pan","jsonArray="+jsonArray.toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String key = jsonObject.getString("key");
@@ -824,22 +728,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             SharedPreferencesUtils.put("fullSpell", resultList.get(0).getFullSpell());
             SharedPreferencesUtils.put("cityCode", resultList.get(0).getCityCode());
             SharedPreferencesUtils.put("apiUrl", resultList.get(0).getApiUrl());
-//            SharedPreferencesUtils.put("apiUrl", "http://wzjx.iotone.cn/mobileservice.asmx");
 
             String httpUrl = resultList.get(0).getApiUrl().substring(0, xxx(3, "/", resultList.get(0).getApiUrl()) + 1);
             SharedPreferencesUtils.put("httpUrl", httpUrl);
 
             String v = resultList.get(0).getVersion();
             if (v == null) {
-                mLog.e("Version值为null");
                 v = "";
             }
             SharedPreferencesUtils.put("Version", v);
-            mLog.e("Version=" + resultList.get(0).getVersion());
-            //if (locCityName.equals("昆明市")) {
-            //拷贝数据库文件
-            //DatebaseManager.getInstance(getApplicationContext()).copyDataBase("Registration.db");
-            //}
             String appName = (String) SharedPreferencesUtils.get("appName", "");
             if (appName.equals("")) {
                 imageAppName.setVisibility(View.VISIBLE);
@@ -849,14 +746,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 textAppName.setText(appName);
                 textAppName.setVisibility(View.VISIBLE);
             }
-            //获取显示名字配置信息
-//            getFieldSetting(resultList.get(0).getListId());
-//        getNewApk();
-            com.orhanobut.logger.Logger.d("开始准备更新");
-            new CheckUpdate(mActivity).UpdateAPK();
+            new CheckUpdate(this).UpdateAPK();
         } else {
             if (!cityName.equals("")) {
-                Utils.myToast(mContext, cityName + "即将开放");
+                Utils.myToast(LoginActivity.this, cityName + "即将开放");
             }
         }
 
@@ -872,74 +765,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return j;
     }
 
-    private void getFieldSetting(String cityListId) {
-        RL_Loding.setVisibility(View.VISIBLE);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("accessToken", DESCoder.encrypt("GETFIELDSETTING", Constants.DES_KEY));
-        map.put("infoJsonStr", cityListId);
-        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
-                WebServiceUtils.WebServiceCallBack() {
-                    @Override
-                    public void callBack(String result) {
-                        if (result != null) {
-                            mLog.e("FieldSetting=" + result);
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                int errorCode = jsonObject.getInt("ErrorCode");
-                                String data = jsonObject.getString("Data");
-                                if (errorCode == 0) {
-                                    List<FieldSettingModel> fieldSettingModels = new ArrayList<>();
-                                    fieldSettingModels = mGson.fromJson(data, new TypeToken<List<FieldSettingModel>>() {
-                                    }.getType());
-                                    if (fieldSettingModels.size() > 0 && fieldSettingModels != null) {
-                                        db.dropTable(FieldSettingModel.class);
-                                        mLog.e("存储FieldSetting");
-                                        for (FieldSettingModel fieldSettingModel : fieldSettingModels) {
-                                            db.save(fieldSettingModel);
-                                        }
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                RL_Loding.setVisibility(View.GONE);
-                                Utils.myToast(mContext, "JSON解析出错");
-                            } catch (DbException e) {
-                                e.printStackTrace();
-                                RL_Loding.setVisibility(View.GONE);
-                                Utils.myToast(mContext, "存储到本地数据库出错");
-                            }
-                        } else {
-                            RL_Loding.setVisibility(View.GONE);
-                            Utils.myToast(mContext, "获取城市配置列表超时，请检查网络连接。");
-                        }
-                    }
-                });
-    }
-
     private void getBaseData() {
-        mLog.e("DBVersion=" + db.getDaoConfig().getDbVersion());
         if (getBaseDataing) {
             getBaseDataing = false;
-            Log.e("Pan", "初始化数据开始");
         } else {
-            Log.e("Pan", "正在初始化数据");
             return;
         }
-//        mProgressHUD.setMessage("初始化中...");
-//        mProgressHUD.show();
         TV_min.setText("初始化中...");
         RL_Loding.setVisibility(View.VISIBLE);
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", DESCoder.encrypt("GETCITYLIST", Constants.DES_KEY));
-//        map.put("infoJsonStr", (String) SharedPreferencesUtils.get("cityUpdateTime", "") + "_" + "ANDROID");
         map.put("infoJsonStr", "_" + "ANDROID");
-
-        WebServiceUtils.callWebService(mActivity, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
+        WebServiceUtils.callWebService(this, Constants.WEBSERVER_URL, Constants.WEBSERVER_OPENAPI, map, new
                 WebServiceUtils.WebServiceCallBack() {
                     @Override
                     public void callBack(String result) {
-                        Utils.LOGE("Pan", result);
-                        Log.e("Pan", "getBaseData_result= " + result);
+                        Logger.json(result);
                         if (result != null) {
                             getBaseDataing = true;
                             try {
@@ -950,43 +791,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if (errorCode == 0) {
                                     baseInfos = mGson.fromJson(data, new TypeToken<List<BaseInfo>>() {
                                     }.getType());
-
-                                    if (baseInfos.size() > 0 && baseInfos != null) {
+                                    if (baseInfos != null && baseInfos.size() > 0) {
                                         db.dropTable(BaseInfo.class);
                                         for (int i = 0; i < baseInfos.size(); i++) {
                                             if (!baseInfos.get(i).getIsValid().equals("0")) {
                                                 db.save(baseInfos.get(i));
                                             }
-//                                    Log.e("Pan", "CityName=" + baseInfos.get(i).getCityName() + "  ListId=" +
-// baseInfos.get(i).getListId() + "  getPhotoConfig= " + baseInfos.get(i).getPhotoConfig());
-//                                    db.deleteById(BaseInfo.class, baseInfos.get(i).getListId());
-
                                         }
                                         SharedPreferencesUtils.put("cityUpdateTime", Utils.getNowTime());
                                     }
                                     if (cityName != null && !cityName.equals("")) {
                                         initData();
                                     }
-//                            mProgressHUD.dismiss();
                                     RL_Loding.setVisibility(View.GONE);
                                 } else {
-//                            mProgressHUD.dismiss();
                                     RL_Loding.setVisibility(View.GONE);
-                                    Utils.myToast(mContext, data);
+                                    Utils.myToast(LoginActivity.this, data);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-//                        mProgressHUD.dismiss();
                                 RL_Loding.setVisibility(View.GONE);
-                                Utils.myToast(mContext, "JSON解析出错");
+                                Utils.myToast(LoginActivity.this, "JSON解析出错");
                             } catch (DbException e) {
                                 e.printStackTrace();
                             }
                         } else {
-//                    mProgressHUD.dismiss();
                             RL_Loding.setVisibility(View.GONE);
-                            Utils.myToast(mContext, "获取城市列表数据超时，请检查网络连接。");
-//                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
+                            Utils.myToast(LoginActivity.this, "获取城市列表数据超时，请检查网络连接。");
                         }
                     }
                 });
@@ -998,44 +829,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (RL_Loding.getVisibility() == View.VISIBLE) {
             Utils.showToast("系统正在加载数据!请勿关闭程序！");
         }
-    }
-
-    /**
-     * 更新apk
-     */
-    private void getNewApk() {
-
-
-        String Name = apkName + (String) SharedPreferencesUtils.get("fullSpell", "");
-        SharedPreferencesUtils.put("apkName", Name);
-        mLog.e("apkName=" + Name);
-        UpdateManager.Builder builder = new UpdateManager.Builder(this);
-        builder.setUpdateCancleable(false)
-                .setShowDownloadDialog(true)
-                .setLoadStrategy(new WebServiceStrategy())
-                .setUpdateContent("检测到新版本，是否进行更新？")
-                .build()
-                .checkUpdate();
-    }
-
-
-    private NiftyDialogBuilder dialogBuilder;
-    private NiftyDialogBuilder.Effectstype effectstype;
-
-    private void dialogShow(String msg) {
-        if (dialogBuilder != null && dialogBuilder.isShowing())
-            return;
-
-        dialogBuilder = NiftyDialogBuilder.getInstance(this);
-        effectstype = NiftyDialogBuilder.Effectstype.Fadein;
-        dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage(msg)
-                .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("确定")
-                .setCustomView(R.layout.custom_view, mContext).setButton1Click(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogBuilder.dismiss();
-            }
-        }).show();
     }
 
 }

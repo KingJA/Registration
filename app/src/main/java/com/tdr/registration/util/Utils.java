@@ -16,7 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -61,7 +61,7 @@ public class Utils {
     }
 
     public static void showToast(String msg) {
-        Toast toast = Toast.makeText(MyApplication.getContext(), "", Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(App.getContext(), "", Toast.LENGTH_LONG);
         toast.setText(msg);
         toast.show();
     }

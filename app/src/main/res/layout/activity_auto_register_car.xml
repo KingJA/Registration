@@ -473,7 +473,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
-                        android:id="@+id/et_frame"
+                        android:id="@+id/et_shelvesNo"
                         style="@style/inputText"
                         android:hint="如若不清用*代替" />
                     <ImageView
@@ -523,7 +523,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
-                        android:id="@+id/et_motor"
+                        android:id="@+id/et_engineNo"
                         style="@style/inputText"
                         android:hint="如若不清用*代替" />
                     <ImageView

@@ -1,10 +1,9 @@
-package com.tdr.registration.activity;
+package com.tdr.registration.activity.tianjin;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,8 +13,8 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
-import com.tdr.registration.adapter.InsuranceShowAdapter;
-import com.tdr.registration.model.ResultInsuranceModel;
+import com.tdr.registration.activity.HomeActivity;
+import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.SharedPreferencesUtils;
@@ -32,15 +31,12 @@ import org.xutils.x;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * 电信预登记统计
  */
 @ContentView(R.layout.activity_dx_pre_registration_statistics_tj)
-public class DX_PreRegistration_Statistics_Activity extends Activity implements View.OnClickListener {
+public class DX_PreRegistration_Statistics_Tj_Activity extends Activity implements View.OnClickListener {
     @ViewInject(R.id.image_back)
     ImageView imageBack;
     @ViewInject(R.id.text_title)
@@ -136,8 +132,8 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
-        map.put("starttime", TV_startTime.getText().toString().trim());
-        map.put("endttime", TV_endTime.getText().toString().trim());
+        map.put("starttime", TV_startTime.getText().toString().trim()+" 00:00:00");
+        map.put("endttime", TV_endTime.getText().toString().trim()+" 23:59:59");
         mLog.e("个人统计map=" + map.toString());
         WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERSTATISTICS, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
@@ -157,7 +153,7 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
                             mProgressHUD.dismiss();
                             Utils.showToast(data);
                             SharedPreferencesUtils.put("token", "");
-                            ActivityUtil.goActivityAndFinish(DX_PreRegistration_Statistics_Activity.this, LoginActivity.class);
+                            ActivityUtil.goActivityAndFinish(DX_PreRegistration_Statistics_Tj_Activity.this, LoginActivity.class);
                         } else {
                             mProgressHUD.dismiss();
                             Utils.showToast(data);

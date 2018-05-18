@@ -3,7 +3,7 @@ package com.tdr.registration.util;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 
 /**
  * 电动车存储字段
@@ -62,7 +62,7 @@ public class VehiclesStorageUtils {
 
     public static void clearData() {
         Utils.ClearData();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyApplication.context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.context);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(REGISTERID, "");
         editor.putString(CARTYPE, "");
@@ -107,13 +107,13 @@ public class VehiclesStorageUtils {
     }
 
     public static String getVehiclesAttr(String attrname) {
-        return PreferenceManager.getDefaultSharedPreferences(MyApplication.context).getString(attrname, "");
+        return PreferenceManager.getDefaultSharedPreferences(App.context).getString(attrname, "");
     }
     public static String getVehiclesAttr(String attrname,String defaultValue) {
-        return PreferenceManager.getDefaultSharedPreferences(MyApplication.context).getString(attrname, defaultValue);
+        return PreferenceManager.getDefaultSharedPreferences(App.context).getString(attrname, defaultValue);
     }
     public static void setVehiclesAttr(String attrname, String value) {
-        PreferenceManager.getDefaultSharedPreferences(MyApplication.context).edit().putString(attrname, value).commit();
+        PreferenceManager.getDefaultSharedPreferences(App.context).edit().putString(attrname, value).commit();
     }
 
 

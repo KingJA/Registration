@@ -20,7 +20,7 @@ import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.activity.UnpaidActivity;
 import com.tdr.registration.activity.longyan.PreToOfficialSecondLongYanActivity;
 import com.tdr.registration.adapter.PhotoListAdapter;
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.ConfirmInsuranceModel;
@@ -57,7 +57,7 @@ public class RegisterUtil {
     public final static int PRE_SHOW_CODE = 1314;//预登记展示回调值
 
 
-    public MyApplication BA;
+    public App BA;
     public ZProgressHUD mProgressHUD;
     private Activity mActivity;
     public ParsingQR mQR;
@@ -98,7 +98,7 @@ public class RegisterUtil {
         db = x.getDb(DBUtils.getDb());
         mGson = new Gson();
         mQR = new ParsingQR();
-        BA = ((MyApplication) mActivity.getApplicationContext());
+        BA = ((App) mActivity.getApplicationContext());
         mProgressHUD = new ZProgressHUD(mActivity);
         mProgressHUD.setMessage("");
         mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);

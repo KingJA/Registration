@@ -38,7 +38,7 @@
         android:required="true"/>
 
     <application
-        android:name=".base.MyApplication"
+        android:name=".base.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -537,7 +537,16 @@
         <activity
             android:name="com.yunmai.android.idcard.ARecognize"
             android:configChanges="orientation|keyboard|keyboardHidden">
+        </activity>
 
+        <activity
+            android:name=".activity.tianjin.PreFirstActivity_TJ"
+            android:configChanges="orientation|keyboard|keyboardHidden">
+        </activity>
+
+        <activity
+            android:name=".activity.tianjin.DX_PreRegistration_Statistics_Tj_Activity"
+            android:configChanges="orientation|keyboard|keyboardHidden">
         </activity>
 
         <service

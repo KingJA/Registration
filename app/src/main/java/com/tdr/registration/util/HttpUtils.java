@@ -1,7 +1,5 @@
 package com.tdr.registration.util;
 
-import android.widget.Toast;
-
 import com.orhanobut.logger.Logger;
 
 import org.xutils.common.Callback;
@@ -14,7 +12,7 @@ public class HttpUtils {
     public static final String Cancelled = "onCancelled";
     public static final String Finished = "onFinished";
 
-    public static Callback.Cancelable get(RequestParams RP, final HttpGetCallBack httpcallback) {
+    public static Callback.Cancelable get(RequestParams RP, final HttpCallBack httpcallback) {
         RP.addHeader("accessToken", (String) SharedPreferencesUtils.get("token", ""));
 //        //设置联网超时时间
         RP.setConnectTimeout(5000);
@@ -23,13 +21,12 @@ public class HttpUtils {
         Callback.Cancelable cancelable = x.http().get(RP, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Logger.json(result);
                 httpcallback.onSuccess(result);
-                mLog.e("onSuccess:" + result);
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                mLog.e("onError:" + ex.toString());
                 httpcallback.onError(ex);
                 if (ex.getMessage().contains("Network is unreachable")) {
                     Utils.showToast("网络连接中断！请检查您的网络。");
@@ -42,12 +39,10 @@ public class HttpUtils {
 
             @Override
             public void onCancelled(CancelledException cex) {
-                mLog.e("onCancelled:" + cex.toString());
             }
 
             @Override
             public void onFinished() {
-                mLog.e("onFinished");
             }
         });
         return cancelable;
@@ -94,7 +89,7 @@ public class HttpUtils {
         });
     }
 
-    public static void postK(RequestParams RP, final HttpGetCallBack httpcallback) {
+    public static void postK(RequestParams RP, final HttpCallBack httpcallback) {
         mLog.e("Token:"+(String) SharedPreferencesUtils.get("token", ""));
         RP.addHeader("accessToken", (String) SharedPreferencesUtils.get("token", ""));
         //设置联网超时时间
@@ -179,7 +174,7 @@ public class HttpUtils {
     public interface HttpPostCallBack {
         void postcallback(String Finish, String paramString);
     }
-    public interface HttpGetCallBack {
+    public interface HttpCallBack {
         void onSuccess(String result);
         void onError(Throwable ex);
     }

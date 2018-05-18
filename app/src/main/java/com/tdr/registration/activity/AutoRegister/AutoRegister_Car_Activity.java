@@ -166,7 +166,7 @@ public class AutoRegister_Car_Activity extends Activity implements View.OnClickL
      */
     @ViewInject(R.id.ll_Frame_number)
     LinearLayout LL_Frame_number;
-    @ViewInject(R.id.et_frame)
+    @ViewInject(R.id.et_shelvesNo)
     EditText ET_frame;
     @ViewInject(R.id.IV_ScanFrameNumber)
     ImageView IV_ScanFrameNumber;
@@ -176,7 +176,7 @@ public class AutoRegister_Car_Activity extends Activity implements View.OnClickL
      */
     @ViewInject(R.id.ll_MotorNumber)
     LinearLayout LL_MotorNumber;
-    @ViewInject(R.id.et_motor)
+    @ViewInject(R.id.et_engineNo)
     EditText ET_motor;
     @ViewInject(R.id.IV_ScanMotorNumber)
     ImageView IV_ScanMotorNumber;

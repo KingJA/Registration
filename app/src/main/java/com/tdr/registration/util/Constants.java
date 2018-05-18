@@ -27,9 +27,9 @@ public class Constants {
     /**
      * Webservice参数
      */
-    public static final String WEBSERVER_URL = "https://ykgcapp.iotone.cn/OpenService.asmx";// WebServices访问地址，测试
+//    public static final String WEBSERVER_URL = "https://ykgcapp.iotone.cn/OpenService.asmx";// WebServices访问地址，正式服
 //    public static final String WEBSERVER_URL = "http://183.129.130.119:48012/OpenService.asmx";// WebServices访问地址，测试====>外网
-//    public static final String WEBSERVER_URL = "http://10.130.0.104:8012/OpenService.asmx";// WebServices访问地址，测试====>内网
+    public static final String WEBSERVER_URL = "http://10.130.0.104:8012/OpenService.asmx";// WebServices访问地址，测试====>内网
 //    public static final String WEBSERVER_URL = "http://10.130.0.104:8071/OpenService.asmx";// WebServices访问地址，测试
 //    public static final String WEBSERVER_URL = "http://10.130.0.104:8812/OpenService.asmx";// WebServices访问地址，测试
 //    public static final String WEBSERVER_URL = "http://183.129.130.119:52000/OpenService.asmx";// WebServices访问地址，测试
@@ -149,6 +149,9 @@ public class Constants {
     public static final String JURISDICTION_PRE_REGISTRATION= "2711";//电信预登记
     public static final String JURISDICTION_PRE_REGISTRATION_QUERY= "2712";//电信预登记查询
     public static final String JURISDICTION_PRE_REGISTRATION_STATISTICS= "4002";//电信预登记个人统计
+    public static final String JURISDICTION_PRE_REGISTRATION_SHANGPAI_STATISTICS= "4003";//上牌统计
+    public static final String JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE= "2713";//免费上牌
+    public static final String JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE_QUERY= "2714";//免费上牌查询
 
 
     public static final Jurisdiction JURISDICTION_REGISTRATION2 = new Jurisdiction(JURISDICTION_REGISTRATION, R.mipmap.ic_registration,"备案登记");
@@ -157,6 +160,9 @@ public class Constants {
     public static final Jurisdiction JURISDICTION_PRE_REGISTRATION2 = new Jurisdiction(JURISDICTION_PRE_REGISTRATION, R.mipmap.pre_registration,"预登记");
     public static final Jurisdiction JURISDICTION_PRE_REGISTRATION_QUERY2 = new Jurisdiction(JURISDICTION_PRE_REGISTRATION_QUERY, R.mipmap.pre_registration_query,"预登记查询");
     public static final Jurisdiction JURISDICTION_PRE_REGISTRATION_STATISTICS2 = new Jurisdiction(JURISDICTION_PRE_REGISTRATION_STATISTICS, R.mipmap.ic_personstatistics,"个人统计");
+    public static final Jurisdiction JURISDICTION_PRE_REGISTRATION_SHANGPAI_STATISTICS2 = new Jurisdiction(JURISDICTION_PRE_REGISTRATION_SHANGPAI_STATISTICS, R.mipmap.ic_shangpai_statistics,"上牌统计");
+    public static final Jurisdiction JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE2 = new Jurisdiction(JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE, R.mipmap.ic_shangpai_free,"免费上牌");
+    public static final Jurisdiction JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE_QUERY2 = new Jurisdiction(JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE_QUERY, R.mipmap.ic_shangpai_free_query,"免费上牌查询");
 
 
     public final static List<Jurisdiction> JURISDICTIONS = Arrays.asList(
@@ -165,7 +171,10 @@ public class Constants {
             JURISDICTION_STATISTICS2,
             JURISDICTION_PRE_REGISTRATION2,
             JURISDICTION_PRE_REGISTRATION_QUERY2,
-            JURISDICTION_PRE_REGISTRATION_STATISTICS2);
+            JURISDICTION_PRE_REGISTRATION_STATISTICS2,
+            JURISDICTION_PRE_REGISTRATION_SHANGPAI_STATISTICS2,
+            JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE2,
+            JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE_QUERY2);
 
     public static final class  Jurisdiction{
         String Jur;

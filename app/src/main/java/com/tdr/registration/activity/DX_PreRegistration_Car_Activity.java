@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,9 +23,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.adapter.PhotoListAdapter;
+import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.BaseInfo;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.PhotoListInfo;
@@ -34,6 +37,7 @@ import com.tdr.registration.util.CharacterParser;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.PhotoUtils;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
+import com.tdr.registration.util.RegularChecker;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
@@ -61,7 +65,9 @@ import java.util.regex.Pattern;
  * 电信预登记车辆信息
  */
 @ContentView(R.layout.activity_dx_pre_registration)
-public class DX_PreRegistration_Car_Activity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class DX_PreRegistration_Car_Activity extends Activity implements View.OnClickListener, AdapterView
+        .OnItemClickListener {
+    private static final String TAG = "DX_PreRegistration_Car_Activity";
     @ViewInject(R.id.IV_back)
     private ImageView IV_back;
 
@@ -88,6 +94,14 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
 
     @ViewInject(R.id.BT_Next)
     private Button BT_Next;
+
+    @ViewInject(R.id.IV_ScanFrameNumber)
+    ImageView IV_ScanFrameNumber;
+    @ViewInject(R.id.IV_ScanMotorNumber)
+    ImageView IV_ScanMotorNumber;
+    @ViewInject(R.id.image_scanPlateNumber)
+    ImageView imageScanPlateNumber;
+
     private Activity mActivity;
 
     private final static int BRAND_CODE = 2016;//品牌回调
@@ -104,7 +118,7 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
     private CharacterParser characterParser;
     private TimePickerView timePickerView;
     public boolean CheckTime;
-    private String city="";
+    private String city = "";
     private List<PhotoListInfo> PLI;
     private PhotoListAdapter PLA;
 
@@ -112,7 +126,9 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "当前Actity: " );
         x.view().inject(this);
+        mQR = new ParsingQR();
         initdate();
         setClick();
         getPhotoConfig();
@@ -121,7 +137,7 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
     /**
      * 加载数据
      */
-    private void initdate(){
+    private void initdate() {
         mActivity = this;
         city = (String) SharedPreferencesUtils.get("locCityName", "");
         db = x.getDb(DBUtils.getDb());
@@ -144,13 +160,31 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
                 });
             }
         });
-        TV_BuyTime.setText("2015-01-01");
-        Utils.CheckBuyTime(TV_BuyTime.getText().toString(), new Utils.GetServerTime() {
-            @Override
-            public void ServerTime(String ST, boolean Check) {
-                CheckTime = Check;
-            }
-        });
+//        Utils.CheckBuyTime(TV_BuyTime.getText().toString(), new Utils.GetServerTime() {
+//            @Override
+//            public void ServerTime(String ST, boolean Check) {
+//                CheckTime = Check;
+//            }
+//        });
+
+        String isScanCard = (String) SharedPreferencesUtils.get("isScanCard", "");
+        String IsScanDjh = (String) SharedPreferencesUtils.get("IsScanDjh", "");
+        String IsScanCjh = (String) SharedPreferencesUtils.get("IsScanCjh", "");
+        if (isScanCard.equals("1")) {
+            imageScanPlateNumber.setVisibility(View.VISIBLE);
+        } else {
+            imageScanPlateNumber.setVisibility(View.GONE);
+        }
+        if (IsScanCjh.equals("1")) {
+            IV_ScanFrameNumber.setVisibility(View.VISIBLE);
+        } else {
+            IV_ScanFrameNumber.setVisibility(View.GONE);
+        }
+        if (IsScanDjh.equals("1")) {
+            IV_ScanMotorNumber.setVisibility(View.VISIBLE);
+        } else {
+            IV_ScanMotorNumber.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -172,10 +206,10 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
             JSONArray JA = new JSONArray(BI.getPrephotoConfig());
             JSONObject JB;
             PhotoListInfo pli;
-            mLog.e("PrephotoConfig:"+BI.getPrephotoConfig());
-            if(JA.length()==0){
+            mLog.e("PrephotoConfig:" + BI.getPrephotoConfig());
+            if (JA.length() == 0) {
                 RL_DX_PhotoList.setVisibility(View.GONE);
-            }else{
+            } else {
                 for (int i = 0; i < JA.length(); i++) {
                     JB = new JSONObject(JA.get(i).toString());
                     pli = new PhotoListInfo();
@@ -194,6 +228,7 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
         }
         SetPhotoList();
     }
+
     /**
      * 加载图片列表
      */
@@ -225,17 +260,24 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
                     PhotoUtils.TakePicture2(mActivity, PhotoName);
                 }
             }
+
             @Override
-            public void onItemLongClick(View view, int position) {}
+            public void onItemLongClick(View view, int position) {
+            }
         });
         RL_DX_PhotoList.setAdapter(PLA);
     }
+
     private void setClick() {
         IV_back.setOnClickListener(this);
         TV_CarBrand.setOnClickListener(this);
         TV_Color.setOnClickListener(this);
         TV_BuyTime.setOnClickListener(this);
         BT_Next.setOnClickListener(this);
+
+        IV_ScanFrameNumber.setOnClickListener(this);
+        IV_ScanMotorNumber.setOnClickListener(this);
+        imageScanPlateNumber.setOnClickListener(this);
     }
 
     /**
@@ -249,26 +291,30 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
         String Color = TV_Color.getText().toString().trim();
         String BuyTime = TV_BuyTime.getText().toString().trim();
 
-        if(RL_DX_PhotoList.getVisibility()!=View.GONE){
+        if (RL_DX_PhotoList.getVisibility() != View.GONE) {
             for (int i = 0; i < PLI.size(); i++) {
                 if (!PLA.checkItemDate(i)) {
                     Utils.showToast("请拍摄" + PLI.get(i).getREMARK());
-                    return ;
+                    return;
                 }
             }
         }
-        String CarRegular = (String) SharedPreferencesUtils.get("PlatenumberRegular" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE), "");
-        mLog.e("车牌正则："+CarRegular);
+        String CarRegular = (String) SharedPreferencesUtils.get("PlatenumberRegular" + VehiclesStorageUtils
+                .getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE), "");
+        mLog.e("车牌正则：" + CarRegular);
         Pattern pattern = Pattern.compile(CarRegular);
         Matcher matcher = pattern.matcher(PlateNumber + "");
         if (!matcher.matches()) {
-            Utils.showToast( "输入的车牌有误，请重新确认");
-            return ;
+            Utils.showToast("输入的车牌有误，请重新确认");
+            return;
         }
         if (CarBrand.equals("")) {
             Utils.showToast(TV_CarBrand.getHint().toString());
             return;
         }
+
+
+
         if (FrameNumber.equals("")) {
             Utils.showToast("请输入车架号");
             return;
@@ -277,6 +323,13 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
             Utils.showToast("请输入电机号");
             return;
         }
+        if (!RegularChecker.checkShelvesNoRegular(FrameNumber)) {
+            return ;
+        }
+        if (!RegularChecker.checkEngineNoRegular(MotorNumber)) {
+            return ;
+        }
+
         if (Color.equals("")) {
             Utils.showToast(TV_Color.getHint().toString());
             return;
@@ -289,9 +342,9 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
             if (Utils.ServerTime == null || Utils.ServerTime.equals("")) {
                 Utils.showToast("获取服务器时间异常。");
             } else {
-                Utils.showToast( "您选择的时间已超过当前时间");
+                Utils.showToast("您选择的时间已超过当前时间");
             }
-            return ;
+            return;
         }
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARTYPE, "1");
 
@@ -310,7 +363,7 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
         if (dialogBuilder != null && dialogBuilder.isShowing())
             return;
         dialogBuilder = NiftyDialogBuilder.getInstance(this);
-        if(flag == 0){
+        if (flag == 0) {
             effectstype = NiftyDialogBuilder.Effectstype.Fadein;
             LayoutInflater mInflater = LayoutInflater.from(this);
             View color_view = mInflater.inflate(R.layout.layout_color, null);
@@ -371,30 +424,32 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
                     VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, mColorId1);
                 }
             }).show();
-        }else if (flag == 4) {
-                effectstype = NiftyDialogBuilder.Effectstype.Fadein;
-                dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage("信息编辑中，确认离开该页面？")
-                        .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("取消")
-                        .setCustomView(R.layout.custom_view, mActivity).withButton2Text("确认").setButton1Click(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
-                    }
-                }).setButton2Click(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
-                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                        finish();
-                    }
-                }).show();
-            }
+        } else if (flag == 4) {
+            effectstype = NiftyDialogBuilder.Effectstype.Fadein;
+            dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage("信息编辑中，确认离开该页面？")
+                    .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("取消")
+                    .setCustomView(R.layout.custom_view, mActivity).withButton2Text("确认").setButton1Click(new View
+                    .OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder.dismiss();
+                }
+            }).setButton2Click(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder.dismiss();
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    finish();
+                }
+            }).show();
         }
+    }
 
     @Override
     public void onBackPressed() {
         ColorDialogShow(4);
     }
+    private String ScanType = "";//扫描类型
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
@@ -420,9 +475,44 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
                 GoNext();
                 break;
 
+            case R.id.image_scanPlateNumber:
+                Logger.d("车牌号");
+                ScanType = "ScanPlate";
+                Scan(0, true, true, "请输入车牌号");
+                break;
+            case R.id.IV_ScanFrameNumber:
+                Logger.d("车架号");
+                ScanType = "ScanFrame";
+                Scan(1, false, false, "请输入车架号");
+                break;
+            case R.id.IV_ScanMotorNumber:
+                Logger.d("电机号");
+                ScanType = "ScanMotor";
+                Scan(1, false, false, "请输入电机号");
+                break;
+            default:
+                break;
+
         }
     }
-
+    private final static int SCANNIN_QR_CODE = 0514;//二维码回调值*
+    /**
+     * 扫码
+     *
+     * @param ScanType   扫描类型
+     * @param isshow     是否显示录入框
+     * @param isPlate    是否扫描车牌
+     * @param ButtonName 按钮文本
+     */
+    private void Scan(int ScanType, boolean isshow, boolean isPlate, String ButtonName) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("ScanType", ScanType);
+        bundle.putBoolean("isShow", isshow);
+        bundle.putBoolean("isPlateNumber", isPlate);
+        bundle.putString("ButtonName", ButtonName);
+        ActivityUtil.goActivityForResultWithBundle(DX_PreRegistration_Car_Activity.this, QRCodeScanActivity.class, bundle,
+                SCANNIN_QR_CODE);
+    }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
@@ -437,7 +527,7 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
                 break;
         }
     }
-
+    private ParsingQR mQR;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BRAND_CODE) {
@@ -447,7 +537,7 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
                 String brandCode = data.getStringExtra("brandCode");
                 VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, brandCode);
             }
-        }else if (requestCode == PhotoUtils.CAMERA_REQESTCODE) {
+        } else if (requestCode == PhotoUtils.CAMERA_REQESTCODE) {
             if (resultCode == RESULT_OK) {
                 mLog.e("系统API版本:" + PhotoUtils.CurrentapiVersion);
                 try {
@@ -457,35 +547,68 @@ public class DX_PreRegistration_Car_Activity extends Activity implements View.On
                         UpDatePhotoItem2(data);
                     }
                 } catch (Exception E) {
-                    MobclickAgent.reportError(mActivity, "临时缓存图片AbsolutePath：" + PhotoUtils.imageFile.getAbsolutePath());
+                    MobclickAgent.reportError(mActivity, "临时缓存图片AbsolutePath：" + PhotoUtils.imageFile.getAbsolutePath
+                            ());
                     MobclickAgent.reportError(mActivity, "UpDatePhotoItem" + E.toString());
+                }
+            }
+        }else if (requestCode == SCANNIN_QR_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (data == null) {
+                    Utils.myToast(this, "没有扫描到二维码");
+                    return;
+                } else {
+                    Bundle bundle = data.getExtras();
+                    String labelNumber = bundle.getString("result");
+                    if (ScanType.equals("ScanPlate")) {
+                        String num = "";
+                        boolean isScan = bundle.getBoolean("isScan");
+                        if (isScan) {
+                            num = labelNumber;
+                        } else {
+                            num = mQR.plateNumber(labelNumber);
+                        }
+                        if (!num.equals("-1")) {
+                            ET_PlateNumber.setText(num);
+                        } else {
+                            Utils.myToast(this, "二维码不属于车牌");
+                        }
+                    }else if (ScanType.equals("ScanFrame")) {
+                        //车架号
+                        ET_FrameNumber.setText(labelNumber);
+                    } else if (ScanType.equals("ScanMotor")) {
+                        //电机号
+                        ET_MotorNumber.setText(labelNumber);
+                    }
                 }
             }
         }
     }
-
     /**
      * Item刷新
      */
     private void UpDatePhotoItem() {
-        Bitmap bitmap= PhotoUtils.getPhotoBitmap();
+        Bitmap bitmap = PhotoUtils.getPhotoBitmap();
         String Photoindex[] = PhotoUtils.mPicName.split(":");
         Drawable drawable = new BitmapDrawable(bitmap);
 
-        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RL_DX_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RL_DX_PhotoList
+                .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
         my.Photo.setBackgroundDrawable(drawable);
         my.PhotoName.setTextColor(Color.WHITE);
         PLA.SevePhoto(Photoindex[1]);
     }
+
     /**
      * Item刷新
      */
     private void UpDatePhotoItem2(Intent data) {
-        Bitmap bitmap= PhotoUtils.getPhotoBitmap(data);
+        Bitmap bitmap = PhotoUtils.getPhotoBitmap(data);
         String Photoindex[] = PhotoUtils.mPicName.split(":");
         Drawable drawable = new BitmapDrawable(bitmap);
 
-        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RL_DX_PhotoList.findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
+        PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RL_DX_PhotoList
+                .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
         my.Photo.setBackgroundDrawable(drawable);
         my.PhotoName.setTextColor(Color.WHITE);
         PhotoUtils.sevephoto(bitmap);

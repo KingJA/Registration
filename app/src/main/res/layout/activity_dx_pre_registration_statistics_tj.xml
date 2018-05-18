@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_centerVertical="true"
+                    android:text="开始时间" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RL_startTime"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="开始日期" />
+
+                <TextView
+                    android:id="@+id/TV_startTime"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_centerVertical="true"
+                    android:text="结束时间" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RL_endTime"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="结束日期" />
+
+                <TextView
+                    android:id="@+id/TV_endTime"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/image_more" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    style="@style/descText"
+                    android:layout_centerVertical="true"
+                    android:text="基本信息" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_registrationName"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="登记点名称" />
+
+                <TextView
+                    android:id="@+id/TV_registrationName"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="登记点编号" />
+
+                <TextView
+                    android:id="@+id/TV_registrationNumber"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:id="@+id/relative_registrationArea"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="所属辖区" />
+
+                <TextView
+                    android:id="@+id/TV_registrationArea"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="上牌未防盗登记数" />
+
+                <TextView
+                    android:id="@+id/TV_PR_UnApproval"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView style="@style/dividerLine" />
+
+            <RelativeLayout
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="上牌已防盗登记数" />
+
+                <TextView
+                    android:id="@+id/TV_PR_Approval"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/image_totalWithoutAntitheft"
+                style="@style/dividerLine" />
+
+            <RelativeLayout
+                android:id="@+id/relative_totalWithoutAntitheft"
+                style="@style/blockBg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/showText"
+                    android:layout_centerVertical="true"
+                    android:text="上牌总数" />
+
+                <TextView
+                    android:id="@+id/TV_PR_sum"
+                    style="@style/showText"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

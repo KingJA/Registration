@@ -36,6 +36,8 @@ import com.tdr.registration.activity.kunming.JustFuckForKMActivity;
 import com.tdr.registration.activity.longyan.PreSearchActivity;
 import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.activity.tianjin.AppointmentQueryActivity;
+import com.tdr.registration.activity.tianjin.DX_PreRegistration_Statistics_Tj_Activity;
+import com.tdr.registration.activity.tianjin.PreFirstActivity_TJ;
 import com.tdr.registration.adapter.MainRecyclerAdapter;
 import com.tdr.registration.adapter.RecyclerAdapter;
 import com.tdr.registration.model.BaseInfo;
@@ -107,8 +109,7 @@ public class BusinessFragment extends Fragment {
             "备案统计", "车辆预登记",
             "被盗申报", "车辆发还",
             "预约查询", "车辆回访",
-            "服务延期", "登记上牌",
-            "登记上牌查询", "标签绑定"};//ic小标签
+            "服务延期", "标签绑定"};//ic小标签
     private int[] funInsurance = {R.mipmap.ic_insurance_modify};
     private String[] funInsuranceTitles = {"套餐变更"};
     private int[] funImgsNone = {R.mipmap.ic_none};
@@ -121,8 +122,7 @@ public class BusinessFragment extends Fragment {
             "3700", "2700",
             "113", "1300106",
             "600", "199",
-            "114", "2713",
-            "2714", "122"};
+            "114",  "122"};
 
     private MainRecyclerAdapter MRAdapter;
     private RecyclerAdapter mRecyclerAdapter;
@@ -141,6 +141,8 @@ public class BusinessFragment extends Fragment {
     private String Register = "备案登记";
     private String PreRegister = "预登记";
     private String PreRegister_TJ = "登记上牌";
+    private String PreRegister_TJ_FREE = "免费上牌";
+
 
     private String cardTypes;
     String[] CarType;
@@ -252,6 +254,9 @@ public class BusinessFragment extends Fragment {
                     } else if (mAdapter.Name.equals(PreRegister_TJ)) {
                         bundle.putString("in", "TJ");
                         ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundle);
+                    }else if (mAdapter.Name.equals(PreRegister_TJ_FREE)) {
+                        bundle.putString("in", "TJ");
+                        ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity_TJ.class, bundle);
                     }
                 }
                 mLog.e("VEHICLETYPE=" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
@@ -294,7 +299,6 @@ public class BusinessFragment extends Fragment {
                 }
             }
         }
-
         MainrolePowers = new ArrayList<String>();
         hot_new_mvp = new ArrayList<String>();
 
@@ -434,6 +438,39 @@ public class BusinessFragment extends Fragment {
                 bundle.putString("rolePower", "");
                 ActivityUtil.goActivity(getActivity(), PersonalStatisticActivity.class);
                 break;
+            case Constants.JURISDICTION_PRE_REGISTRATION_SHANGPAI_STATISTICS://上牌统计
+                bundle.putString("rolePower", "");
+                if (locCityName.startsWith("天津")) {
+                    ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Tj_Activity.class);
+                }else{
+                    ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Activity.class);
+                }
+                break;
+            case Constants.JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE://天津车辆预登记（免费上牌）
+                IsDX_PR = false;
+                if (CarType.length > 1) {
+                    mAdapter.setName(locCityName.startsWith("天津")?PreRegister_TJ_FREE:PreRegister_TJ);
+                    dialogRegistration.show();
+                } else {
+                    VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
+                    Bundle bundlet1 = new Bundle();
+                    bundlet1.putString("in", "TJ");
+                    if (locCityName.startsWith("天津")) {
+                        ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity_TJ.class, bundlet1);
+                    }else{
+                        ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundlet1);
+                    }
+
+                }
+                mLog.e("MyCarType=" + CarType[0]);
+                break;
+            case Constants.JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE_QUERY://天津车辆预登记查询
+                Bundle bundlet1 = new Bundle();
+                bundlet1.putString("in", "TJ");
+                ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class,
+                        bundlet1);
+                break;
+
             default:
                 break;
         }
@@ -454,33 +491,8 @@ public class BusinessFragment extends Fragment {
                     Utils.showToast("车辆类型数据被清除，请重新登录以获取最新数据。");
                 } else {
                     VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
-//                    ActivityUtil.goActivity(getActivity(), RegisterPersonalActivity.class);//人员信息
                     ActivityUtil.goActivity(getActivity(), RegisterCarActivity.class);//车辆信息
                 }
-//                    ActivityUtil.goActivity(getActivity(), RegisterPersonalActivity.class);
-//                    if(city.contains("天津")){
-//                        ((MyApplication) mActivity.getApplicationContext()).setRD(new RegisterData());
-//                        ((MyApplication) mActivity.getApplicationContext()).setACList(new ArrayList<Activity>());
-//                        ((MyApplication) mActivity.getApplicationContext()).getRD().setVEHICLETYPE(CarType[0]);
-//
-//                        List<Order> listOrder = new Gson().fromJson((String) SharedPreferencesUtils.get("Order",
-// ""), new TypeToken<List<Order>>() {
-//                        }.getType());
-//                        for (Order order : listOrder) {
-//                            if(order.getName().equals("Car")&&order.getOrder()==1){
-//                                ActivityUtil.goActivity(getActivity(), AutoRegister_Car_Activity.class);
-//                            }else if(order.getName().equals("Personnel")&&order.getOrder()==1){
-//                                ActivityUtil.goActivity(getActivity(), AutoRegister_Personnel_Activity.class);
-//                            }else if(order.getName().equals("Insurance")&&order.getOrder()==1){
-//                                ActivityUtil.goActivity(getActivity(), AutoRegister_Insurance_Activity.class);
-//                            }
-//                        }
-//                    }else{
-//                        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
-//                        ActivityUtil.goActivity(getActivity(), RegisterPersonalActivity.class);
-//                    }
-//
-//                }
             }
             mLog.e("MyCarType=" + CarType[0]);
         }
@@ -564,8 +576,6 @@ public class BusinessFragment extends Fragment {
                     case "3700"://保险信息统计
                         ActivityUtil.goActivityWithBundle(getActivity(), StatisticActivity.class, bundle);
                         break;
-
-
                     case "2700"://民警现场预登记
                         VehiclesStorageUtils.clearData();
                         IsDX_PR = false;

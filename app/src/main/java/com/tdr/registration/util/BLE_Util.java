@@ -566,7 +566,6 @@ public enum BLE_Util {
     public void RegisterBLEState(BleStatusListener bsl) {
         Name=(String)SharedPreferencesUtils.get("BLE_Name","");
         MAC=(String)SharedPreferencesUtils.get("BLE_MAC","");
-        mLog.e("Name:"+Name+"    MAC:"+MAC);
         BSL=bsl;
         mClient.registerBluetoothStateListener(bsl2);
         if(MAC!=null&&!MAC.equals("")){

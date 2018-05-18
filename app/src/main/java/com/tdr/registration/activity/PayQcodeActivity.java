@@ -155,7 +155,7 @@ public class PayQcodeActivity extends BaseActivity {
         RequestParams rp = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_GetPayBill);
         rp.addBodyParameter("payno", payNo);
-        cancelable = HttpUtils.get(rp, new HttpUtils.HttpGetCallBack() {
+        cancelable = HttpUtils.get(rp, new HttpUtils.HttpCallBack() {
             @Override
             public void onSuccess(String result) {
                 JSONObject jsonObject;

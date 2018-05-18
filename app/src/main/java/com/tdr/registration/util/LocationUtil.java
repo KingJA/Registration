@@ -4,7 +4,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.tdr.registration.base.MyApplication;
+import com.tdr.registration.base.App;
 
 /**
  * Created by Administrator on 2017/12/13.
@@ -18,7 +18,7 @@ public class LocationUtil {
 
     public static void getLocation(final OnLocationListener OLL) {
 //初始化定位
-        AMapLocationClient mLocationClient = new AMapLocationClient(MyApplication.getContext());
+        AMapLocationClient mLocationClient = new AMapLocationClient(App.getContext());
         AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         //异步获取定位结果
         AMapLocationListener mAMapLocationListener = new AMapLocationListener() {

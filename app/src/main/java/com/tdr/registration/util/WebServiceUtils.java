@@ -43,20 +43,12 @@ public class WebServiceUtils {
 		final MyHttpTransportSE ht = new MyHttpTransportSE(url);
 		// 创建SoapObject对象
 		SoapObject soapObject = new SoapObject(Constants.WEBSERVER_NAMESPACE, methodName);
-
-//		mLog.e("soapObject:"+soapObject.getName());
-		// SoapObject添加参数
 		if (properties != null) {
-			mLog.e("Pan","methodName="+methodName);
-			Utils.LOGE("Pan",properties.toString());
-//			Log.e("Pan","callWebService:============");
 			for (Iterator<Map.Entry<String, String>> it = properties.entrySet().iterator(); it.hasNext();) {
 				Map.Entry<String, String> entry = it.next();
 				soapObject.addProperty(entry.getKey(), entry.getValue());
 			}
 		}
-		
-
 		// 实例化SoapSerializationEnvelope，传入WebService的SOAP协议的版本号
 		final SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
 		// 设置是否调用的是.Net开发的WebService
