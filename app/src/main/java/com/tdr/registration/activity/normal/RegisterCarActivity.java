@@ -101,7 +101,8 @@ import butterknife.OnClick;
 /**
  * 备案登记全国版 车辆信息
  */
-public class RegisterCarActivity extends BaseActivity implements AdapterView.OnItemClickListener,RegistrPop.OnRegistrPopClickListener {
+public class RegisterCarActivity extends BaseActivity implements AdapterView.OnItemClickListener, RegistrPop
+        .OnRegistrPopClickListener {
 
     private final static int SCANNIN_GREQUEST_CODE_CAR = 1996;//二维码回调值
     private final static int SCANNIN_GREQUEST_CODE = 1991;//二维码回调值
@@ -1272,18 +1273,18 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                             dealPreByPlateNumber(preForKMModel);
                         } else {
                             mProgressHUD.dismiss();
-                            ToastUtil.showToast( data);
+                            ToastUtil.showToast(data);
                         }
                     } catch (JSONException e) {
                         mProgressHUD.dismiss();
-                        ToastUtil.showToast(  "JSON解析错误");
+                        ToastUtil.showToast("JSON解析错误");
                     } catch (JsonSyntaxException e) {
                         mProgressHUD.dismiss();
-                        ToastUtil.showToast(  "未查询到有效数据");
+                        ToastUtil.showToast("未查询到有效数据");
                     }
                 } else {
                     mProgressHUD.dismiss();
-                    ToastUtil.showToast(  "获取数据超时，请检查网络连接");
+                    ToastUtil.showToast("获取数据超时，请检查网络连接");
                 }
             }
         });
@@ -1362,19 +1363,19 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                             }
                         } else {
                             mProgressHUD.dismiss();
-                            ToastUtil.showToast( data);
+                            ToastUtil.showToast(data);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         mProgressHUD.dismiss();
-                        ToastUtil.showToast( "JSON解析出错");
+                        ToastUtil.showToast("JSON解析出错");
                     } catch (JsonSyntaxException e) {
                         mProgressHUD.dismiss();
-                        ToastUtil.showToast( "未查到有效数据");
+                        ToastUtil.showToast("未查到有效数据");
                     }
                 } else {
                     mProgressHUD.dismiss();
-                    ToastUtil.showToast(  "获取数据超时，请检查网络连接");
+                    ToastUtil.showToast("获取数据超时，请检查网络连接");
                 }
             }
         });
@@ -1384,7 +1385,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         String VEHICLETYPE = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE);
         String vehicleType = Utils.initNullStr(preRegistrationModel.getVEHICLETYPE());
         if (!vehicleType.equals(VEHICLETYPE)) {
-            ToastUtil.showToast(  "预登记车辆类型与所选类型不符，请重新选择车辆类型登记");
+            ToastUtil.showToast("预登记车辆类型与所选类型不符，请重新选择车辆类型登记");
             return;
         } else {
             SharedPreferencesUtils.put("preregistration", mGson.toJson(preRegistrationModel.getPhotoListFile()));
@@ -1432,7 +1433,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             saveCarInfo();
             ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
         } else {
-            ToastUtil.showToast(  "请确认车牌无误！");
+            ToastUtil.showToast("请确认车牌无误！");
         }
     }
 
@@ -1529,7 +1530,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         } else if (requestCode == SCANNIN_GREQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if (data == null) {
-                    ToastUtil.showToast(  "没有扫描到二维码");
+                    ToastUtil.showToast("没有扫描到二维码");
                     return;
                 } else {
                     Bundle bundle = data.getExtras();
@@ -1542,7 +1543,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                             saveCarInfo();
                             ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
                         } else {
-                            ToastUtil.showToast(  "输入的车牌有误，请重新确认");
+                            ToastUtil.showToast("输入的车牌有误，请重新确认");
                             return;
                         }
                     } else {
@@ -1551,11 +1552,11 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                             saveCarInfo();
                             ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
                         } else if (plateNumberRead.equals("-1")) {
-                            ToastUtil.showToast(  "校验不通过，请确认车牌合法正确性");
+                            ToastUtil.showToast("校验不通过，请确认车牌合法正确性");
 
                             return;
                         } else {
-                            ToastUtil.showToast( "输入的车牌有误，请重新确认");
+                            ToastUtil.showToast("输入的车牌有误，请重新确认");
                             return;
                         }
                     }
@@ -1564,7 +1565,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         } else if (requestCode == SCANNIN_QR_CODE) {
             if (resultCode == RESULT_OK) {
                 if (data == null) {
-                    ToastUtil.showToast( "没有扫描到二维码");
+                    ToastUtil.showToast("没有扫描到二维码");
                     return;
                 } else {
                     Bundle bundle = data.getExtras();
@@ -1584,7 +1585,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                                 TV_Plate.setText(num);
                             }
                         } else {
-                            ToastUtil.showToast(  "二维码不属于车牌");
+                            ToastUtil.showToast("二维码不属于车牌");
                         }
                     } else if (ScanType.equals("ScanTheft1")) {
                         mLog.e("labelNumber" + labelNumber);
@@ -1615,7 +1616,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         } else if (requestCode == SCANNIN_GREQUEST_CODE_CAR) {
             if (resultCode == RESULT_OK) {
                 if (data == null) {
-                    ToastUtil.showToast(  "没有扫描到二维码");
+                    ToastUtil.showToast("没有扫描到二维码");
                     return;
                 } else {
                     mProgressHUD.show();
@@ -1632,7 +1633,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         } else if (requestCode == PRE_SHOW_CODE) {
             if (resultCode == RESULT_OK) {
                 if (data == null) {
-                    ToastUtil.showToast(  "没有选择预登记车辆");
+                    ToastUtil.showToast("没有选择预登记车辆");
                     return;
                 } else {
                     Bundle bundle = data.getExtras();
@@ -1683,20 +1684,20 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                             if (state.equals("0")) {
                                 dealModel(preModel);
                             } else {
-                                ToastUtil.showToast(  "该预登记车辆已被登记");
+                                ToastUtil.showToast("该预登记车辆已被登记");
                             }
                         } else {
                             mProgressHUD.dismiss();
-                            ToastUtil.showToast(  resultText);
+                            ToastUtil.showToast(resultText);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         mProgressHUD.dismiss();
-                        ToastUtil.showToast(  "JSON解析出错");
+                        ToastUtil.showToast("JSON解析出错");
                     }
                 } else {
                     mProgressHUD.dismiss();
-                    ToastUtil.showToast(  "获取数据超时，请检查网络连接");
+                    ToastUtil.showToast("获取数据超时，请检查网络连接");
                 }
             }
         });
@@ -2157,13 +2158,13 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     private boolean checkData() {
         for (int i = 0; i < PLI.size(); i++) {
             if (!PLA.checkItemDate(i)) {
-                ToastUtil.showToast(  "请拍摄" + PLI.get(i).getREMARK());
+                ToastUtil.showToast("请拍摄" + PLI.get(i).getREMARK());
                 return false;
             }
         }
         if (!city.contains("南宁") || !city.contains("昆明")) {
             if (carType.equals("")) {
-                ToastUtil.showToast(  "请选择车辆类型");
+                ToastUtil.showToast("请选择车辆类型");
                 return false;
             }
         }
@@ -2173,13 +2174,13 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 //        }
         if (city.contains("天津")) {
             if (plateType.equals("")) {
-                ToastUtil.showToast(  "请选择车牌类型");
+                ToastUtil.showToast("请选择车牌类型");
                 return false;
             }
         }
         String brand = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND);
         if (brand.equals("") || brand == null) {
-            ToastUtil.showToast(  "请选择车辆品牌");
+            ToastUtil.showToast("请选择车辆品牌");
             return false;
         }
         String plateNum = "";
@@ -2190,7 +2191,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         }
 
         if (plateNum.equals("") || plateNum == null) {
-            ToastUtil.showToast(  "请输入车牌");
+            ToastUtil.showToast("请输入车牌");
             return false;
         }
 
@@ -2198,20 +2199,20 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         Matcher matcher = pattern.matcher(plateNum + "");
         if (!matcher.matches()) {
             Logger.d("车牌正则不匹配:" + plateNum + "-" + plateNum);
-            ToastUtil.showToast(  "输入的车牌有误，请重新确认");
+            ToastUtil.showToast("输入的车牌有误，请重新确认");
             return false;
         }
 
         if (isScanLabel.equals("1")) {
             String theftNo = TV_theftNo.getText().toString().trim();
             if (theftNo.equals("")) {
-                ToastUtil.showToast(  "请输入" + TV_lable.getText().toString().trim());
+                ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
                 return false;
             }
             if (ISDOUBLESIGN.equals("1")) {
                 String theftNo2 = TV_theftNo2.getText().toString().trim();
                 if (theftNo2.equals("")) {
-                    ToastUtil.showToast(  "请输入" + TV_lable2.getText().toString().trim());
+                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
                     return false;
                 }
             }
@@ -2226,25 +2227,25 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         }
         if (city.contains("昆明")) {
             if (!Utils.check_FrameOrMotor(shelvesNo) && !Utils.check_FrameOrMotor(engineNo)) {
-                ToastUtil.showToast( "电机号与车架号必须正确录入其中一个");
+                ToastUtil.showToast("电机号与车架号必须正确录入其中一个");
                 return false;
             }
         }
         String colorId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.COLOR1ID);
         if (colorId.equals("") || colorId == null) {
-            ToastUtil.showToast( "请选择电动车颜色");
+            ToastUtil.showToast("请选择电动车颜色");
             return false;
         }
         String buyTime = TV_buyTime.getText().toString();
         if (buyTime.equals("") || buyTime == null) {
-            ToastUtil.showToast(  "请选择车辆购买时间");
+            ToastUtil.showToast("请选择车辆购买时间");
             return false;
         }
         if (!CheckTime) {
             if (Utils.ServerTime == null || Utils.ServerTime.equals("")) {
-                ToastUtil.showToast(  "获取服务器时间异常。");
+                ToastUtil.showToast("获取服务器时间异常。");
             } else {
-                ToastUtil.showToast(  "您选择的时间已超过当前时间");
+                ToastUtil.showToast("您选择的时间已超过当前时间");
             }
             return false;
         }
@@ -2296,18 +2297,18 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                                     mProgressHUD.dismiss();
                                 } else {
                                     mProgressHUD.dismiss();
-                                    ToastUtil.showToast(  data);
+                                    ToastUtil.showToast(data);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 mProgressHUD.dismiss();
-                                ToastUtil.showToast(  "JSON解析出错");
+                                ToastUtil.showToast("JSON解析出错");
                             } catch (DbException e) {
                                 e.printStackTrace();
                             }
                         } else {
                             mProgressHUD.dismiss();
-                            ToastUtil.showToast(  "获取数据超时，请检查网络连接");
+                            ToastUtil.showToast("获取数据超时，请检查网络连接");
                         }
                     }
                 });
