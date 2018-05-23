@@ -655,9 +655,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                                 int errorCode = jsonObject.getInt("ErrorCode");
                                 String data = jsonObject.getString("Data");
                                 if (errorCode == 0) {
-
                                     mProgressHUD.dismiss();
-
                                     if ("登记成功".equals(data)) {
                                         showSuccess();
                                         return;
@@ -697,7 +695,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                                         SharedPreferencesUtils.put("preregisters", "");
                                         SharedPreferencesUtils.put("preregistration", "");
                                         SharedPreferencesUtils.put("PhotoListFile", "");
-
                                         Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
                                                 (VehiclesStorageUtils
                                                         .PLATENUMBER) + "  电动车信息上传成功！");
