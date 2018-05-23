@@ -200,7 +200,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         //TODO 从服务器获取保险数据
         String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
         if (!TextUtils.isEmpty(insurancesStr)) {
-            List<InsuranceModel>  insurances = new Gson().fromJson(insurancesStr, new
+            List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
                     TypeToken<List<InsuranceModel>>() {
                     }.getType());
             fillInsuranceData(insurances);
@@ -212,13 +212,13 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
     public String getCurrentDate() {
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-       return sdf.format(d);
+        return sdf.format(d);
     }
 
     private void getInsuranceData() {
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("BuyDate", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.BUYDATE,getCurrentDate()));
+        map.put("BuyDate", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.BUYDATE, getCurrentDate()));
         JSONObject JB = new JSONObject(map);
         RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_PolicyConfig);
@@ -236,7 +236,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                     if (errorCode == 0) {
                         String data = jsonObject.getString("Data");
                         if (!TextUtils.isEmpty(data)) {
-                            List<InsuranceModel>   insurances = new Gson().fromJson(data, new
+                            List<InsuranceModel> insurances = new Gson().fromJson(data, new
                                     TypeToken<List<InsuranceModel>>() {
                                     }.getType());
                             if (insurances != null && insurances.size() > 0) {
@@ -570,9 +570,9 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
             obj.put("Photo4File", "");
             obj.put("REGISTERID", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.REGISTERID));
             String carType = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARTYPE);
-            obj.put("CARTYPE",TextUtils.isEmpty(carType)?"1":carType );
+            obj.put("CARTYPE", TextUtils.isEmpty(carType) ? "1" : carType);
             String isConfirm = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.ISCONFIRM);
-            obj.put("ISCONFIRM", TextUtils.isEmpty(isConfirm)?"0":isConfirm);
+            obj.put("ISCONFIRM", TextUtils.isEmpty(isConfirm) ? "0" : isConfirm);
             obj.put("VehicleBrand", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND));
             obj.put("PlateNumber", VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER));
             String platetype = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATETYPE);
@@ -655,7 +655,13 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                                 int errorCode = jsonObject.getInt("ErrorCode");
                                 String data = jsonObject.getString("Data");
                                 if (errorCode == 0) {
+
                                     mProgressHUD.dismiss();
+
+                                    if ("登记成功".equals(data)) {
+                                        showSuccess();
+                                        return;
+                                    }
                                     List<PayInsurance> payInsurances = new Gson().fromJson(data, new
                                             TypeToken<List<PayInsurance>>
                                                     () {
@@ -734,8 +740,32 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 });
     }
 
+    private void showSuccess() {
+        final NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
+        dialogBuilder.withTitle("提示")
+                .withTitleColor("#333333")
+                .withMessage("登记成功")
+                .isCancelableOnTouchOutside(false)
+                .withEffect(NiftyDialogBuilder.Effectstype.Fadein)
+                .withButton1Text("確定")
+                .setCustomView(R.layout.custom_view, this)
+                .setButton1Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        SharedPreferencesUtils.put("preregisters", "");
+                        SharedPreferencesUtils.put("preregistration", "");
+                        SharedPreferencesUtils.put("PhotoListFile", "");
+                        VehiclesStorageUtils.clearData();
+                        ActivityUtil.goActivityAndFinish(RegisterInsuranceActivity.this, HomeActivity.class);
+                    }
+                });
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.show();
+    }
+
     private void dialogShow(int flag, String msg) {
-        final NiftyDialogBuilder   dialogBuilder = NiftyDialogBuilder.getInstance(this);
+        final NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(this);
         if (flag == 0) {
             dialogBuilder.withTitle("提示")
                     .withTitleColor("#333333")
