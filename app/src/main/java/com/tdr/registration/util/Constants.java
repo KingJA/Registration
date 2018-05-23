@@ -109,10 +109,7 @@ public class Constants {
     public static final String HTTP_UploadPicture = "http://10.130.0.104:818/api/Picture/Upload2";//上传图片
     public static final String HTTP_GetPayBill = "api/PayBill/GetPayBill";//获取订单支付状态
     public static final String HTTP_PolicyConfig = "/api/ElectricCar/PolicyConfig";//获取保险信息
-
-
-
-
+    public static final String HTTP_VehicleBoardStatisticsAPP = "/api/Statistics/VehicleBoardStatisticsAPP";//上牌统计
 
     /**
      * Des加密Key

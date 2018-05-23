@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,8 +13,6 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
-import com.tdr.registration.adapter.InsuranceShowAdapter;
-import com.tdr.registration.model.ResultInsuranceModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.SharedPreferencesUtils;
@@ -32,9 +29,6 @@ import org.xutils.x;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * 电信预登记统计
@@ -78,13 +72,13 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
     TextView TV_PR_sum;
 
 
-
     private Activity mActivity;
     private TimePickerView startTime;
     private TimePickerView endTime;
     private ZProgressHUD mProgressHUD;
     private Gson mGson;
-    private  StatisticsData SD;
+    private StatisticsData SD;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +133,8 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
         map.put("starttime", TV_startTime.getText().toString().trim());
         map.put("endttime", TV_endTime.getText().toString().trim());
         mLog.e("个人统计map=" + map.toString());
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERSTATISTICS, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_GETPREREGISTERSTATISTICS, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
@@ -157,7 +152,8 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
                             mProgressHUD.dismiss();
                             Utils.showToast(data);
                             SharedPreferencesUtils.put("token", "");
-                            ActivityUtil.goActivityAndFinish(DX_PreRegistration_Statistics_Activity.this, LoginActivity.class);
+                            ActivityUtil.goActivityAndFinish(DX_PreRegistration_Statistics_Activity.this,
+                                    LoginActivity.class);
                         } else {
                             mProgressHUD.dismiss();
                             Utils.showToast(data);
@@ -174,7 +170,8 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
             }
         });
     }
-    private void setdata(){
+
+    private void setdata() {
         TV_registrationName.setText((String) SharedPreferencesUtils.get("regionName", ""));//登记点名称
         TV_registrationNumber.setText((String) SharedPreferencesUtils.get("regionNo", ""));//登记点编号
         TV_registrationArea.setText((String) SharedPreferencesUtils.get("regionName", ""));//所属辖区
@@ -182,6 +179,7 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
         TV_PR_Approval.setText(SD.getHas_platenumber());
         TV_PR_sum.setText(SD.getTotal());
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -196,6 +194,8 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
                 break;
             case R.id.RL_endTime:
                 endTime.show();
+                break;
+            default:
                 break;
         }
     }

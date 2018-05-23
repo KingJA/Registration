@@ -21,14 +21,13 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.tdr.registration.R;
+import com.tdr.registration.activity.DX_PreRegistrationQueryActivity;
 import com.tdr.registration.activity.DX_PreRegistration_Car_Activity;
 import com.tdr.registration.activity.DX_PreRegistration_Statistics_Activity;
 import com.tdr.registration.activity.ElectricInfoSearchActivity;
 import com.tdr.registration.activity.LabelBindingCarQueryActivity;
 import com.tdr.registration.activity.PersonalStatisticActivity;
 import com.tdr.registration.activity.PreFirstActivity;
-import com.tdr.registration.activity.DX_PreRegistrationQueryActivity;
-import com.tdr.registration.activity.RegisterPersonalActivity;
 import com.tdr.registration.activity.StatisticActivity;
 import com.tdr.registration.activity.VehicleMonitorActivity;
 import com.tdr.registration.activity.Visit_1_Activity;
@@ -56,7 +55,6 @@ import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ItemDecorationDivider;
 import com.tdr.registration.view.MyRecyclerView;
 import com.tdr.registration.view.dialog.DialogRegistration;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
