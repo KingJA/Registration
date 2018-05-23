@@ -198,15 +198,17 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         }
 
         //TODO 从服务器获取保险数据
-        String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
-        if (!TextUtils.isEmpty(insurancesStr)) {
-            List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
-                    TypeToken<List<InsuranceModel>>() {
-                    }.getType());
-            fillInsuranceData(insurances);
-        } else {
-            getInsuranceData();
-        }
+//        String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
+//        if (!TextUtils.isEmpty(insurancesStr)) {
+//            List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
+//                    TypeToken<List<InsuranceModel>>() {
+//                    }.getType());
+//            fillInsuranceData(insurances);
+//        } else {
+//            getInsuranceData();
+//        }
+
+        getInsuranceData();
     }
 
     public String getCurrentDate() {
