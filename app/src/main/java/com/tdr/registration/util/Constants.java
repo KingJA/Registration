@@ -110,6 +110,7 @@ public class Constants {
     public static final String HTTP_GetPayBill = "api/PayBill/GetPayBill";//获取订单支付状态
     public static final String HTTP_PolicyConfig = "/api/ElectricCar/PolicyConfig";//获取保险信息
     public static final String HTTP_VehicleBoardStatisticsAPP = "/api/Statistics/VehicleBoardStatisticsAPP";//上牌统计
+    public static final String HTTP_ElectricPager = "/api/ElectricCar/ElectricPager ";//上牌查询
 
 
     /**

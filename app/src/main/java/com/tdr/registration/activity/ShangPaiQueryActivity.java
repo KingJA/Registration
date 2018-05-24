@@ -11,23 +11,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.DX_PreRegistrationModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
+import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
-import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.WebServiceUtils;
-import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -36,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 上牌查询
+ * 免费上牌查询
  */
 @ContentView(R.layout.activity_dx_pre_registration_query)
 public class ShangPaiQueryActivity extends Activity {
@@ -82,14 +78,7 @@ public class ShangPaiQueryActivity extends Activity {
         mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);
         mQR = new ParsingQR();
         city = (String) SharedPreferencesUtils.get("locCityName", "");
-        in=getIntent().getExtras().getString("in");
-        if(in==null){
-            in="";
-        }
-        if (in.equals("TJ")) {
-            TV_Title.setText("登记上牌查询");
-
-        }
+        TV_Title.setText("免费上牌查询");
         IV_Scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,55 +112,74 @@ public class ShangPaiQueryActivity extends Activity {
             Utils.showToast("请至少输入一个查询条件");
             return;
         }
+//        mProgressHUD.show();
+//        HashMap<String, String> map = new HashMap<>();
+//        map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
+//        map.put("plateNumber", plateNumber);
+//        map.put("cardid", cardid);
+//        map.put("phone", phone);
+//        map.put("registerId", "");
+//        mLog.e("Pan", "map=" + map);
+//        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERLIST, map, new WebServiceUtils.WebServiceCallBack() {
+//            @Override
+//            public void callBack(String result) {
+//                Utils.LOGE("Pan","result=" + result);
+//                if (result != null) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(result);
+//                        int errorCode = jsonObject.getInt("ErrorCode");
+//                        String data = jsonObject.getString("Data");
+//                        if (errorCode == 0) {
+//                            mProgressHUD.dismiss();
+//                            try {
+//                                PRList = mGson.fromJson(data, new TypeToken<List<DX_PreRegistrationModel>>() {
+//                                }.getType());
+//                                if (PRList.size() > 0) {
+//                                    TransferUtil.save("PreRegistrationData",PRList);
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putString("in",in);
+//                                    ActivityUtil.goActivityWithBundle(ShangPaiQueryActivity.this, DX_PreListActivity.class,bundle);
+//                                }
+//                            }catch (JsonSyntaxException e){
+//                                mProgressHUD.dismiss();
+//                                Utils.showToast(data);
+//                            }
+//                        } else {
+//                            mProgressHUD.dismiss();
+//                            Utils.showToast(data);
+//                        }
+//                    } catch (JSONException e) {
+//                        mProgressHUD.dismiss();
+//                        e.printStackTrace();
+//                        Utils.showToast("JSON解析出错");
+//                    }
+//                } else {
+//                    mProgressHUD.dismiss();
+//                    Utils.showToast("获取数据超时，请检查网络连接");
+//                }
+//            }
+//        });
+
         mProgressHUD.show();
-        HashMap<String, String> map = new HashMap<>();
-        map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
-        map.put("plateNumber", plateNumber);
-        map.put("cardid", cardid);
-        map.put("phone", phone);
-        map.put("registerId", "");
-        mLog.e("Pan", "map=" + map);
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERLIST, map, new WebServiceUtils.WebServiceCallBack() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("PlateNumber",plateNumber);
+        map.put("CardId",cardid);
+        map.put("HASRFID","0");
+        map.put("Phone",phone);
+        JSONObject JB = new JSONObject(map);
+        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_ElectricPager);
+        RP.setAsJsonContent(true);
+        RP.setBodyContent(JB.toString());
+        HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
             @Override
-            public void callBack(String result) {
-                Utils.LOGE("Pan","result=" + result);
-                if (result != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        if (errorCode == 0) {
-                            mProgressHUD.dismiss();
-                            try {
-                                PRList = mGson.fromJson(data, new TypeToken<List<DX_PreRegistrationModel>>() {
-                                }.getType());
-                                if (PRList.size() > 0) {
-                                    TransferUtil.save("PreRegistrationData",PRList);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("in",in);
-                                    ActivityUtil.goActivityWithBundle(ShangPaiQueryActivity.this, DX_PreListActivity.class,bundle);
-//                                    ArrayList list = new ArrayList();
-//                                    list.add(PRList);
-//                                    bundle.putParcelableArrayList("electricCarModelList", list);
-//                                    ActivityUtil.goActivityWithBundle(DX_PreRegistrationQueryActivity.this, DX_PreListActivity.class, bundle);
-                                }
-                            }catch (JsonSyntaxException e){
-                                mProgressHUD.dismiss();
-                                Utils.showToast(data);
-                            }
-                        } else {
-                            mProgressHUD.dismiss();
-                            Utils.showToast(data);
-                        }
-                    } catch (JSONException e) {
-                        mProgressHUD.dismiss();
-                        e.printStackTrace();
-                        Utils.showToast("JSON解析出错");
-                    }
-                } else {
-                    mProgressHUD.dismiss();
-                    Utils.showToast("获取数据超时，请检查网络连接");
-                }
+            public void onSuccess(String result) {
+                mProgressHUD.dismiss();
+            }
+
+            @Override
+            public void onError(Throwable ex) {
+                mProgressHUD.dismiss();
             }
         });
 

@@ -28,6 +28,8 @@ import com.tdr.registration.activity.ElectricInfoSearchActivity;
 import com.tdr.registration.activity.LabelBindingCarQueryActivity;
 import com.tdr.registration.activity.PersonalStatisticActivity;
 import com.tdr.registration.activity.PreFirstActivity;
+import com.tdr.registration.activity.ShangPaiCarActivity;
+import com.tdr.registration.activity.ShangPaiQueryActivity;
 import com.tdr.registration.activity.StatisticActivity;
 import com.tdr.registration.activity.VehicleMonitorActivity;
 import com.tdr.registration.activity.Visit_1_Activity;
@@ -120,7 +122,7 @@ public class BusinessFragment extends Fragment {
             "3700", "2700",
             "113", "1300106",
             "600", "199",
-            "114",  "122"};
+            "114", "122"};
 
     private MainRecyclerAdapter MRAdapter;
     private RecyclerAdapter mRecyclerAdapter;
@@ -252,9 +254,8 @@ public class BusinessFragment extends Fragment {
                     } else if (mAdapter.Name.equals(PreRegister_TJ)) {
                         bundle.putString("in", "TJ");
                         ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundle);
-                    }else if (mAdapter.Name.equals(PreRegister_TJ_FREE)) {
-                        bundle.putString("in", "TJ");
-                        ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity_TJ.class, bundle);
+                    } else if (mAdapter.Name.equals(PreRegister_TJ_FREE)) {
+                        ActivityUtil.goActivity(getActivity(), ShangPaiCarActivity.class);
                     }
                 }
                 mLog.e("VEHICLETYPE=" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE));
@@ -409,19 +410,15 @@ public class BusinessFragment extends Fragment {
         Bundle bundle = new Bundle();
         switch (Jurisdiction) {
             case Constants.JURISDICTION_PRE_REGISTRATION://电信预登记
-//                Utils.showToast("电信预登记");
                 IsDX_PR = true;
                 goPreRegistration();
-//                ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
                 break;
             case Constants.JURISDICTION_PRE_REGISTRATION_QUERY://电信预登记查询
-//                Utils.showToast("电信预登记查询");
                 Bundle bundlet = new Bundle();
                 bundlet.putString("in", "");
                 ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class, bundlet);
                 break;
             case Constants.JURISDICTION_PRE_REGISTRATION_STATISTICS://电信预登记统计
-//                Utils.showToast("电信预登记统计");
                 ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Activity.class);
                 break;
             case Constants.JURISDICTION_REGISTRATION://备案登记
@@ -440,33 +437,16 @@ public class BusinessFragment extends Fragment {
                 bundle.putString("rolePower", "");
                 if (locCityName.startsWith("天津")) {
                     ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Tj_Activity.class);
-                }else{
+                } else {
                     ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Activity.class);
                 }
                 break;
             case Constants.JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE://天津车辆预登记（免费上牌）
                 IsDX_PR = false;
-                if (CarType.length > 1) {
-                    mAdapter.setName(locCityName.startsWith("天津")?PreRegister_TJ_FREE:PreRegister_TJ);
-                    dialogRegistration.show();
-                } else {
-                    VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
-                    Bundle bundlet1 = new Bundle();
-                    bundlet1.putString("in", "TJ");
-                    if (locCityName.startsWith("天津")) {
-                        ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity_TJ.class, bundlet1);
-                    }else{
-                        ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundlet1);
-                    }
-
-                }
-                mLog.e("MyCarType=" + CarType[0]);
+                goShangPai();
                 break;
             case Constants.JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE_QUERY://天津车辆预登记查询
-                Bundle bundlet1 = new Bundle();
-                bundlet1.putString("in", "TJ");
-                ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class,
-                        bundlet1);
+                ActivityUtil.goActivity(getActivity(), ShangPaiQueryActivity.class);
                 break;
 
             default:
@@ -506,6 +486,17 @@ public class BusinessFragment extends Fragment {
             ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Car_Activity.class);
         }
         mLog.e("MyCarType=" + CarType[0]);
+    }
+
+    private void goShangPai() {
+        VehiclesStorageUtils.clearData();
+        if (CarType.length > 1) {
+            mAdapter.setName(PreRegister_TJ_FREE);
+            dialogRegistration.show();
+        } else {
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
+            ActivityUtil.goActivity(getActivity(), ShangPaiCarActivity.class);
+        }
     }
 
     private void setStaggeredGridLayoutRecyclerView() {
