@@ -163,7 +163,7 @@ public class QRCodeCreateActivity extends Activity {
                                 if(PRList.get(0)!=null){
                                     Bundle bundle=new Bundle();
                                     bundle.putString("InType","PreRegistration");
-                                    bundle.putSerializable("PreRegistrationModel", PRList.get(0));
+//                                    bundle.putSerializable("PreRegistrationModel", PRList.get(0));
                                     TransferUtil.save("PreRegistrationModel",PRList.get(0));
                                     ActivityUtil.goActivityWithBundle(QRCodeCreateActivity.this, RegisterCarActivity.class, bundle);
                                 }
