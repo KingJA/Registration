@@ -111,11 +111,11 @@ public class Constants {
     public static final String HTTP_PolicyConfig = "/api/ElectricCar/PolicyConfig";//获取保险信息
     public static final String HTTP_VehicleBoardStatisticsAPP = "/api/Statistics/VehicleBoardStatisticsAPP";//上牌统计
 
+
     /**
      * Des加密Key
      */
     public static final String DES_KEY = "OPENAPI.";
-
 
     /**
      * 蓝牙参数
