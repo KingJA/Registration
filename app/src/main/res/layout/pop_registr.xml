@@ -36,14 +36,12 @@
 
         <ImageView
             android:id="@+id/image_queryIdentity"
-            style="@style/dividerLine"
-            android:visibility="gone" />
+            style="@style/dividerLine" />
 
         <LinearLayout
             android:id="@+id/linear_queryIdentity"
             style="@style/blockBg"
-            android:gravity="center"
-            android:visibility="gone">
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="20dp"
@@ -68,8 +66,7 @@
         <LinearLayout
             android:id="@+id/linear_queryPlateNumber"
             style="@style/blockBg"
-            android:gravity="center"
-            android:visibility="gone">
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="20dp"
@@ -91,10 +88,10 @@
             android:visibility="gone"/>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/linear_PlateNumber"
             style="@style/blockBg"
-            android:gravity="center"
-            android:visibility="gone">
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="20dp"
@@ -107,7 +104,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
                 android:gravity="center_vertical"
-                android:text="车牌号查询预登记" />
+                android:text="免费上牌查询登记" />
 
         </LinearLayout>
     </LinearLayout>

@@ -12,7 +12,6 @@ import com.tdr.registration.base.App;
 
 public class VehiclesStorageUtils {
     public static final String REGISTERID = "RegisterId";//预登记ID
-    public static final String ECID = "Ecid";// 车辆id
     public static final String CARTYPE = "CARTYPE";// 车辆类型
     public static final String VEHICLETYPE = "VEHICLETYPE";//1  电动车 2  助力车  3  摩托车
     public static final String ISCONFIRM = "ISCONFIRM";// 是否承诺书
@@ -44,6 +43,10 @@ public class VehiclesStorageUtils {
 
     public static final String INSURANCE = "INSURANCE";
     public static final String INSURANCES = "INSURANCES";
+
+    public static final String IS_FREE_SHANGPAI = "IS_FREE_SHANGPAI";
+    public static final String HAS_FREE_SHANGPAI = "HAS_FREE_SHANGPAI";
+    public static final String ECID = "ECID";
 
 
 
@@ -102,6 +105,8 @@ public class VehiclesStorageUtils {
         editor.putString(PHOTOLIST3, "");
 
         editor.putString(INSURANCES, "");
+        editor.putString(IS_FREE_SHANGPAI, "");
+        editor.putString(ECID, "");
 
         editor.commit();
     }

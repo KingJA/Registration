@@ -317,6 +317,9 @@ public class BusinessFragment extends Fragment {
         }
 
         for (String power : powers) {
+            if (Constants.JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE.equals(power)) {
+                VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.HAS_FREE_SHANGPAI,"1");
+            }
             for (Constants.Jurisdiction jurisdiction : Constants.JURISDICTIONS) {
                 if (jurisdiction.getJur().equals(power)) {
 

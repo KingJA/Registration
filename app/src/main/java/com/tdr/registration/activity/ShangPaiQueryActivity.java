@@ -11,23 +11,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.data.ParsingQR;
 import com.tdr.registration.model.DX_PreRegistrationModel;
+import com.tdr.registration.model.ShangPaiInfo;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.ToastUtil;
+import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.view.ZProgressHUD;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +66,7 @@ public class ShangPaiQueryActivity extends Activity {
     private String city;
     private final static int SCANNIN_QR_CODE = 10514;//二维码回调值*
     private ParsingQR mQR;
-    private String in="";
+    private String in = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,7 +93,8 @@ public class ShangPaiQueryActivity extends Activity {
                 bundle.putBoolean("isShow", true);
                 bundle.putBoolean("isPlateNumber", true);
                 bundle.putString("ButtonName", "请输入车牌号");
-                ActivityUtil.goActivityForResultWithBundle(ShangPaiQueryActivity.this, QRCodeScanActivity.class, bundle, SCANNIN_QR_CODE);
+                ActivityUtil.goActivityForResultWithBundle(ShangPaiQueryActivity.this, QRCodeScanActivity.class,
+                        bundle, SCANNIN_QR_CODE);
             }
         });
         BT_query.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +127,8 @@ public class ShangPaiQueryActivity extends Activity {
 //        map.put("phone", phone);
 //        map.put("registerId", "");
 //        mLog.e("Pan", "map=" + map);
-//        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERLIST, map, new WebServiceUtils.WebServiceCallBack() {
+//        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+// .WEBSERVER_GETPREREGISTERLIST, map, new WebServiceUtils.WebServiceCallBack() {
 //            @Override
 //            public void callBack(String result) {
 //                Utils.LOGE("Pan","result=" + result);
@@ -138,7 +146,8 @@ public class ShangPaiQueryActivity extends Activity {
 //                                    TransferUtil.save("PreRegistrationData",PRList);
 //                                    Bundle bundle = new Bundle();
 //                                    bundle.putString("in",in);
-//                                    ActivityUtil.goActivityWithBundle(ShangPaiQueryActivity.this, DX_PreListActivity.class,bundle);
+//                                    ActivityUtil.goActivityWithBundle(ShangPaiQueryActivity.this,
+// DX_PreListActivity.class,bundle);
 //                                }
 //                            }catch (JsonSyntaxException e){
 //                                mProgressHUD.dismiss();
@@ -162,10 +171,10 @@ public class ShangPaiQueryActivity extends Activity {
 
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("PlateNumber",plateNumber);
-        map.put("CardId",cardid);
-        map.put("HASRFID","0");
-        map.put("Phone",phone);
+        map.put("PlateNumber", plateNumber);
+        map.put("CardId", cardid);
+        map.put("HASRFID", "0");
+        map.put("Phone", phone);
         JSONObject JB = new JSONObject(map);
         RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_ElectricPager);
@@ -175,6 +184,38 @@ public class ShangPaiQueryActivity extends Activity {
             @Override
             public void onSuccess(String result) {
                 mProgressHUD.dismiss();
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(result);
+                    int errorCode = jsonObject.getInt("ErrorCode");
+                    String data = jsonObject.getString("Data");
+
+                    if (errorCode == 0) {
+                        int count = jsonObject.getInt("Count");
+                        if (count > 0) {
+                            List<ShangPaiInfo> shangPaiInfos = mGson.fromJson(data, new TypeToken<List<ShangPaiInfo>>() {
+                            }.getType());
+                            List<DX_PreRegistrationModel> oldTypeInfos = convertData(shangPaiInfos);
+                            if (oldTypeInfos.size() > 0) {
+                                TransferUtil.save("PreRegistrationData", oldTypeInfos);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("in", in);
+                                ActivityUtil.goActivityWithBundle(ShangPaiQueryActivity.this,
+                                        ShangPaiListActivity.class, bundle);
+                            }
+                        }else{
+                            ToastUtil.showToast("未查到上牌信息");
+                        }
+
+
+                    } else {
+                        ToastUtil.showToast(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
 
             @Override
@@ -183,6 +224,37 @@ public class ShangPaiQueryActivity extends Activity {
             }
         });
 
+    }
+
+    public static  List<DX_PreRegistrationModel> convertData(List<ShangPaiInfo> shangPaiInfos) {
+        List<DX_PreRegistrationModel> oldDataInfos = new ArrayList<>();
+        for (ShangPaiInfo shangPaiInfo : shangPaiInfos) {
+            DX_PreRegistrationModel oldDataInfo = new DX_PreRegistrationModel();
+            oldDataInfo.setREGISTERID(shangPaiInfo.getREGISTERID());
+            oldDataInfo.setVEHICLETYPE(shangPaiInfo.getVehicleType());
+            oldDataInfo.setVEHICLEBRAND(shangPaiInfo.getVehicleBrand());
+            oldDataInfo.setVEHICLEBRANDNAME(shangPaiInfo.getVehicleBrandName());
+            oldDataInfo.setPLATENUMBER(shangPaiInfo.getPlateNumber());
+            oldDataInfo.setCARDTYPE(shangPaiInfo.getCARDTYPE() + "");
+            oldDataInfo.setSHELVESNO(shangPaiInfo.getShelvesNo());
+            oldDataInfo.setENGINENO(shangPaiInfo.getEngineNo());
+            oldDataInfo.setColorName(shangPaiInfo.getColorName());
+            oldDataInfo.setCOLORNAME(shangPaiInfo.getColorName());
+            oldDataInfo.setCOLORNAME2(shangPaiInfo.getColorName2());
+            oldDataInfo.setCOLORID(shangPaiInfo.getColorId());
+            oldDataInfo.setCOLORID2(shangPaiInfo.getColorId2());
+            oldDataInfo.setECID(shangPaiInfo.getEcId());
+            oldDataInfo.setBUYDATE(shangPaiInfo.getBuyDate());
+            oldDataInfo.setOWNERNAME(shangPaiInfo.getOwnerName());
+            oldDataInfo.setCARDID(shangPaiInfo.getCardId());
+            oldDataInfo.setPHONE1(shangPaiInfo.getPhone1());
+            oldDataInfo.setPHONE2(shangPaiInfo.getPhone2());
+            oldDataInfo.setADDRESS(shangPaiInfo.getResidentAddress());
+            oldDataInfo.setREMARK(shangPaiInfo.getRemark());
+            oldDataInfo.setPhotoListFile(shangPaiInfo.getPhotoListFile());
+            oldDataInfos.add(oldDataInfo);
+        }
+        return oldDataInfos;
     }
 
     @Override
@@ -205,7 +277,7 @@ public class ShangPaiQueryActivity extends Activity {
                     if (!num.equals("-1")) {
                         ET_plateNumber.setText(num);
                     } else {
-                        Utils.showToast( "二维码不属于车牌");
+                        Utils.showToast("二维码不属于车牌");
                     }
                 }
             }

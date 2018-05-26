@@ -544,6 +544,7 @@ public class ShangPaiPersonalActivity extends BaseActivity implements View.OnCli
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
         map.put("infoJsonStr", obj.toString());
+        Logger.json(obj.toString());
         String functionName = "";
         if (listId.equals("")) {
             functionName = Constants.WEBSERVER_ADDELECTRICCAR;
