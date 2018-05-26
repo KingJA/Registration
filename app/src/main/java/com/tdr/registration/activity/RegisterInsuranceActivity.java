@@ -226,6 +226,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 .HTTP_PolicyConfig);
         RP.setAsJsonContent(true);
         RP.setBodyContent(JB.toString());
+        Log.e(TAG, "参数: "+JB.toString() );
         HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
             @Override
             public void onSuccess(String result) {
