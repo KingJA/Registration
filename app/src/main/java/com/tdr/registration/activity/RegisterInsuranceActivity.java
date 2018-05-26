@@ -253,6 +253,13 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                         } else {
                             Utils.showToast("无data数据");
                         }
+                    }else if (errorCode == 1) {
+                        mProgressHUD.dismiss();
+                        String data = jsonObject.getString("Data");
+                        Utils.showToast(data);
+                        SharedPreferencesUtils.put("token", "");
+                        ActivityUtil.goActivityAndFinish(RegisterInsuranceActivity.this, LoginActivity
+                                .class);
                     } else {
                         //错误
                         String errorMsg = jsonObject.getString("Data");
