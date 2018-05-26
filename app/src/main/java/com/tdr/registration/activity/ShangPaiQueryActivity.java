@@ -207,7 +207,6 @@ public class ShangPaiQueryActivity extends Activity {
                             ToastUtil.showToast("未查到上牌信息");
                         }
 
-
                     } else {
                         ToastUtil.showToast(data);
                     }
