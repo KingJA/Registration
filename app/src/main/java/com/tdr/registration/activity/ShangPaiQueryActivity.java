@@ -244,7 +244,7 @@ public class ShangPaiQueryActivity extends Activity {
             oldDataInfo.setCOLORID(shangPaiInfo.getColorId());
             oldDataInfo.setCOLORID2(shangPaiInfo.getColorId2());
             oldDataInfo.setECID(shangPaiInfo.getEcId());
-            oldDataInfo.setBUYDATE(shangPaiInfo.getBuyDate());
+            oldDataInfo.setBUYDATE(shangPaiInfo.getBuyDate().substring(0,10));
             oldDataInfo.setOWNERNAME(shangPaiInfo.getOwnerName());
             oldDataInfo.setCARDID(shangPaiInfo.getCardId());
             oldDataInfo.setPHONE1(shangPaiInfo.getPhone1());

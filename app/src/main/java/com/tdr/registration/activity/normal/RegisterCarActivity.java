@@ -708,7 +708,20 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (preregisters.equals("") && preregistration.equals("") && photoListFile.equals("")) {
             return;
         }
-        if (!preregisters.equals("")) {
+         if (!photoListFile.equals("")) {
+            List<PhotoModel> list = mGson.fromJson(photoListFile, new TypeToken<List<PhotoModel>>() {
+            }.getType());
+            Logger.d("|photoList:" + list.size());
+
+            for (PhotoModel photoModel : list) {
+                PhotoModel PM = new PhotoModel();
+                PM.setINDEX(photoModel.getINDEX());
+                PM.setPhoto(photoModel.getPhoto());
+                PM.setPhotoFile(photoModel.getPhotoFile());
+                PM.setRemark(photoModel.getRemark());
+                pm.add(PM);
+            }
+        }else if (!preregisters.equals("")) {
             preForKMModel = mGson.fromJson(preregisters, new TypeToken<PreRegistrationModel>() {
             }.getType());
             mLog.e("Pan", "preForKMModel=" + preForKMModel.getColorName());
@@ -734,26 +747,12 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 PM.setRemark(photoModel.getRemark());
                 pm.add(PM);
             }
-        } else if (!photoListFile.equals("")) {
-            List<PhotoModel> list = mGson.fromJson(photoListFile, new TypeToken<List<PhotoModel>>() {
-            }.getType());
-            Logger.d("|photoList:" + list.size());
-
-            for (PhotoModel photoModel : list) {
-                PhotoModel PM = new PhotoModel();
-                PM.setINDEX(photoModel.getINDEX());
-                PM.setPhoto(photoModel.getPhoto());
-                PM.setPhotoFile(photoModel.getPhotoFile());
-                PM.setRemark(photoModel.getRemark());
-                pm.add(PM);
-            }
         }
 
 
         for (int i = 0; i < PLI.size(); i++) {
             for (int j = 0; j < pm.size(); j++) {
                 if (PLI.get(i).getINDEX().equals(pm.get(j).getINDEX())) {
-                    mLog.e("Pan", i + "  pm=" + pm.get(i).getINDEX());
                     photolist.add(pm.get(j));
                 }
             }
