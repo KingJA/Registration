@@ -38,6 +38,7 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.ToastUtil;
 import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
@@ -81,7 +82,7 @@ import static com.tdr.registration.util.VehiclesStorageUtils.VEHICLEBRANDNAME;
  * 捆绑型
  */
 public class RegisterInsuranceActivity extends BaseActivity implements View.OnClickListener {
-    private final String TAG = "RegisterInsuranceActivity";
+    private final String TAG = "Register保险";
     @BindView(R.id.image_back)
     ImageView imageBack;
     @BindView(R.id.text_title)
@@ -198,17 +199,30 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         }
 
         //TODO 从服务器获取保险数据
-//        String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
-//        if (!TextUtils.isEmpty(insurancesStr)) {
-//            List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
-//                    TypeToken<List<InsuranceModel>>() {
-//                    }.getType());
-//            fillInsuranceData(insurances);
-//        } else {
-//            getInsuranceData();
-//        }
+        String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
+        String interfaceVersion = (String) SharedPreferencesUtils.get("InterfaceVersion", "0");
+        if ("1".equals(interfaceVersion)) {
+            Log.e(TAG, "interfaceVersion:"+interfaceVersion+" 保险从服务器获取: " );
+            if (TextUtils.isEmpty(insurancesStr)) {
+                getInsuranceData();
+            }else{
+                List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
+                        TypeToken<List<InsuranceModel>>() {
+                        }.getType());
+                fillInsuranceData(insurances);
+            }
 
-        getInsuranceData();
+        } else {
+            Log.e(TAG, "interfaceVersion:"+interfaceVersion+" 保险从本地获取: " );
+            List<InsuranceModel>   insuranceModels = db.findAll(InsuranceModel.class);
+            if (insuranceModels != null) {
+                fillInsuranceData(insuranceModels);
+            }else{
+                ToastUtil.showToast("无保险信息");
+            }
+
+        }
+
     }
 
     public String getCurrentDate() {

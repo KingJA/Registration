@@ -615,6 +615,9 @@ public class LoginActivity extends AppCompatActivity {
             SharedPreferencesUtils.put("IsConfirm", "");
             SharedPreferencesUtils.put("IsScanDjh", "");
             SharedPreferencesUtils.put("IsScanCjh", "");
+
+            SharedPreferencesUtils.put("InterfaceVersion", "0");
+
             try {
                 JSONArray jsonArray = new JSONArray(appConfig);
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -694,15 +697,21 @@ public class LoginActivity extends AppCompatActivity {
                             String IsTransferReserve = jsonObject.getString("value");
                             SharedPreferencesUtils.put("IsTransferReserve", IsTransferReserve);
                             break;
+                        case "InterfaceVersion":
+                            String InterfaceVersion = jsonObject.getString("value");
+                            SharedPreferencesUtils.put("InterfaceVersion", InterfaceVersion);
+                            mLog.e("InterfaceVersion" + InterfaceVersion);
+                            break;
                         default:
                             break;
-
                     }
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            mLog.e("默认InterfaceVersion" + SharedPreferencesUtils.get("InterfaceVersion","0"));
+
             String FieldSetting = resultList.get(0).getFieldSetting();
             mLog.e("FieldSetting" + FieldSetting);
             if (FieldSetting != null && !FieldSetting.equals("")) {

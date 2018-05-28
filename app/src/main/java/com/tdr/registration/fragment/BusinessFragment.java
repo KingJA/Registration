@@ -120,7 +120,7 @@ public class BusinessFragment extends Fragment {
             "3700", "2700",
             "113", "1300106",
             "600", "199",
-            "114",  "122"};
+            "114", "122"};
 
     private MainRecyclerAdapter MRAdapter;
     private RecyclerAdapter mRecyclerAdapter;
@@ -252,7 +252,7 @@ public class BusinessFragment extends Fragment {
                     } else if (mAdapter.Name.equals(PreRegister_TJ)) {
                         bundle.putString("in", "TJ");
                         ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundle);
-                    }else if (mAdapter.Name.equals(PreRegister_TJ_FREE)) {
+                    } else if (mAdapter.Name.equals(PreRegister_TJ_FREE)) {
                         bundle.putString("in", "TJ");
                         ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity_TJ.class, bundle);
                     }
@@ -440,14 +440,14 @@ public class BusinessFragment extends Fragment {
                 bundle.putString("rolePower", "");
                 if (locCityName.startsWith("天津")) {
                     ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Tj_Activity.class);
-                }else{
+                } else {
                     ActivityUtil.goActivity(getActivity(), DX_PreRegistration_Statistics_Activity.class);
                 }
                 break;
             case Constants.JURISDICTION_PRE_REGISTRATION_SHANGPAI_FREE://天津车辆预登记（免费上牌）
                 IsDX_PR = false;
                 if (CarType.length > 1) {
-                    mAdapter.setName(locCityName.startsWith("天津")?PreRegister_TJ_FREE:PreRegister_TJ);
+                    mAdapter.setName(locCityName.startsWith("天津") ? PreRegister_TJ_FREE : PreRegister_TJ);
                     dialogRegistration.show();
                 } else {
                     VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, CarType[0]);
@@ -455,7 +455,7 @@ public class BusinessFragment extends Fragment {
                     bundlet1.putString("in", "TJ");
                     if (locCityName.startsWith("天津")) {
                         ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity_TJ.class, bundlet1);
-                    }else{
+                    } else {
                         ActivityUtil.goActivityWithBundle(getActivity(), PreFirstActivity.class, bundlet1);
                     }
 
@@ -543,10 +543,8 @@ public class BusinessFragment extends Fragment {
 //                        ActivityUtil.goActivity(getActivity(), InsuranceQueryActivity.class);
                         break;
                     case "101"://添加电动车
-
                         break;
                     case "102"://
-
                         break;
                     case "103"://删除电动车
                         break;
@@ -799,6 +797,14 @@ public class BusinessFragment extends Fragment {
                             String ChangeType = jsonObject.getString("value");
                             SharedPreferencesUtils.put("ChangeType", ChangeType);
                             mLog.e("ChangeType" + ChangeType);
+                            break;
+                        case "InterfaceVersion":
+                            String InterfaceVersion = jsonObject.getString("value");
+                            SharedPreferencesUtils.put("InterfaceVersion", InterfaceVersion);
+                            mLog.e("InterfaceVersion" + InterfaceVersion);
+                            break;
+
+                        default:
                             break;
                     }
 
