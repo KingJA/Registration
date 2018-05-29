@@ -537,10 +537,8 @@ public class BusinessFragment extends Fragment {
 //                        ActivityUtil.goActivity(getActivity(), InsuranceQueryActivity.class);
                         break;
                     case "101"://添加电动车
-
                         break;
                     case "102"://
-
                         break;
                     case "103"://删除电动车
                         break;
@@ -793,6 +791,14 @@ public class BusinessFragment extends Fragment {
                             String ChangeType = jsonObject.getString("value");
                             SharedPreferencesUtils.put("ChangeType", ChangeType);
                             mLog.e("ChangeType" + ChangeType);
+                            break;
+                        case "InterfaceVersion":
+                            String InterfaceVersion = jsonObject.getString("value");
+                            SharedPreferencesUtils.put("InterfaceVersion", InterfaceVersion);
+                            mLog.e("InterfaceVersion" + InterfaceVersion);
+                            break;
+
+                        default:
                             break;
                     }
 

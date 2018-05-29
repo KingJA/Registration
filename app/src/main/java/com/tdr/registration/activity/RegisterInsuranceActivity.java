@@ -39,6 +39,7 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.ToastUtil;
 import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
@@ -82,7 +83,7 @@ import static com.tdr.registration.util.VehiclesStorageUtils.VEHICLEBRANDNAME;
  * 捆绑型
  */
 public class RegisterInsuranceActivity extends BaseActivity implements View.OnClickListener {
-    private final String TAG = "RegisterInsuranceActivity";
+    private final String TAG = "Register保险";
     @BindView(R.id.image_back)
     ImageView imageBack;
     @BindView(R.id.text_title)
@@ -199,17 +200,30 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         }
 
         //TODO 从服务器获取保险数据
-//        String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
-//        if (!TextUtils.isEmpty(insurancesStr)) {
-//            List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
-//                    TypeToken<List<InsuranceModel>>() {
-//                    }.getType());
-//            fillInsuranceData(insurances);
-//        } else {
-//            getInsuranceData();
-//        }
+        String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
+        String interfaceVersion = (String) SharedPreferencesUtils.get("InterfaceVersion", "0");
+        if ("1".equals(interfaceVersion)) {
+            Log.e(TAG, "interfaceVersion:" + interfaceVersion + " 保险从服务器获取: ");
+            if (TextUtils.isEmpty(insurancesStr)) {
+                getInsuranceData();
+            } else {
+                List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
+                        TypeToken<List<InsuranceModel>>() {
+                        }.getType());
+                fillInsuranceData(insurances);
+            }
 
-        getInsuranceData();
+        } else {
+            Log.e(TAG, "interfaceVersion:" + interfaceVersion + " 保险从本地获取: ");
+            List<InsuranceModel> insuranceModels = db.findAll(InsuranceModel.class);
+            if (insuranceModels != null) {
+                fillInsuranceData(insuranceModels);
+            } else {
+                ToastUtil.showToast("无保险信息");
+            }
+
+        }
+
     }
 
     public String getCurrentDate() {
@@ -227,6 +241,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 .HTTP_PolicyConfig);
         RP.setAsJsonContent(true);
         RP.setBodyContent(JB.toString());
+        Log.e(TAG, "参数: " + JB.toString());
         HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -254,14 +269,14 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                         } else {
                             Utils.showToast("无data数据");
                         }
-                    }else if (errorCode == 1) {
+                    } else if (errorCode == 1) {
                         mProgressHUD.dismiss();
                         String data = jsonObject.getString("Data");
                         Utils.showToast(data);
                         SharedPreferencesUtils.put("token", "");
                         ActivityUtil.goActivityAndFinish(RegisterInsuranceActivity.this, LoginActivity
                                 .class);
-                    }  else {
+                    } else {
                         //错误
                         String errorMsg = jsonObject.getString("Data");
                         Utils.showToast(errorMsg);
@@ -639,12 +654,12 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         }
 //        Log.e("Pan", "JA=" + JA.length());
         String isFreeShangPai = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI);
-        String ecId="";
+        String ecId = "";
         if ("1".equals(isFreeShangPai)) {
             //免费上牌转备案登记
             ecId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.ECID);
-        }else{
-             ecId = UUID.randomUUID().toString().toUpperCase();
+        } else {
+            ecId = UUID.randomUUID().toString().toUpperCase();
         }
 
         try {
@@ -741,7 +756,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
             //免费上牌转备案登记
             Log.e(TAG, "免费上牌转备案登记: ");
             sendByHttp(obj);
-        }else{
+        } else {
             Log.e(TAG, "备案登记: ");
             sendByWebService(map, functionName);
         }
@@ -861,6 +876,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                                 int errorCode = jsonObject.getInt("ErrorCode");
                                 String data = jsonObject.getString("Data");
                                 if (errorCode == 0) {
+                                    VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.INSURANCES, "");
                                     mProgressHUD.dismiss();
                                     if ("登记成功".equals(data)) {
                                         showSuccess();

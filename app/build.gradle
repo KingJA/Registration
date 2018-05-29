@@ -8,8 +8,8 @@ android {
         applicationId "com.tdr.registration"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 20180427
-        versionName "1.5.2"
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
         multiDexEnabled true
 
         ndk {

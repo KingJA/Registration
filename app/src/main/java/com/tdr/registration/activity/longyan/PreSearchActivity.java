@@ -13,19 +13,23 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.activity.RegisterPersonalActivity;
+import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.base.BaseActivity;
 import com.tdr.registration.model.BaseInfo;
+import com.tdr.registration.model.DX_PreRegistrationModel;
 import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.model.PreRegistrationModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.TransferUtil;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
@@ -73,7 +77,7 @@ public class PreSearchActivity extends BaseActivity {
 
     private ZProgressHUD mProgressHUD;
     private Activity mActivity;
-    private String locCityName="";
+    private String locCityName = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,67 +117,108 @@ public class PreSearchActivity extends BaseActivity {
                     bundle.putSerializable("model", model);
                     bundle.putString("palteNumber", plateNumber);
                     bundle.putString("cardTypes", "98");
-                    ActivityUtil.goActivityWithBundle(PreSearchActivity.this, PreToOfficialFirstLongYanActivity.class, bundle);
+                    ActivityUtil.goActivityWithBundle(PreSearchActivity.this, PreToOfficialFirstLongYanActivity
+                    .class, bundle);
                     finish();
                 } else {*/
                 mProgressHUD.show();
                 HashMap<String, String> map = new HashMap<>();
                 map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
                 map.put("plateNumber", plateNumber);
-                WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_GETPREREGISTERS, map, new WebServiceUtils.WebServiceCallBack() {
-                    @Override
-                    public void callBack(String result) {
-                        if (result != null) {
-                            Utils.LOGE("Pan", "预登记转正式：" + result);
-                            try {
-                                JSONObject json = new JSONObject(result);
-                                int errorCode = json.getInt("ErrorCode");
-                                String data = json.getString("Data");
-                                if (errorCode == 0) {
-                                    if (checkJson(data) == 0) {
-                                        model = mGson.fromJson(data, new TypeToken<PreRegistrationModel>() {
-                                        }.getType());
-                                        if(locCityName.contains("龙岩")){
-                                            scanQR();
-                                        }else{
-                                            Bundle bundle = new Bundle();
-                                            for (PhotoModel photoModel : model.getPhotoListFile()) {
-                                                photoModel.setPhotoFile("");
-                                            }
-                                            bundle.putString("InType","Registration");
-                                            bundle.putSerializable("RegistrationModel", model);
-                                            SharedPreferencesUtils.put("preregisters", data);
-                                            ActivityUtil.goActivityWithBundle(PreSearchActivity.this, RegisterPersonalActivity.class, bundle);
+                WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""),
+                        Constants.WEBSERVER_GETPREREGISTERS, map, new WebServiceUtils.WebServiceCallBack() {
+                            @Override
+                            public void callBack(String result) {
+                                if (result != null) {
+                                    Utils.LOGE("Pan", "预登记转正式：" + result);
+                                    try {
+                                        JSONObject json = new JSONObject(result);
+                                        int errorCode = json.getInt("ErrorCode");
+                                        String data = json.getString("Data");
+                                        if (errorCode == 0) {
+                                            if (checkJson(data) == 0) {
+                                                Logger.json(data);
+                                                model = mGson.fromJson(data, new TypeToken<PreRegistrationModel>() {
+                                                }.getType());
+                                                if (locCityName.contains("龙岩")) {
+                                                    scanQR();
+                                                } else {
+                                                    Bundle bundle = new Bundle();
+                                                    for (PhotoModel photoModel : model.getPhotoListFile()) {
+                                                        photoModel.setPhotoFile("");
+                                                    }
+//                                            bundle.putString("InType","Registration");
+//                                            bundle.putSerializable("RegistrationModel", model);
+//                                            SharedPreferencesUtils.put("preregisters", data);
+                                                    DX_PreRegistrationModel newPreData = convertData(model);
+                                                    bundle.putString("InType", "PreRegistration");
+                                                    TransferUtil.save("PreRegistrationModel", newPreData);
+//                                            bundle.putSerializable("PreRegistrationModel", model);
+//                                            SharedPreferencesUtils.put("preregisters", data);
 
+                                                    ActivityUtil.goActivityWithBundle(PreSearchActivity.this,
+                                                            RegisterCarActivity.class, bundle);
+
+                                                }
+                                            } else {
+                                                dialogShow(data);
+                                            }
+                                            mProgressHUD.dismiss();
+                                        } else if (errorCode == 1) {
+                                            mProgressHUD.dismiss();
+                                            Utils.myToast(mContext, data);
+                                            //AppManager.getAppManager().finishActivity(HomeActivity.class);
+                                            SharedPreferencesUtils.put("token", "");
+                                            ActivityUtil.goActivityAndFinish(PreSearchActivity.this, LoginActivity
+                                                    .class);
+                                        } else {
+                                            Utils.myToast(mContext, data);
+                                            mProgressHUD.dismiss();
                                         }
-                                    } else {
-                                        dialogShow(data);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        mProgressHUD.dismiss();
+                                        Utils.myToast(mContext, "JSON解析出错");
                                     }
-                                    mProgressHUD.dismiss();
-                                } else if (errorCode == 1) {
-                                    mProgressHUD.dismiss();
-                                    Utils.myToast(mContext, data);
-                                    //AppManager.getAppManager().finishActivity(HomeActivity.class);
-                                    SharedPreferencesUtils.put("token", "");
-                                    ActivityUtil.goActivityAndFinish(PreSearchActivity.this, LoginActivity.class);
                                 } else {
-                                    Utils.myToast(mContext, data);
                                     mProgressHUD.dismiss();
+                                    Utils.myToast(mContext, "获取数据超时，请检查网络连接");
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                mProgressHUD.dismiss();
-                                Utils.myToast(mContext, "JSON解析出错");
                             }
-                        } else {
-                            mProgressHUD.dismiss();
-                            Utils.myToast(mContext, "获取数据超时，请检查网络连接");
-                        }
-                    }
-                });
+                        });
                 /*}*/
                 break;
+
+            default:
+
+                break;
         }
+    }
+
+    public static DX_PreRegistrationModel convertData(PreRegistrationModel preRegistrationModel) {
+        DX_PreRegistrationModel dxPreRegistrationModel = new DX_PreRegistrationModel();
+        dxPreRegistrationModel.setREGISTERID(preRegistrationModel.getREGISTERID());
+        dxPreRegistrationModel.setVEHICLETYPE(preRegistrationModel.getVEHICLETYPE());
+        dxPreRegistrationModel.setVEHICLEBRAND(preRegistrationModel.getVEHICLEBRAND());
+        dxPreRegistrationModel.setVEHICLEBRANDNAME(preRegistrationModel.getVEHICLEBRANDName());
+        dxPreRegistrationModel.setPLATENUMBER(preRegistrationModel.getPLATENUMBER());
+        dxPreRegistrationModel.setCARDTYPE(preRegistrationModel.getCARDTYPE());
+        dxPreRegistrationModel.setSHELVESNO(preRegistrationModel.getSHELVESNO());
+        dxPreRegistrationModel.setENGINENO(preRegistrationModel.getENGINENO());
+        dxPreRegistrationModel.setColorName(preRegistrationModel.getColorName());
+        dxPreRegistrationModel.setCOLORNAME(preRegistrationModel.getColorName());
+        dxPreRegistrationModel.setCOLORNAME2(preRegistrationModel.getCOLORNAME2());
+        dxPreRegistrationModel.setCOLORID(preRegistrationModel.getCOLORID());
+        dxPreRegistrationModel.setCOLORID2(preRegistrationModel.getCOLORID2());
+        dxPreRegistrationModel.setBUYDATE(preRegistrationModel.getBUYDATE().substring(0, 10));
+        dxPreRegistrationModel.setOWNERNAME(preRegistrationModel.getOWNERNAME());
+        dxPreRegistrationModel.setCARDID(preRegistrationModel.getCARDID());
+        dxPreRegistrationModel.setPHONE1(preRegistrationModel.getPHONE1());
+        dxPreRegistrationModel.setPHONE2(preRegistrationModel.getPHONE2());
+        dxPreRegistrationModel.setADDRESS(preRegistrationModel.getADDRESS());
+        dxPreRegistrationModel.setREMARK(preRegistrationModel.getREMARK());
+        dxPreRegistrationModel.setPhotoListFile(preRegistrationModel.getPhotoListFile());
+        return dxPreRegistrationModel;
     }
 
 
@@ -192,14 +237,15 @@ public class PreSearchActivity extends BaseActivity {
         bundle.putBoolean("isShow", true);
         bundle.putString("activity", "tianjin");
         bundle.putString("ButtonName", "请输入二维码");
-        ActivityUtil.goActivityForResultWithBundle(PreSearchActivity.this, QRCodeScanActivity.class, bundle, SCANNIN_GREQUEST_CODE);
+        ActivityUtil.goActivityForResultWithBundle(PreSearchActivity.this, QRCodeScanActivity.class, bundle,
+                SCANNIN_GREQUEST_CODE);
     }
 
 
     private NiftyDialogBuilder dialogBuilder;
     private NiftyDialogBuilder.Effectstype effectstype;
 
-    private void dialogShow( String msg) {
+    private void dialogShow(String msg) {
         if (dialogBuilder != null && dialogBuilder.isShowing())
             return;
         dialogBuilder = NiftyDialogBuilder.getInstance(this);
@@ -207,7 +253,8 @@ public class PreSearchActivity extends BaseActivity {
         effectstype = NiftyDialogBuilder.Effectstype.Fadein;
         dialogBuilder.withTitle("提示").withTitleColor("#333333").withMessage(msg)
                 .isCancelableOnTouchOutside(false).withEffect(effectstype).withButton1Text("重新查询")
-                .setCustomView(R.layout.custom_view, mContext).withButton2Text("继续登记").setButton1Click(new View.OnClickListener() {
+                .setCustomView(R.layout.custom_view, mContext).withButton2Text("继续登记").setButton1Click(new View
+                .OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogBuilder.dismiss();
@@ -216,11 +263,11 @@ public class PreSearchActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialogBuilder.dismiss();
-                String VEHICLETYPE= VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE);
-                if("".equals(VEHICLETYPE)){
+                String VEHICLETYPE = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE);
+                if ("".equals(VEHICLETYPE)) {
                     VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, "1");
                 }
-                ActivityUtil.goActivityAndFinish(PreSearchActivity.this, RegisterPersonalActivity.class);
+                ActivityUtil.goActivityAndFinish(PreSearchActivity.this, RegisterCarActivity.class);
             }
         }).show();
 
@@ -263,9 +310,10 @@ public class PreSearchActivity extends BaseActivity {
             }
         }
     }
-    private void GoPreRegistration(String labelNumber){
+
+    private void GoPreRegistration(String labelNumber) {
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.THEFTNO, labelNumber);
-        if(model.getVEHICLETYPE()==null|| model.getVEHICLETYPE().equals("")){
+        if (model.getVEHICLETYPE() == null || model.getVEHICLETYPE().equals("")) {
             model.setVEHICLETYPE("1");
         }
 
@@ -277,6 +325,7 @@ public class PreSearchActivity extends BaseActivity {
         ActivityUtil.goActivityWithBundle(PreSearchActivity.this, PreToOfficialFirstLongYanActivity.class, bundle1);
         finish();
     }
+
     private void sevephoto() {
         for (PhotoModel photoModel : model.getPhotoListFile()) {
             SharedPreferencesUtils.put(photoModel.getPhoto(), photoModel.getPhotoFile());
