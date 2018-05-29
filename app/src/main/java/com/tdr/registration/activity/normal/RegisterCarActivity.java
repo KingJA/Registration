@@ -1162,10 +1162,13 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 @Override
                 public void onClick(View v) {
                     dialogBuilder.dismiss();
+                    VehiclesStorageUtils.clearData();
+
                     SharedPreferencesUtils.put("preregisters", "");
                     SharedPreferencesUtils.put("preregistration", "");
                     SharedPreferencesUtils.put("PhotoListFile", "");
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    TransferUtil.remove("PreRegistrationModel");
                     TransferUtil.remove("PhotoList");
                     finish();
                 }
@@ -1791,8 +1794,10 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (bikeCodes == null) {
             bikeCodes = new ArrayList<BikeCode>();
         }
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getCOLORID());
+        if (bikeCodes != null && bikeCodes.size() > 0) {
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
+
+        }
 //        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" +
 // " and " + "type=\'4\'");
         List<BikeCode> bikeCodeList = null;
@@ -1805,7 +1810,10 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (bikeCodeList == null) {
             bikeCodeList = new ArrayList<BikeCode>();
         }
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, bikeCodeList.get(0).getName());
+        if (bikeCodeList != null && bikeCodeList.size() > 0) {
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, bikeCodeList.get(0).getName());
+            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getCOLORID());
+        }
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preModel.getSHELVESNO());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preModel.getENGINENO());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, preModel.getCARDTYPE());

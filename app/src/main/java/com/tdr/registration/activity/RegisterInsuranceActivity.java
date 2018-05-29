@@ -679,6 +679,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                                 int errorCode = jsonObject.getInt("ErrorCode");
                                 String data = jsonObject.getString("Data");
                                 if (errorCode == 0) {
+                                    VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.INSURANCES,"");
                                     mProgressHUD.dismiss();
                                     if ("登记成功".equals(data)) {
                                         showSuccess();
