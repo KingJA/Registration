@@ -83,7 +83,7 @@ import java.util.regex.Pattern;
 /**
  * 信息变更全国版
  */
-@ContentView(R.layout.activity_register_first_normal2)
+@ContentView(R.layout.activity_register_car)
 public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnClickListener, LGImgCompressor.CompressListener, AdapterView.OnItemClickListener {
     private final static int SCANNIN_GREQUEST_CODE = 1991;//二维码回调值
     private final static int SCANNIN_QR_CODE = 0514;//二维码回调值*

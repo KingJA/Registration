@@ -49,6 +49,7 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.ItemClickListener;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.SpSir;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.mLog;
@@ -800,7 +801,8 @@ public class BusinessFragment extends Fragment {
                             break;
                         case "InterfaceVersion":
                             String InterfaceVersion = jsonObject.getString("value");
-                            SharedPreferencesUtils.put("InterfaceVersion", InterfaceVersion);
+//                            SharedPreferencesUtils.put("InterfaceVersion", InterfaceVersion);
+                            SpSir.getDefault().setInterfaceVersion(InterfaceVersion);
                             mLog.e("InterfaceVersion" + InterfaceVersion);
                             break;
 

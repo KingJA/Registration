@@ -310,7 +310,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_register_first_normal2);
+        setContentView(R.layout.activity_register_car);
         ButterKnife.bind(this);
         Version = (String) SharedPreferencesUtils.get("Version", "");
 /*获取预登记传递的信息*/

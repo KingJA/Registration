@@ -35,6 +35,7 @@ public class SpSir {
         save(SpConstants.ENGINENO_REGULAR, value);
     }
 
+
     public String getEngineNoRegular() {
         return get(SpConstants.ENGINENO_REGULAR, SpConstants.EMPTY);
     }
@@ -46,6 +47,17 @@ public class SpSir {
     public String getShelvesNoRegular() {
         return get(SpConstants.SHELVESNO_REGULAR, SpConstants.EMPTY);
     }
+
+
+
+    public void setInterfaceVersion(String value) {
+        save(SpConstants.INTERFACE_VERSION, value);
+    }
+
+    public String getInterfaceVersion() {
+        return get(SpConstants.INTERFACE_VERSION, SpConstants.EMPTY);
+    }
+
 
 
     public String get(String key, String defValue) {
