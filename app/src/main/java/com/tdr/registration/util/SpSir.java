@@ -47,6 +47,14 @@ public class SpSir {
         return get(SpConstants.SHELVESNO_REGULAR, SpConstants.EMPTY);
     }
 
+    public void setInterfaceVersion(String value) {
+        save(SpConstants.INTERFACE_VERSION, value);
+    }
+
+    public String getInterfaceVersion() {
+        return get(SpConstants.INTERFACE_VERSION, SpConstants.EMPTY);
+    }
+
 
     public String get(String key, String defValue) {
         return defaultSp.getString(key, defValue);

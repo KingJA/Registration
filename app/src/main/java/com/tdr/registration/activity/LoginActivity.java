@@ -1,7 +1,6 @@
 package com.tdr.registration.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,13 +9,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,8 +32,6 @@ import com.tdr.registration.model.DetailBean;
 import com.tdr.registration.model.FieldSettingModel;
 import com.tdr.registration.model.InsuranceModel;
 import com.tdr.registration.model.LoginModel;
-import com.tdr.registration.update.UpdateManager;
-import com.tdr.registration.update.strategy.WebServiceStrategy;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.AppInfoUtil;
 import com.tdr.registration.util.CheckUpdate;
@@ -45,13 +40,12 @@ import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.DESCoder;
 import com.tdr.registration.util.PermissionUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.SpSir;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ClearEditTextView;
-import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 import com.umeng.analytics.MobclickAgent;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -616,7 +610,9 @@ public class LoginActivity extends AppCompatActivity {
             SharedPreferencesUtils.put("IsScanDjh", "");
             SharedPreferencesUtils.put("IsScanCjh", "");
 
-            SharedPreferencesUtils.put("InterfaceVersion", "0");
+//            SharedPreferencesUtils.put("InterfaceVersion", "0");
+            SpSir.getDefault().setInterfaceVersion("0");
+
 
             try {
                 JSONArray jsonArray = new JSONArray(appConfig);
@@ -699,7 +695,7 @@ public class LoginActivity extends AppCompatActivity {
                             break;
                         case "InterfaceVersion":
                             String InterfaceVersion = jsonObject.getString("value");
-                            SharedPreferencesUtils.put("InterfaceVersion", InterfaceVersion);
+                            SpSir.getDefault().setInterfaceVersion(InterfaceVersion);
                             mLog.e("InterfaceVersion" + InterfaceVersion);
                             break;
                         default:
