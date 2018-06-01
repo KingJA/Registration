@@ -208,11 +208,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                         String signTypes = dataObject.getString("SignType");
                         List<SignType> signTypeList = mGson.fromJson(signTypes, new TypeToken<List<SignType>>() {
                         }.getType());
-                        for (SignType signType : signTypeList) {
-                        }
-                        for (SignType signType : signTypeList) {
-                            Log.e(TAG, "signType: " + signType.toString());
-                        }
+                        InterfaceChecker.setElectroCar(signTypeList);
                     } else {
                         ToastUtil.showToast(data);
                     }

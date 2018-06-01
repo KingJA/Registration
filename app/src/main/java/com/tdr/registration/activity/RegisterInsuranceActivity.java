@@ -871,6 +871,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                     @Override
                     public void callBack(String result) {
                         if (result != null) {
+                            Log.e(TAG, "result: "+result );
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 int errorCode = jsonObject.getInt("ErrorCode");

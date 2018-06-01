@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,11 @@ import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.AppUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
+import com.tdr.registration.util.InterfaceChecker;
 import com.tdr.registration.util.PhotoUtils;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.SpSir;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
@@ -64,6 +67,7 @@ import java.util.regex.Pattern;
  */
 @ContentView(R.layout.activity_car_label_change)
 public class CarLabelBindingActivity extends Activity {
+    private static final String TAG = "标签变更";
     @ViewInject(R.id.IV_Back)
     ImageView IV_Back;
     @ViewInject(R.id.TV_Title)
@@ -146,7 +150,8 @@ public class CarLabelBindingActivity extends Activity {
             TV_OldLabelNum.setText(CL.getEquipments().get(Position).getORI_THEFTNO());
             RL_LabelType.setEnabled(false);
             Picasso.with(mActivity)
-                    .load(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants.HTTP_GetPhotoUrl+CL.getEquipments().get(Position).getExtraInfo().getPhoto())
+                    .load(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants.HTTP_GetPhotoUrl +
+                            CL.getEquipments().get(Position).getExtraInfo().getPhoto())
                     .noFade()
                     .into(new Target() {
                         @Override
@@ -250,7 +255,8 @@ public class CarLabelBindingActivity extends Activity {
             e.printStackTrace();
         }
 
-        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants.HTTP_Bind);
+        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_Bind);
         RP.setAsJsonContent(true);
         RP.setBodyContent(JB.toString());
         Utils.LOGE("Pan", "Bind:" + JB.toString());
@@ -311,8 +317,8 @@ public class CarLabelBindingActivity extends Activity {
             Utils.showToast("请选择标签类型");
             return false;
         }
-        mLog.e("CarRegular="+CarRegular);
-        if(CarRegular!=null&&!CarRegular.equals("")){
+        mLog.e("CarRegular=" + CarRegular);
+        if (CarRegular != null && !CarRegular.equals("")) {
             Pattern pattern = Pattern.compile(CarRegular);
             Matcher matcher = pattern.matcher(label);
             if (!matcher.matches()) {
@@ -328,10 +334,36 @@ public class CarLabelBindingActivity extends Activity {
     }
 
     private void getSignType() {
-        mProgressHUD.show();
+        if (InterfaceChecker.isNewInterface()) {
+            getSignTypeByNew();
+        } else {
+            getSignTypeByOld();
+        }
+    }
 
+    private void getSignTypeByNew() {
+        if (InType.equals("Add")) {
+            LT = InterfaceChecker.getExtraSignTypes(SpSir.getDefault().getBindTagVehicleType());
+            mAdapter = new MyAdapter();
+        } else if (InType.equals("Change")) {
+            LT = InterfaceChecker.getChangeSignTypes(SpSir.getDefault().getBindTagVehicleType());
+            for (LabelType labelType : LT) {
+                if (labelType.getValue() == CL.getEquipments().get(Position).getSIGNTYPE()) {
+                    CarRegular = labelType.getRegular();
+                    TV_Label_Type.setText(labelType.getName());
+                    SIGNTYPE = labelType.getValue();
+                    Log.e(TAG, "CarRegular: "+ labelType.getRegular() );
+                }
+            }
+        }
+        Log.e(TAG, "LT: "+LT.size() );
+    }
+
+    private void getSignTypeByOld() {
+        mProgressHUD.show();
         mLog.e("Http=" + (String) SharedPreferencesUtils.get("httpUrl", "") + Constants.HTTP_signtype);
-        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim()+ Constants.HTTP_signtype);
+        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_signtype);
         HttpUtils.post(RP, new HttpUtils.HttpPostCallBack() {
             public void postcallback(String Finish, String result) {
                 if (Finish.equals(HttpUtils.Success)) {

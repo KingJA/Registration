@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Binder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -25,6 +26,7 @@ import com.tdr.registration.util.AllCapTransformationMethod;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.SpSir;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
@@ -49,6 +51,7 @@ import java.util.List;
 @ContentView(R.layout.activity_label_binding_query)
 public class LabelBindingCarQueryActivity extends  Activity{
 
+    private static final String TAG = "标签绑定";
     @ViewInject(R.id.IV_Back)
     ImageView IV_Back;
     @ViewInject(R.id.ET_PlateNumber)
@@ -124,6 +127,10 @@ public class LabelBindingCarQueryActivity extends  Activity{
                             if (errorCode == 0) {
                                 CarLabel CL = mGson.fromJson(data, new TypeToken<CarLabel>() {
                                 }.getType());
+
+                                Log.e(TAG, "VehicleType: "+CL.getVehicleType() );
+                                SpSir.getDefault().setBindTagVehicleType(CL.getVehicleType());
+
                                 dialogShow(CL);
                             } else if (errorCode==1){
                                 Utils.myToast(mContext, data);

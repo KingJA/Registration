@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,7 +42,6 @@ import com.tdr.registration.activity.PayQcodeActivity;
 import com.tdr.registration.activity.PreListActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.activity.RegisterPersonalActivity;
-import com.tdr.registration.activity.ShangPaiListActivity;
 import com.tdr.registration.activity.ShangPaiQueryActivity;
 import com.tdr.registration.activity.UnpaidActivity;
 import com.tdr.registration.adapter.ColorAdapter;
@@ -59,6 +59,7 @@ import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.model.PreModel;
 import com.tdr.registration.model.PreRegistrationModel;
 import com.tdr.registration.model.ShangPaiInfo;
+import com.tdr.registration.model.SignType;
 import com.tdr.registration.model.SortModel;
 import com.tdr.registration.model.UploadInsuranceModel;
 import com.tdr.registration.util.ActivityUtil;
@@ -68,6 +69,7 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.DESCoder;
 import com.tdr.registration.util.HttpUtils;
+import com.tdr.registration.util.InterfaceChecker;
 import com.tdr.registration.util.PhotoUtils;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
 import com.tdr.registration.util.RegularChecker;
@@ -115,6 +117,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     private final static int BRAND_CODE = 2016;//品牌回调
     private final static int CONFIRMATION_INSURANCE = 1212;//确认保险
     private final static int PRE_SHOW_CODE = 1314;//预登记展示回调值
+    private static final String TAG = "RegisterCarActivity";
 
     @BindView(R.id.text_title)
     TextView textTitle;
@@ -315,7 +318,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_register_first_normal2);
+        setContentView(R.layout.activity_register_car);
         ButterKnife.bind(this);
         Version = (String) SharedPreferencesUtils.get("Version", "");
 /*获取预登记传递的信息*/
@@ -807,17 +810,49 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         LL_tagId.setVisibility(View.GONE);
 
         mLog.e(isScanLabel.equals("1") ? "启用扫标签：" + isScanLabel : "禁用扫标签：" + isScanLabel);
-        if (isScanLabel.equals("1")) {
-            RL_scanTheft.setVisibility(View.VISIBLE);
+
+
+
+        if (InterfaceChecker.isNewInterface()) {
+            Log.e(TAG, "新接口: " );
+            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+            //新接口方式
+            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+
+            Log.e(TAG, "标签数: "+signTypes.size() );
+            if (signTypes.size() == 1) {
+                Log.e(TAG, "1个标签: " );
+                RL_scanTheft.setVisibility(View.VISIBLE);
+                RL_scanTheft2.setVisibility(View.GONE);
+                TV_lable.setText(signTypes.get(0).getName());
+                REGULAR=signTypes.get(0).getRegular();
+            } else if (signTypes.size() == 2||signTypes.size() == 3) {
+                Log.e(TAG, "2个标签: " );
+                RL_scanTheft.setVisibility(View.VISIBLE);
+                RL_scanTheft2.setVisibility(View.VISIBLE);
+                TV_lable.setText(signTypes.get(0).getName());
+                TV_lable2.setText(signTypes.get(1).getName());
+                REGULAR=signTypes.get(0).getRegular();
+                REGULAR2=signTypes.get(1).getRegular();
+            }
+        }else{
+            Log.e(TAG, "老接口: " );
+            //老接口方式
             if (ISDOUBLESIGN.equals("1")) {
+                RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.VISIBLE);
             } else {
+                RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.GONE);
             }
-        } else if (isScanLabel.equals("0")) {
-            RL_scanTheft.setVisibility(View.GONE);
-            RL_scanTheft2.setVisibility(View.GONE);
         }
+        Log.e(TAG, "REGULAR: "+REGULAR );
+        Log.e(TAG, "REGULAR2: "+REGULAR2 );
+
+
+
 
         if (city.contains("天津")) {
             isManualInputPlate = false;
@@ -2272,6 +2307,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             return false;
         }
 
+        //TODO
         if (isScanLabel.equals("1")) {
             String theftNo = TV_theftNo.getText().toString().trim();
             if (theftNo.equals("")) {
@@ -2286,6 +2322,64 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 }
             }
         }
+
+        if (InterfaceChecker.isNewInterface()) {
+            Log.e(TAG, "新接口: " );
+            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+            //新接口方式
+            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+
+            Log.e(TAG, "标签数: "+signTypes.size() );
+            if (signTypes.size() == 1) {
+                Log.e(TAG, "1个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
+            } else if (signTypes.size() == 2||signTypes.size() == 3) {
+                Log.e(TAG, "2个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
+                String theftNo2 = TV_theftNo2.getText().toString().trim();
+                if (theftNo2.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
+                    return false;
+                }
+            }
+        }else{
+            Log.e(TAG, "老接口: " );
+            //老接口方式
+            if (ISDOUBLESIGN.equals("1")) {
+                Log.e(TAG, "2个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
+                String theftNo2 = TV_theftNo2.getText().toString().trim();
+                if (theftNo2.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
+                    return false;
+                }
+            } else {
+                Log.e(TAG, "1个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
+            }
+        }
+
+
+
+
         String shelvesNo = etShelvesNo.getText().toString().toUpperCase().trim();
         if (!RegularChecker.checkShelvesNoRegular(shelvesNo)) {
             return false;

@@ -1,6 +1,7 @@
 package com.tdr.registration.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
@@ -15,6 +16,8 @@ import java.util.regex.Pattern;
  */
 public class RegularChecker {
 
+    private static final String TAG = "RegularChecker";
+
     private static boolean check(String regular, String value, String tip) {
         Pattern pattern = Pattern.compile(regular);
         Matcher matcher = pattern.matcher(value);
@@ -26,6 +29,7 @@ public class RegularChecker {
     }
 
     public static boolean checkEngineNoRegular(String engineNo) {
+        Log.e(TAG, "校验engineNo: "+engineNo );
         if (TextUtils.isEmpty(engineNo)) {
             ToastUtil.showToast("请输入电机号");
             return false;
@@ -34,7 +38,8 @@ public class RegularChecker {
             return true;
         }
         String engineNoRegular = SpSir.getDefault().getEngineNoRegular();
-        if (TextUtils.isEmpty(engineNoRegular)) {
+        Log.e(TAG, "校验engineNoRegular: "+engineNoRegular );
+        if (TextUtils.isEmpty(engineNoRegular)||"null".equals(engineNoRegular)) {
             return true;
         }
         return check(engineNoRegular, engineNo, "电机号不匹配");
@@ -49,7 +54,7 @@ public class RegularChecker {
             return true;
         }
         String shelvesNoRegular = SpSir.getDefault().getShelvesNoRegular();
-        if (TextUtils.isEmpty(shelvesNoRegular)) {
+        if (TextUtils.isEmpty(shelvesNoRegular)||"null".equals(shelvesNoRegular)) {
             return true;
         }
         return check(shelvesNoRegular, shelvesNo, "车架号不匹配");
