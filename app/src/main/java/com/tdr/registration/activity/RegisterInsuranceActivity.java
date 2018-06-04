@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.InsuranceAdapter;
 import com.tdr.registration.base.BaseActivity;
@@ -871,7 +872,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                     @Override
                     public void callBack(String result) {
                         if (result != null) {
-                            Log.e(TAG, "result: "+result );
+                            Logger.json(result);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 int errorCode = jsonObject.getInt("ErrorCode");

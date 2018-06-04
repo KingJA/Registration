@@ -112,7 +112,7 @@ public class CarLabelBindingActivity extends Activity {
     Button BT_Search;
 
     private Activity mActivity;
-    private ArrayList<LabelPhotoListAdapter.DrawableList> drawablelist;
+    private ArrayList<LabelPhotoListAdapter.DrawableList> drawablelist=new ArrayList<>();;
     private LabelPhotoListAdapter PLA;
     private CarLabel CL;
     private String InType;
@@ -140,6 +140,7 @@ public class CarLabelBindingActivity extends Activity {
         mProgressHUD.setSpinnerType(ZProgressHUD.SIMPLE_ROUND_SPINNER);
         InType = getIntent().getExtras().getString("InType");
         CL = (CarLabel) getIntent().getExtras().getSerializable("CarInfo");
+        PLA = new LabelPhotoListAdapter(mActivity);
         if (InType.equals("Add")) {
             TV_Title.setText("绑定新标签");
             LL_Label_Change.setVisibility(View.GONE);
@@ -149,6 +150,8 @@ public class CarLabelBindingActivity extends Activity {
             LL_LabelNum.setVisibility(View.GONE);
             TV_OldLabelNum.setText(CL.getEquipments().get(Position).getORI_THEFTNO());
             RL_LabelType.setEnabled(false);
+            Log.e(TAG, "标签图片url: "+((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants.HTTP_GetPhotoUrl +
+                    CL.getEquipments().get(Position).getExtraInfo().getPhoto());
             Picasso.with(mActivity)
                     .load(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants.HTTP_GetPhotoUrl +
                             CL.getEquipments().get(Position).getExtraInfo().getPhoto())
@@ -192,9 +195,9 @@ public class CarLabelBindingActivity extends Activity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         RL_PhotoList.setLayoutManager(linearLayoutManager);
-        drawablelist = new ArrayList<>();
+//        drawablelist = new ArrayList<>();
         RL_PhotoList.addItemDecoration(new RecyclerViewItemDecoration());
-        PLA = new LabelPhotoListAdapter(mActivity);
+
         PLA.setOnItemClickLitener(new LabelPhotoListAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -244,6 +247,7 @@ public class CarLabelBindingActivity extends Activity {
                 JB.put("THEFTNO", ET_LabelNum.getText().toString().trim());
                 JB.put("SIGNTYPE", SIGNTYPE + "");
                 JB.put("ExtraInfo", JB1);
+                JB.put("LISTID", "ADD");
             } else if (InType.equals("Change")) {
                 JB.put("ECID", CL.getEcId());
                 JB.put("THEFTNO", ET_NewLabelNum.getText().toString().trim());
@@ -343,16 +347,17 @@ public class CarLabelBindingActivity extends Activity {
 
     private void getSignTypeByNew() {
         if (InType.equals("Add")) {
-            LT = InterfaceChecker.getExtraSignTypes(SpSir.getDefault().getBindTagVehicleType());
+            LT = InterfaceChecker.getExtraSignTypes(CL.getVehicleType());
             mAdapter = new MyAdapter();
         } else if (InType.equals("Change")) {
-            LT = InterfaceChecker.getChangeSignTypes(SpSir.getDefault().getBindTagVehicleType());
+            LT = InterfaceChecker.getChangeSignTypes(CL.getVehicleType());
             for (LabelType labelType : LT) {
                 if (labelType.getValue() == CL.getEquipments().get(Position).getSIGNTYPE()) {
                     CarRegular = labelType.getRegular();
                     TV_Label_Type.setText(labelType.getName());
                     SIGNTYPE = labelType.getValue();
                     Log.e(TAG, "CarRegular: "+ labelType.getRegular() );
+                    Log.e(TAG, "Name: "+ labelType.getName() );
                 }
             }
         }

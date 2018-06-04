@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -240,6 +239,12 @@ public class LabelBindingListActivity extends Activity {
             viewHolder.TV_ID.setText(Label.getORI_THEFTNO());
             viewHolder.TV_LabelName.setText(Label.getSIGNTYPENAME());
             viewHolder.TV_BindingTime.setText("绑定时间:" + Label.getBindTime());
+            if (Label.getSIGNTYPE() < 3) {
+                viewHolder.TV_Replace.setVisibility(View.GONE);
+            }else{
+                viewHolder.TV_Replace.setVisibility(View.VISIBLE);
+            }
+
             viewHolder.TV_Replace.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

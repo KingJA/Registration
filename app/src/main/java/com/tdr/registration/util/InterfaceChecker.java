@@ -93,7 +93,7 @@ public class InterfaceChecker {
         List<SignType> signTypes = getSignTypes(vehicleType);
         List<LabelType> results = new ArrayList<>();
         for (SignType signType : signTypes) {
-            if (signType.getNumber() <= 2) {
+            if (signType.getNumber() >= 2) {
                 LabelType labelType = new LabelType();
                 labelType.setName(signType.getName());
                 labelType.setValue(signType.getNumber());

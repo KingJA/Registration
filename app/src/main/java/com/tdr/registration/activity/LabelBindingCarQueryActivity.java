@@ -129,7 +129,6 @@ public class LabelBindingCarQueryActivity extends  Activity{
                                 }.getType());
 
                                 Log.e(TAG, "VehicleType: "+CL.getVehicleType() );
-                                SpSir.getDefault().setBindTagVehicleType(CL.getVehicleType());
 
                                 dialogShow(CL);
                             } else if (errorCode==1){
