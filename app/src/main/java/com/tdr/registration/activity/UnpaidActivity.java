@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.UnPaidListAdapter;
 import com.tdr.registration.base.BaseActivity;
@@ -29,6 +30,7 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.PayResult;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.ToastUtil;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.WebServiceUtils;
 import com.tdr.registration.util.mLog;
@@ -230,11 +232,17 @@ public class UnpaidActivity extends BaseActivity {
                 new WebServiceUtils.WebServiceCallBack() {
                     @Override
                     public void callBack(String result) {
+                        RL_UnPaid_Loding.setVisibility(View.GONE);
+                        Logger.json(result);
                         if (result != null) {
                             try {
                                 JSONObject JB = new JSONObject(result);
                                 String data = JB.getString("Data");
-                                Utils.LOGE("Pan", data);
+                                int errorcode = JB.getInt("ErrorCode");
+                                if (errorcode != 0) {
+                                    ToastUtil.showToast(data);
+                                    return;
+                                }
                                 PIL = mGson.fromJson(data, new TypeToken<List<PayInsurance>>() {
                                 }.getType());
                                 if (PIL != null) {
@@ -261,6 +269,7 @@ public class UnpaidActivity extends BaseActivity {
     public void refleshOrderCount(FleshOrderCountEvent event) {
         initdate();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

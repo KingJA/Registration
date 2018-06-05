@@ -32,6 +32,16 @@ public class DX_PreRegistrationModel  implements Serializable {
     private String CAPACITY;
     private String LENGTH;
     private String WIDE;
+
+    public String getECID() {
+        return ECID;
+    }
+
+    public void setECID(String ECID) {
+        this.ECID = ECID;
+    }
+
+    private String ECID;
     private String HIGH;
     private String HEAVY;
     private String ISPEDAL;

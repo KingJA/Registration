@@ -523,6 +523,26 @@
             android:name=".activity.PayQcodeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!-- 上牌查询 -->
+        <activity
+            android:name=".activity.ShangPaiQueryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!-- 免费上牌车 -->
+        <activity
+            android:name=".activity.ShangPaiCarActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+      <!-- 免费上牌人 -->
+        <activity
+            android:name=".activity.ShangPaiPersonalActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+     <!-- 免费上牌人 -->
+        <activity
+            android:name=".activity.ShangPaiListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
 
         <!--OCR-->
         <activity

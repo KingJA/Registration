@@ -9,6 +9,16 @@ import java.util.List;
 
 public class CarLabel implements Serializable {
     String VehicleBrandName;
+
+    public String getVehicleType() {
+        return VehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        VehicleType = vehicleType;
+    }
+
+    String VehicleType;
     String ColorName;
     String ColorName2;
     String EcId;

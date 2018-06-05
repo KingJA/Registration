@@ -1,5 +1,7 @@
 package com.tdr.registration.util;
 
+import android.util.Log;
+
 import com.orhanobut.logger.Logger;
 
 import org.xutils.common.Callback;
@@ -11,6 +13,7 @@ public class HttpUtils {
     public static final String Error = "onError";
     public static final String Cancelled = "onCancelled";
     public static final String Finished = "onFinished";
+    private static final String TAG = "HttpUtils";
 
     public static Callback.Cancelable get(RequestParams RP, final HttpCallBack httpcallback) {
         RP.addHeader("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -22,6 +25,7 @@ public class HttpUtils {
             @Override
             public void onSuccess(String result) {
                 Logger.json(result);
+                Log.e(TAG, "onSuccess: "+result);
                 httpcallback.onSuccess(result);
             }
 
@@ -59,7 +63,7 @@ public class HttpUtils {
             @Override
             public void onSuccess(String result) {
                 httpcallback.postcallback(Success, result);
-                mLog.e("onSuccess:" + result);
+                Log.d(TAG,"onSuccess:" + result);
                 Logger.json(result);
             }
 

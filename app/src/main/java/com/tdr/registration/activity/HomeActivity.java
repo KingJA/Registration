@@ -1,6 +1,5 @@
 package com.tdr.registration.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,14 +8,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.HomePagerAdapter;
 import com.tdr.registration.fragment.BusinessFragment;
 import com.tdr.registration.fragment.InspectFragment;
 import com.tdr.registration.fragment.SettingFragment;
+import com.tdr.registration.model.SignType;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
+import com.tdr.registration.util.InterfaceChecker;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.SpSir;
 import com.tdr.registration.util.ToastUtil;
@@ -76,14 +79,18 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     private SettingFragment SF;
 
     private long firstTime;
+    private Gson mGson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+        mGson = new Gson();
         initview();
         Utils.CompleteConfig();//补齐缺失字段
-        GetSetting();
+        if (InterfaceChecker.isNewInterface()) {
+            GetSetting();
+        }
     }
 
     /**
@@ -173,12 +180,14 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 break;
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         Utils.getServerTime();
 
     }
+
     private void GetSetting() {
         mLog.e("GetSetting");
         RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
@@ -196,7 +205,11 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                         String shelvesNoRegular = dataObject.getString("ShelvesNoRegular");
                         SpSir.getDefault().setEngineNoRegular(engineNoRegular);
                         SpSir.getDefault().setShelvesNoRegular(shelvesNoRegular);
-                    }else{
+                        String signTypes = dataObject.getString("SignType");
+                        List<SignType> signTypeList = mGson.fromJson(signTypes, new TypeToken<List<SignType>>() {
+                        }.getType());
+                        InterfaceChecker.setElectroCar(signTypeList);
+                    } else {
                         ToastUtil.showToast(data);
                     }
                 } catch (JSONException e) {
@@ -206,7 +219,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
 
             @Override
             public void onError(Throwable ex) {
-                Logger.d("ex:"+ex.toString());
+                Logger.d("ex:" + ex.toString());
             }
         });
     }

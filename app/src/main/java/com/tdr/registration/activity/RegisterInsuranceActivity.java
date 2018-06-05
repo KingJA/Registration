@@ -21,8 +21,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.InsuranceAdapter;
 import com.tdr.registration.base.BaseActivity;
@@ -202,10 +204,10 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         String insurancesStr = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.INSURANCES);
         String interfaceVersion = (String) SharedPreferencesUtils.get("InterfaceVersion", "0");
         if ("1".equals(interfaceVersion)) {
-            Log.e(TAG, "interfaceVersion:"+interfaceVersion+" 保险从服务器获取: " );
+            Log.e(TAG, "interfaceVersion:" + interfaceVersion + " 保险从服务器获取: ");
             if (TextUtils.isEmpty(insurancesStr)) {
                 getInsuranceData();
-            }else{
+            } else {
                 List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
                         TypeToken<List<InsuranceModel>>() {
                         }.getType());
@@ -213,11 +215,11 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
             }
 
         } else {
-            Log.e(TAG, "interfaceVersion:"+interfaceVersion+" 保险从本地获取: " );
-            List<InsuranceModel>   insuranceModels = db.findAll(InsuranceModel.class);
+            Log.e(TAG, "interfaceVersion:" + interfaceVersion + " 保险从本地获取: ");
+            List<InsuranceModel> insuranceModels = db.findAll(InsuranceModel.class);
             if (insuranceModels != null) {
                 fillInsuranceData(insuranceModels);
-            }else{
+            } else {
                 ToastUtil.showToast("无保险信息");
             }
 
@@ -240,7 +242,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 .HTTP_PolicyConfig);
         RP.setAsJsonContent(true);
         RP.setBodyContent(JB.toString());
-        Log.e(TAG, "参数: "+JB.toString() );
+        Log.e(TAG, "参数: " + JB.toString());
         HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -268,7 +270,7 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                         } else {
                             Utils.showToast("无data数据");
                         }
-                    }else if (errorCode == 1) {
+                    } else if (errorCode == 1) {
                         mProgressHUD.dismiss();
                         String data = jsonObject.getString("Data");
                         Utils.showToast(data);
@@ -390,8 +392,93 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
     }
 
     private void submit() {
-//        String deadLine = "";//保险年限
-        initInsuranceData();
+        uploadInsuranceModels = new ArrayList<>();
+        ConfirmInsuranceModel CIM = new ConfirmInsuranceModel();
+        List<ConfirmInsuranceModel.Insurance> CIMIL = new ArrayList<>();
+        ConfirmInsuranceModel.Insurance CIMI = null;
+        for (int i = 0; i < listInsurance.getChildCount(); i++) {
+            String RemarkID = "";
+            InsuranceModel IM = insuranceModelsList.get(i);
+            UploadInsuranceModel uploadInsuranceModel = new UploadInsuranceModel();
+            View v = listInsurance.getChildAt(i);
+            CheckBox checkInsurance = (CheckBox) v.findViewById(R.id.check_insurance);
+            RadioGroupEx group = (RadioGroupEx) v.findViewById(R.id.group_insurance);
+
+            CIMI = new ConfirmInsuranceModel.Insurance();
+
+            CIMI.setHyperlink(IM.getContract());
+            CIMI.setTitle(IM.getName());
+            CIMI.setSubTitle(IM.getSubTitle());
+            for (int i1 = 0; i1 < IM.getDetail().size(); i1++) {
+                RadioButton RB = (RadioButton) group.getChildAt(i1);
+                if (RB.isChecked()) {
+                    if (Version.equals("1")) {
+                        RemarkID = IM.getDetail().get(i1).getRemarkID();
+                    } else {
+                        RemarkID = IM.getDetail().get(i1).getDeadLine();
+                    }
+                    CIMI.setMoney(IM.getDetail().get(i1).getPrice());
+                    CIMI.setDeadLine(IM.getDetail().get(i1).getDeadLine());
+                }
+            }
+
+
+            mLog.e(i + "RemarkID:" + RemarkID);
+            if (checkInsurance.isChecked()) {
+                if (RemarkID.equals("")) {
+                    Utils.myToast(mContext, "请选择年限");
+                    return;
+                } else {
+                    if (Version.equals("1")) {
+                        uploadInsuranceModel.setPOLICYID(insuranceModelsList.get(i).getListID());
+                        uploadInsuranceModel.setREMARKID(RemarkID);
+                    } else {
+                        uploadInsuranceModel.setPOLICYID("");
+                        uploadInsuranceModel.setType(insuranceModelsList.get(i).getTypeId());
+                        uploadInsuranceModel.setREMARKID(insuranceModelsList.get(i).getRemarkID());
+                        uploadInsuranceModel.setDeadLine(RemarkID);
+                        uploadInsuranceModel.setBUYDATE(Utils.getNowDate());
+                    }
+                    uploadInsuranceModels.add(uploadInsuranceModel);
+                    CIMIL.add(CIMI);
+                }
+            }
+            if (EnableInvoice.equals("1")) {
+                LL_Invoice.setVisibility(View.VISIBLE);
+            }
+        }
+        mLog.e("CIMIL=" + CIMIL.size());
+        CIM.setInsurance(CIMIL);
+        TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        @SuppressLint("MissingPermission") String imei = tm.getDeviceId();
+
+        for (UploadInsuranceModel uploadInsuranceModel : uploadInsuranceModels) {
+            mLog.e("POLICYID= " + uploadInsuranceModel.getPOLICYID());
+            mLog.e("Type= " + uploadInsuranceModel.getType());
+            mLog.e("REMARKID= " + uploadInsuranceModel.getREMARKID());
+            mLog.e("DeadLine= " + uploadInsuranceModel.getDeadLine());
+            mLog.e("BUYDATE= " + uploadInsuranceModel.getBUYDATE());
+            mLog.e("===========================================");
+            String msg = "  POLICYID= " + uploadInsuranceModel.getPOLICYID() +
+                    "  Type= " + uploadInsuranceModel.getType() +
+                    "  REMARKID= " + uploadInsuranceModel.getREMARKID() +
+                    "  DeadLine= " + uploadInsuranceModel.getDeadLine() +
+                    "  BUYDATE= " + uploadInsuranceModel.getBUYDATE();
+            MobclickAgent.reportError(getApplicationContext(), "手机IMEI=" + imei + "   保险数据{" + msg + "}");
+        }
+
+        if (uploadInsuranceModels.size() == 0) {
+            MobclickAgent.reportError(getApplicationContext(), "保险数据赋值错误：手机IMEI=" + imei + "  登录账号：" + (String)
+                    SharedPreferencesUtils.get("UP", "私有空间本地缓存读取失败"));
+            try {
+                insuranceModelsList.clear();
+                initView();
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+            Utils.showToast("检测到保险数据被手机后台清理掉了，请从新选择保险。");
+            return;
+        }
         SendMSG();
     }
 
@@ -453,14 +540,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         }
         mLog.e("CIMIL=" + CIMIL.size());
         CIM.setInsurance(CIMIL);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("activity", "");
-//        bundle.putString("InvoiceType", InvoiceType);
-//        bundle.putString("distrainCarListID", listId);
-//        ArrayList list = new ArrayList();
-//        list.add(uploadInsuranceModels);
-//        list.add(CIM);
-//        bundle.putParcelableArrayList("insurance", list);
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         @SuppressLint("MissingPermission") String imei = tm.getDeviceId();
 
@@ -575,8 +654,15 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
             e.printStackTrace();
         }
 //        Log.e("Pan", "JA=" + JA.length());
+        String isFreeShangPai = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI);
+        String ecId = "";
+        if ("1".equals(isFreeShangPai)) {
+            //免费上牌转备案登记
+            ecId = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.ECID);
+        } else {
+            ecId = UUID.randomUUID().toString().toUpperCase();
+        }
 
-        String ecId = UUID.randomUUID().toString().toUpperCase();
         try {
             obj.put("EcId", ecId);
             VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ECID, ecId);
@@ -666,20 +752,133 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
 
         }
         mLog.e("apiUrl:" + (String) SharedPreferencesUtils.get("apiUrl", ""));
+
+        if ("1".equals(isFreeShangPai)) {
+            //免费上牌转备案登记
+            Log.e(TAG, "免费上牌转备案登记: ");
+            sendByHttp(obj);
+        } else {
+            Log.e(TAG, "备案登记: ");
+            sendByWebService(map, functionName);
+        }
+
+    }
+
+    private void sendByHttp(JSONObject obj) {
+        mProgressHUD.show();
+        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_ToElectricCar);
+        RP.setAsJsonContent(true);
+        RP.setBodyContent(obj.toString());
+        HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (result != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        int errorCode = jsonObject.getInt("ErrorCode");
+                        String data = jsonObject.getString("Data");
+                        if (errorCode == 0) {
+                            mProgressHUD.dismiss();
+                            if ("登记成功".equals(data)) {
+                                showSuccess();
+                                return;
+                            }
+                            List<PayInsurance> payInsurances = new Gson().fromJson(data, new
+                                    TypeToken<List<PayInsurance>>
+                                            () {
+                                    }.getType());
+
+                            if (payInsurances == null) {
+                                return;
+                            }
+                            if (payInsurances.size() == 1) {
+                                PayInsurance payInsurance = payInsurances.get(0);
+                                if (payInsurance.getPaymentWay() == 2) {
+                                    //二维码支付
+                                    PayQcodeActivity.goActivity(RegisterInsuranceActivity.this, payInsurance
+                                                    .getContent(),
+                                            payInsurance.getTotal_Amount(), payInsurance.getPlateNumber(),
+                                            payInsurance.getPayNo(), PayQcodeActivity.FORM_REGISTER);
+                                } else {
+                                    //直接支付
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("UnPaid", "0");
+                                    bundle.putString("PayDate", data);
+                                    ArrayList list = new ArrayList();
+                                    list.add(payInsurances);
+                                    bundle.putParcelableArrayList("PayDate", list);
+                                    ActivityUtil.goActivityWithBundle(RegisterInsuranceActivity.this,
+                                            PayActivity.class, bundle);
+                                }
+
+                            } else if (payInsurances.size() > 1) {
+                                List<PayInsurance> PI = new Gson().fromJson(data, new
+                                        TypeToken<List<PayInsurance>>() {
+                                        }.getType());
+                                SharedPreferencesUtils.put("preregisters", "");
+                                SharedPreferencesUtils.put("preregistration", "");
+                                SharedPreferencesUtils.put("PhotoListFile", "");
+                                Utils.showToast("车牌号：" + VehiclesStorageUtils.getVehiclesAttr
+                                        (VehiclesStorageUtils
+                                                .PLATENUMBER) + "  电动车信息上传成功！");
+                                Bundle bundle = new Bundle();
+                                bundle.putString("UnPaid", "2");
+                                ArrayList list = new ArrayList();
+                                list.add(PI);
+                                bundle.putParcelableArrayList("PayDate", list);
+                                ActivityUtil.goActivityWithBundle(RegisterInsuranceActivity.this,
+                                        UnpaidActivity.class, bundle);
+                                RegisterInsuranceActivity.this.finish();
+
+                            } else {
+//                                        TODO 显示
+                                Utils.showToast("电动车信息上传成功！");
+                                dialogShow(0, "车牌号：" + VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils
+                                        .PLATENUMBER) + "  电动车信息上传成功！");
+                            }
+                        } else if (errorCode == 1) {
+                            mProgressHUD.dismiss();
+                            Utils.showToast(data);
+                            SharedPreferencesUtils.put("token", "");
+                            ActivityUtil.goActivityAndFinish(RegisterInsuranceActivity.this, LoginActivity
+                                    .class);
+                        } else {
+                            Utils.showToast(data);
+                            mProgressHUD.dismiss();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        mProgressHUD.dismiss();
+                        Utils.showToast("JSON解析出错");
+                    }
+                } else {
+                    mProgressHUD.dismiss();
+                    Utils.showToast("获取数据超时，请检查网络连接");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex) {
+                mProgressHUD.dismiss();
+            }
+        });
+    }
+
+    private void sendByWebService(HashMap<String, String> map, String functionName) {
         WebServiceUtils.callWebService(RegisterInsuranceActivity.this, (String) SharedPreferencesUtils.get("apiUrl",
                 ""), functionName,
                 map, new WebServiceUtils.WebServiceCallBack() {
                     @Override
                     public void callBack(String result) {
-                        mLog.e("result:" + result);
-                        Utils.LOGE("Pan", result);
                         if (result != null) {
+                            Logger.json(result);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 int errorCode = jsonObject.getInt("ErrorCode");
                                 String data = jsonObject.getString("Data");
                                 if (errorCode == 0) {
-                                    VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.INSURANCES,"");
+                                    VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.INSURANCES, "");
                                     mProgressHUD.dismiss();
                                     if ("登记成功".equals(data)) {
                                         showSuccess();

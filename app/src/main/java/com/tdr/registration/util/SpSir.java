@@ -48,8 +48,6 @@ public class SpSir {
         return get(SpConstants.SHELVESNO_REGULAR, SpConstants.EMPTY);
     }
 
-
-
     public void setInterfaceVersion(String value) {
         save(SpConstants.INTERFACE_VERSION, value);
     }
@@ -58,6 +56,31 @@ public class SpSir {
         return get(SpConstants.INTERFACE_VERSION, SpConstants.EMPTY);
     }
 
+    public void setElectroCarSignTypes(String value) {
+        save(SpConstants.ElectroCarSignTypes, value);
+    }
+
+    public String getElectroCarSignTypes() {
+        return get(SpConstants.ElectroCarSignTypes, SpConstants.EMPTY);
+    }
+
+
+    public void setThreeElectroCarSignTypes(String value) {
+        save(SpConstants.ThreeElectroCarSignTypes, value);
+    }
+
+    public String getThreeElectroCarSignTypes() {
+        return get(SpConstants.ThreeElectroCarSignTypes, SpConstants.EMPTY);
+    }
+
+
+    public void setBindTagVehicleType(String value) {
+        save(SpConstants.BindTagVehicleType, value);
+    }
+
+    public String getBindTagVehicleType() {
+        return get(SpConstants.BindTagVehicleType, SpConstants.EMPTY);
+    }
 
 
     public String get(String key, String defValue) {

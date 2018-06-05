@@ -13,8 +13,10 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tdr.registration.R;
+import com.tdr.registration.model.ShangPaiStatistics;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
+import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.WebServiceUtils;
@@ -23,6 +25,8 @@ import com.tdr.registration.view.ZProgressHUD;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -78,6 +82,8 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
     private ZProgressHUD mProgressHUD;
     private Gson mGson;
     private StatisticsData SD;
+    private Callback.Cancelable cancelable;
+    private ShangPaiStatistics shangPaiStatistics;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,45 +134,42 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
 
     private void initData() {
         mProgressHUD.show();
-        HashMap<String, String> map = new HashMap<>();
-        map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
-        map.put("starttime", TV_startTime.getText().toString().trim());
-        map.put("endttime", TV_endTime.getText().toString().trim());
-        mLog.e("个人统计map=" + map.toString());
-        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
-                .WEBSERVER_GETPREREGISTERSTATISTICS, map, new WebServiceUtils.WebServiceCallBack() {
+        RequestParams rp = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_VehicleBoardStatisticsAPP);
+        rp.addBodyParameter("startDate", TV_startTime.getText().toString().trim()+" 00:00:00");
+        rp.addBodyParameter("endDate", TV_startTime.getText().toString().trim()+" 23:59:59");
+        cancelable = HttpUtils.get(rp, new HttpUtils.HttpCallBack() {
             @Override
-            public void callBack(String result) {
-                if (result != null) {
-                    mLog.e("个人统计=" + result);
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int errorCode = jsonObject.getInt("ErrorCode");
-                        String data = jsonObject.getString("Data");
-                        if (errorCode == 0) {
-                            SD = mGson.fromJson(data, new TypeToken<StatisticsData>() {
-                            }.getType());
-                            setdata();
-                            mProgressHUD.dismiss();
-                        } else if (errorCode == 1) {
-                            mProgressHUD.dismiss();
-                            Utils.showToast(data);
-                            SharedPreferencesUtils.put("token", "");
-                            ActivityUtil.goActivityAndFinish(DX_PreRegistration_Statistics_Activity.this,
-                                    LoginActivity.class);
-                        } else {
-                            mProgressHUD.dismiss();
-                            Utils.showToast(data);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        mProgressHUD.dismiss();
-                        Utils.showToast("JSON解析出错");
+            public void onSuccess(String result) {
+                mProgressHUD.dismiss();
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(result);
+                    int errorCode = jsonObject.getInt("ErrorCode");
+                    String data = jsonObject.getString("Data");
+                    if (errorCode == 0) {
+                        shangPaiStatistics = mGson.fromJson(data, new TypeToken<ShangPaiStatistics>() {
+                        }.getType());
+                        setdata();
+                    } else if (errorCode == 1) {
+                        Utils.showToast(data);
+                        SharedPreferencesUtils.put("token", "");
+                        ActivityUtil.goActivityAndFinish(DX_PreRegistration_Statistics_Activity.this,
+                                LoginActivity.class);
+                    } else {
+                        //错误
+                        String errorMsg = jsonObject.getString("Data");
+                        Utils.showToast(errorMsg);
                     }
-                } else {
-                    mProgressHUD.dismiss();
-                    Utils.showToast("获取数据超时，请检查网络连接");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Throwable ex) {
+                mProgressHUD.dismiss();
+                Utils.showToast("网络异常");
             }
         });
     }
@@ -175,9 +178,9 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
         TV_registrationName.setText((String) SharedPreferencesUtils.get("regionName", ""));//登记点名称
         TV_registrationNumber.setText((String) SharedPreferencesUtils.get("regionNo", ""));//登记点编号
         TV_registrationArea.setText((String) SharedPreferencesUtils.get("regionName", ""));//所属辖区
-        TV_PR_UnApproval.setText(SD.getNo_platenumber());
-        TV_PR_Approval.setText(SD.getHas_platenumber());
-        TV_PR_sum.setText(SD.getTotal());
+        TV_PR_UnApproval.setText(shangPaiStatistics.getNo_theftno());
+        TV_PR_Approval.setText(shangPaiStatistics.getHas_theftno());
+        TV_PR_sum.setText(shangPaiStatistics.getHas_platenumber());
     }
 
     @Override

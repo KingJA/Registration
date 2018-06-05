@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import com.tdr.registration.R;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.VehiclesStorageUtils;
 
 /**
  * 备案登记 下拉菜单
@@ -45,38 +46,43 @@ public class RegistrPop extends PopupWindowBaseDown implements View.OnClickListe
         linearQueryIdentity.setOnClickListener(this);
 
 
-
         linearQueryPlateNumber = (LinearLayout) popupView.findViewById(R.id.linear_queryPlateNumber);
         linearQueryPlateNumber.setOnClickListener(this);
         imageQueryIdentity = (ImageView) popupView.findViewById(R.id.image_queryIdentity);
         imageQueryPlateNumber = (ImageView) popupView.findViewById(R.id.image_queryPlateNumber);
 
-        linear_PlateNumber= (LinearLayout) popupView.findViewById(R.id.linear_PlateNumber);
+        linear_PlateNumber = (LinearLayout) popupView.findViewById(R.id.linear_PlateNumber);
         linear_PlateNumber.setOnClickListener(this);
         image_PlateNumber = (ImageView) popupView.findViewById(R.id.image_PlateNumber);
 
 
-        String locCityName = (String) SharedPreferencesUtils.get("locCityName", "");
-        if (locCityName.contains("昆明")){
-            linearQueryIdentity.setVisibility(View.VISIBLE);
-            imageQueryIdentity.setVisibility(View.VISIBLE);
-            linearQueryPlateNumber.setVisibility(View.VISIBLE);
-            imageQueryPlateNumber.setVisibility(View.VISIBLE);
-        }else if(locCityName.contains("天津")){
-            linear_PlateNumber.setVisibility(View.VISIBLE);
-            image_PlateNumber.setVisibility(View.VISIBLE);
-        }else if(locCityName.contains("温州")){
-            linear_PlateNumber.setVisibility(View.VISIBLE);
-            image_PlateNumber.setVisibility(View.VISIBLE);
-            linearQueryIdentity.setVisibility(View.VISIBLE);
-            imageQueryIdentity.setVisibility(View.VISIBLE);
+//        String locCityName = (String) SharedPreferencesUtils.get("locCityName", "");
+//        if (locCityName.contains("昆明")){
+//            linearQueryIdentity.setVisibility(View.VISIBLE);
+//            imageQueryIdentity.setVisibility(View.VISIBLE);
 //            linearQueryPlateNumber.setVisibility(View.VISIBLE);
 //            imageQueryPlateNumber.setVisibility(View.VISIBLE);
-        }else if(locCityName.contains("以卡管车")){
+//        }else if(locCityName.contains("天津")){
+//            linear_PlateNumber.setVisibility(View.VISIBLE);
+//            image_PlateNumber.setVisibility(View.VISIBLE);
+//        }else if(locCityName.contains("温州")){
+//            linear_PlateNumber.setVisibility(View.VISIBLE);
+//            image_PlateNumber.setVisibility(View.VISIBLE);
+//            linearQueryIdentity.setVisibility(View.VISIBLE);
+//            imageQueryIdentity.setVisibility(View.VISIBLE);
+//            linearQueryPlateNumber.setVisibility(View.VISIBLE);
+//            imageQueryPlateNumber.setVisibility(View.VISIBLE);
+//        }else if(locCityName.contains("以卡管车")){
+//            linear_PlateNumber.setVisibility(View.VISIBLE);
+//            image_PlateNumber.setVisibility(View.VISIBLE);
+//            linearQueryIdentity.setVisibility(View.VISIBLE);
+//            imageQueryIdentity.setVisibility(View.VISIBLE);
+//        }
+
+        String hasFreeShangPai = VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.HAS_FREE_SHANGPAI);
+        if ("1".equals(hasFreeShangPai)) {
             linear_PlateNumber.setVisibility(View.VISIBLE);
             image_PlateNumber.setVisibility(View.VISIBLE);
-            linearQueryIdentity.setVisibility(View.VISIBLE);
-            imageQueryIdentity.setVisibility(View.VISIBLE);
         }
     }
 

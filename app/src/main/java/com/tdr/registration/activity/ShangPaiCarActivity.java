@@ -1,4 +1,4 @@
-package com.tdr.registration.activity.normal;
+package com.tdr.registration.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,17 +32,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.BrandActivity;
-import com.tdr.registration.activity.ConfirmationInsuranceActivity;
-import com.tdr.registration.activity.HomeActivity;
-import com.tdr.registration.activity.LoginActivity;
-import com.tdr.registration.activity.PayActivity;
-import com.tdr.registration.activity.PayQcodeActivity;
-import com.tdr.registration.activity.PreListActivity;
-import com.tdr.registration.activity.QRCodeScanActivity;
-import com.tdr.registration.activity.RegisterPersonalActivity;
-import com.tdr.registration.activity.ShangPaiQueryActivity;
-import com.tdr.registration.activity.UnpaidActivity;
 import com.tdr.registration.adapter.ColorAdapter;
 import com.tdr.registration.adapter.PhotoListAdapter;
 import com.tdr.registration.base.App;
@@ -58,8 +46,6 @@ import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.model.PreModel;
 import com.tdr.registration.model.PreRegistrationModel;
-import com.tdr.registration.model.ShangPaiInfo;
-import com.tdr.registration.model.SignType;
 import com.tdr.registration.model.SortModel;
 import com.tdr.registration.model.UploadInsuranceModel;
 import com.tdr.registration.util.ActivityUtil;
@@ -68,8 +54,6 @@ import com.tdr.registration.util.CharacterParser;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.DESCoder;
-import com.tdr.registration.util.HttpUtils;
-import com.tdr.registration.util.InterfaceChecker;
 import com.tdr.registration.util.PhotoUtils;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
 import com.tdr.registration.util.RegularChecker;
@@ -90,7 +74,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
-import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -106,9 +89,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 备案登记全国版 车辆信息
+ * 免费上牌 车辆登记
  */
-public class RegisterCarActivity extends BaseActivity implements AdapterView.OnItemClickListener, RegistrPop
+public class ShangPaiCarActivity extends BaseActivity implements AdapterView.OnItemClickListener, RegistrPop
         .OnRegistrPopClickListener {
 
     private final static int SCANNIN_GREQUEST_CODE_CAR = 1996;//二维码回调值
@@ -117,7 +100,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     private final static int BRAND_CODE = 2016;//品牌回调
     private final static int CONFIRMATION_INSURANCE = 1212;//确认保险
     private final static int PRE_SHOW_CODE = 1314;//预登记展示回调值
-    private static final String TAG = "RegisterCarActivity";
 
     @BindView(R.id.text_title)
     TextView textTitle;
@@ -318,7 +300,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_register_car);
+        setContentView(R.layout.activity_shangpai_car);
         ButterKnife.bind(this);
         Version = (String) SharedPreferencesUtils.get("Version", "");
 /*获取预登记传递的信息*/
@@ -539,35 +521,13 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
      * 加载view
      */
     private void initView() {
-
-//        }
-        imageScan.setVisibility(View.VISIBLE);
+        imageScan.setVisibility(View.GONE);
         imageScan.setBackgroundResource(R.mipmap.register_pop);
         registrPop = new RegistrPop(imageScan, mActivity);
         registrPop.setOnRegistrPopClickListener(this);
 
 
-        if (activity.equals("")) {
-            String appName = (String) SharedPreferencesUtils.get("appName", "");
-            if (!REGISTRATION.equals("")) {
-                textTitle.setText(REGISTRATION);
-            } else {
-
-                if (city.contains("温州")) {
-                    textTitle.setText("登记备案");
-                } else {
-                    if (!appName.equals("") && appName.contains("备案登记")) {
-                        textTitle.setText("备案登记");
-                    } else if (!appName.equals("") && appName.contains("防盗登记")) {
-                        textTitle.setText("防盗登记");
-                    } else {
-                        textTitle.setText("防盗登记");
-                    }
-                }
-            }
-        } else if (activity.equals("seizure")) {
-            textTitle.setText("扣押转正式");
-        }
+        textTitle.setText("免费上牌");
         SetViewForCity();
 
         ET_plateNumber.setTransformationMethod(new AllCapTransformationMethod(true));
@@ -711,20 +671,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (preregisters.equals("") && preregistration.equals("") && photoListFile.equals("")) {
             return;
         }
-         if (!photoListFile.equals("")) {
-            List<PhotoModel> list = mGson.fromJson(photoListFile, new TypeToken<List<PhotoModel>>() {
-            }.getType());
-            Logger.d("|photoList:" + list.size());
-
-            for (PhotoModel photoModel : list) {
-                PhotoModel PM = new PhotoModel();
-                PM.setINDEX(photoModel.getINDEX());
-                PM.setPhoto(photoModel.getPhoto());
-                PM.setPhotoFile(photoModel.getPhotoFile());
-                PM.setRemark(photoModel.getRemark());
-                pm.add(PM);
-            }
-        }else if (!preregisters.equals("")) {
+        if (!preregisters.equals("")) {
             preForKMModel = mGson.fromJson(preregisters, new TypeToken<PreRegistrationModel>() {
             }.getType());
             mLog.e("Pan", "preForKMModel=" + preForKMModel.getColorName());
@@ -750,12 +697,26 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 PM.setRemark(photoModel.getRemark());
                 pm.add(PM);
             }
+        } else if (!photoListFile.equals("")) {
+            List<PhotoModel> list = mGson.fromJson(photoListFile, new TypeToken<List<PhotoModel>>() {
+            }.getType());
+            Logger.d("|photoList:" + list.size());
+
+            for (PhotoModel photoModel : list) {
+                PhotoModel PM = new PhotoModel();
+                PM.setINDEX(photoModel.getINDEX());
+                PM.setPhoto(photoModel.getPhoto());
+                PM.setPhotoFile(photoModel.getPhotoFile());
+                PM.setRemark(photoModel.getRemark());
+                pm.add(PM);
+            }
         }
 
 
         for (int i = 0; i < PLI.size(); i++) {
             for (int j = 0; j < pm.size(); j++) {
                 if (PLI.get(i).getINDEX().equals(pm.get(j).getINDEX())) {
+                    mLog.e("Pan", i + "  pm=" + pm.get(i).getINDEX());
                     photolist.add(pm.get(j));
                 }
             }
@@ -811,48 +772,18 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
         mLog.e(isScanLabel.equals("1") ? "启用扫标签：" + isScanLabel : "禁用扫标签：" + isScanLabel);
 
-
-
-        if (InterfaceChecker.isNewInterface()) {
-            Log.e(TAG, "新接口: " );
-            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
-                    (VehiclesStorageUtils.VEHICLETYPE));
-            //新接口方式
-            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
-                    (VehiclesStorageUtils.VEHICLETYPE));
-
-            Log.e(TAG, "标签数: "+signTypes.size() );
-            if (signTypes.size() == 1) {
-                Log.e(TAG, "1个标签: " );
-                RL_scanTheft.setVisibility(View.VISIBLE);
-                RL_scanTheft2.setVisibility(View.GONE);
-                TV_lable.setText(signTypes.get(0).getName());
-                REGULAR=signTypes.get(0).getRegular();
-            } else if (signTypes.size() == 2||signTypes.size() == 3) {
-                Log.e(TAG, "2个标签: " );
-                RL_scanTheft.setVisibility(View.VISIBLE);
-                RL_scanTheft2.setVisibility(View.VISIBLE);
-                TV_lable.setText(signTypes.get(0).getName());
-                TV_lable2.setText(signTypes.get(1).getName());
-                REGULAR=signTypes.get(0).getRegular();
-                REGULAR2=signTypes.get(1).getRegular();
-            }
-        }else{
-            Log.e(TAG, "老接口: " );
-            //老接口方式
+        isScanLabel = "0";
+        if (isScanLabel.equals("1")) {
+            RL_scanTheft.setVisibility(View.VISIBLE);
             if (ISDOUBLESIGN.equals("1")) {
-                RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.VISIBLE);
             } else {
-                RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.GONE);
             }
+        } else if (isScanLabel.equals("0")) {
+            RL_scanTheft.setVisibility(View.GONE);
+            RL_scanTheft2.setVisibility(View.GONE);
         }
-        Log.e(TAG, "REGULAR: "+REGULAR );
-        Log.e(TAG, "REGULAR2: "+REGULAR2 );
-
-
-
 
         if (city.contains("天津")) {
             isManualInputPlate = false;
@@ -911,7 +842,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 timePickerView.show();
                 break;
             case R.id.rl_CarBrand:
-                intent.setClass(RegisterCarActivity.this, BrandActivity.class);
+                intent.setClass(ShangPaiCarActivity.this, BrandActivity.class);
                 startActivityForResult(intent, BRAND_CODE);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
@@ -972,7 +903,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         bundle.putBoolean("isShow", isshow);
         bundle.putBoolean("isPlateNumber", isPlate);
         bundle.putString("ButtonName", ButtonName);
-        ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this, QRCodeScanActivity.class, bundle,
+        ActivityUtil.goActivityForResultWithBundle(ShangPaiCarActivity.this, QRCodeScanActivity.class, bundle,
                 SCANNIN_QR_CODE);
     }
 
@@ -982,7 +913,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         bundle.putBoolean("isShow", true);
         bundle.putBoolean("isPlateNumber", true);
         bundle.putString("ButtonName", ButtonName);
-        ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this, QRCodeScanActivity.class, bundle,
+        ActivityUtil.goActivityForResultWithBundle(ShangPaiCarActivity.this, QRCodeScanActivity.class, bundle,
                 SCANNIN_GREQUEST_CODE);
     }
 
@@ -1029,7 +960,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     SharedPreferencesUtils.put("preregistration", "");
                     SharedPreferencesUtils.put("PhotoListFile", "");
                     VehiclesStorageUtils.clearData();
-                    ActivityUtil.goActivityAndFinish(RegisterCarActivity.this, HomeActivity.class);
+                    ActivityUtil.goActivityAndFinish(ShangPaiCarActivity.this, HomeActivity.class);
                 }
             }).show();
         } else if (flag == 1) {
@@ -1201,13 +1132,10 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 @Override
                 public void onClick(View v) {
                     dialogBuilder.dismiss();
-                    VehiclesStorageUtils.clearData();
-
                     SharedPreferencesUtils.put("preregisters", "");
                     SharedPreferencesUtils.put("preregistration", "");
                     SharedPreferencesUtils.put("PhotoListFile", "");
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                    TransferUtil.remove("PreRegistrationModel");
                     TransferUtil.remove("PhotoList");
                     finish();
                 }
@@ -1258,7 +1186,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         }
     }
 
-    private void showdialog(final String msg, final String textname) {
+    private void showdialog(final String msg, String textname) {
         effectstype = NiftyDialogBuilder.Effectstype.Fadein;
         LayoutInflater mInflater = LayoutInflater.from(this);
         View identityView = mInflater.inflate(R.layout.layout_query_identity, null);
@@ -1283,72 +1211,12 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 dialogBuilder.dismiss();
                 String plateNumber = editQueryIdentity.getText().toString();
 
-                if ("车牌号".equals(textname)) {
-                    //TODO 免费上牌
-                    queryPreByFreeShangPaiPlateNumber(plateNumber);
-                } else {
-                    queryPreByPlateNumber(plateNumber);
-                }
-
+                queryPreByPlateNumber(plateNumber);
             }
         }).show();
     }
 
-    private void queryPreByFreeShangPaiPlateNumber(String plateNumber) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"1");
-
-        mProgressHUD.show();
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("PlateNumber", plateNumber);
-        map.put("CardId", "");
-        map.put("HASRFID", "0");
-        map.put("Phone", "");
-        JSONObject JB = new JSONObject(map);
-        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
-                .HTTP_ElectricPager);
-        RP.setAsJsonContent(true);
-        RP.setBodyContent(JB.toString());
-        HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
-            @Override
-            public void onSuccess(String result) {
-                mProgressHUD.dismiss();
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(result);
-                    int errorCode = jsonObject.getInt("ErrorCode");
-                    String data = jsonObject.getString("Data");
-
-                    if (errorCode == 0) {
-                        int count = jsonObject.getInt("Count");
-                        if (count > 0) {
-                            List<ShangPaiInfo> shangPaiInfos = mGson.fromJson(data, new TypeToken<List<ShangPaiInfo>>
-                                    () {
-                            }.getType());
-                            List<DX_PreRegistrationModel> oldTypeInfos = ShangPaiQueryActivity.convertData
-                                    (shangPaiInfos);
-                            SharedPreferencesUtils.put("preregisters", data);
-                            dealModel(oldTypeInfos.get(0));
-                        } else {
-                            ToastUtil.showToast("未查到上牌信息");
-                        }
-                    } else {
-                        ToastUtil.showToast(data);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Throwable ex) {
-                mProgressHUD.dismiss();
-            }
-        });
-
-    }
-
     private void queryPreByPlateNumber(String plateNumber) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"");
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -1434,7 +1302,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
      * @param queryIdentity
      */
     private void queryPreByIdentity(String queryIdentity) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"");
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -1459,7 +1326,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                                 list.add(preRegistrationModels);
                                 bundle.putParcelableArrayList("electricCarModelList", list);
 
-                                ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this,
+                                ActivityUtil.goActivityForResultWithBundle(ShangPaiCarActivity.this,
                                         PreListActivity.class, bundle, PRE_SHOW_CODE);
                             } else if (preRegistrationModels.size() == 1) {
                                 dealPreByPolice(preRegistrationModels.get(0));
@@ -1534,7 +1401,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             //TODO
 //            SendMSG();
             saveCarInfo();
-            ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
+            ActivityUtil.goActivity(this, ShangPaiPersonalActivity.class);//人员信息
         } else {
             ToastUtil.showToast("请确认车牌无误！");
         }
@@ -1542,10 +1409,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
     private void UpDatePhotoItem() {
         Bitmap bitmap = PhotoUtils.getPhotoBitmap();
-
         String Photoindex[] = PhotoUtils.mPicName.split(":");
         Drawable drawable = new BitmapDrawable(bitmap);
-
         PhotoListAdapter.MyViewHolder my = (PhotoListAdapter.MyViewHolder) RV_PhotoList
                 .findViewHolderForAdapterPosition(Integer.parseInt(Photoindex[2]));
         my.Photo.setBackgroundDrawable(drawable);
@@ -1644,7 +1509,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     if (isPlateNumber.equals("0")) {
                         if (scanResult.equals(plateNumberInput)) {
                             saveCarInfo();
-                            ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
+                            ActivityUtil.goActivity(this, ShangPaiPersonalActivity.class);//人员信息
                         } else {
                             ToastUtil.showToast("输入的车牌有误，请重新确认");
                             return;
@@ -1653,7 +1518,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                         String plateNumberRead = mQR.plateNumber(scanResult);
                         if (plateNumberRead.equals(plateNumberInput)) {
                             saveCarInfo();
-                            ActivityUtil.goActivity(this, RegisterPersonalActivity.class);//人员信息
+                            ActivityUtil.goActivity(this, ShangPaiPersonalActivity.class);//人员信息
                         } else if (plateNumberRead.equals("-1")) {
                             ToastUtil.showToast("校验不通过，请确认车牌合法正确性");
 
@@ -1812,7 +1677,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
      * 获取电信预登记
      */
     private void query(String registerId) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"");
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -1879,11 +1743,12 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
         SharedPreferencesUtils.put("PhotoListFile", new Gson().toJson(photoListFile));
 
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ECID, preModel.getECID());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, preModel.getPLATENUMBER());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE, preModel.getVEHICLETYPE());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.REGISTERID, preModel.getREGISTERID());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRAND, preModel.getVEHICLEBRAND());
+//        List<BikeCode> bikeCodes = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getVehiclebrand() + "\'"
+// + " and " + "type=\'1\'");
         List<BikeCode> bikeCodes = null;
         try {
             bikeCodes = db.selector(BikeCode.class).where("code", "=", preModel.getVEHICLEBRAND()).and("type", "=",
@@ -1894,10 +1759,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (bikeCodes == null) {
             bikeCodes = new ArrayList<BikeCode>();
         }
-        if (bikeCodes != null && bikeCodes.size() > 0) {
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
-
-        }
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLEBRANDNAME, bikeCodes.get(0).getName());
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getCOLORID());
 //        List<BikeCode> bikeCodeList = db.findAllByWhere(BikeCode.class, "code=\'" + preModel.getColorID() + "\'" +
 // " and " + "type=\'4\'");
         List<BikeCode> bikeCodeList = null;
@@ -1910,10 +1773,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (bikeCodeList == null) {
             bikeCodeList = new ArrayList<BikeCode>();
         }
-        if (bikeCodeList != null && bikeCodeList.size() > 0) {
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, bikeCodeList.get(0).getName());
-            VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1ID, preModel.getCOLORID());
-        }
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.COLOR1NAME, bikeCodeList.get(0).getName());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, preModel.getSHELVESNO());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, preModel.getENGINENO());
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARDTYPE, preModel.getCARDTYPE());
@@ -2014,7 +1874,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             ArrayList list = new ArrayList();
             list.add(ConfirmInsuranceList);
             bundle.putParcelableArrayList("ConfirmInsurance", list);
-            ActivityUtil.goActivityForResultWithBundle(RegisterCarActivity.this, ConfirmationInsuranceActivity.class,
+            ActivityUtil.goActivityForResultWithBundle(ShangPaiCarActivity.this, ConfirmationInsuranceActivity.class,
                     bundle, CONFIRMATION_INSURANCE);
         } else {
             sendMsg();
@@ -2276,6 +2136,10 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 return false;
             }
         }
+//        if (isConfirm.equals("")) {
+//            ToastUtil.showToast(mContext, "请选择是否有来历承诺书");
+//            return false;
+//        }
         if (city.contains("天津")) {
             if (plateType.equals("")) {
                 ToastUtil.showToast("请选择车牌类型");
@@ -2307,7 +2171,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
             return false;
         }
 
-        //TODO
         if (isScanLabel.equals("1")) {
             String theftNo = TV_theftNo.getText().toString().trim();
             if (theftNo.equals("")) {
@@ -2322,64 +2185,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 }
             }
         }
-
-        if (InterfaceChecker.isNewInterface()) {
-            Log.e(TAG, "新接口: " );
-            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
-                    (VehiclesStorageUtils.VEHICLETYPE));
-            //新接口方式
-            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
-                    (VehiclesStorageUtils.VEHICLETYPE));
-
-            Log.e(TAG, "标签数: "+signTypes.size() );
-            if (signTypes.size() == 1) {
-                Log.e(TAG, "1个标签验证: " );
-                String theftNo = TV_theftNo.getText().toString().trim();
-                if (theftNo.equals("")) {
-                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
-                    return false;
-                }
-            } else if (signTypes.size() == 2||signTypes.size() == 3) {
-                Log.e(TAG, "2个标签验证: " );
-                String theftNo = TV_theftNo.getText().toString().trim();
-                if (theftNo.equals("")) {
-                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
-                    return false;
-                }
-                String theftNo2 = TV_theftNo2.getText().toString().trim();
-                if (theftNo2.equals("")) {
-                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
-                    return false;
-                }
-            }
-        }else{
-            Log.e(TAG, "老接口: " );
-            //老接口方式
-            if (ISDOUBLESIGN.equals("1")) {
-                Log.e(TAG, "2个标签验证: " );
-                String theftNo = TV_theftNo.getText().toString().trim();
-                if (theftNo.equals("")) {
-                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
-                    return false;
-                }
-                String theftNo2 = TV_theftNo2.getText().toString().trim();
-                if (theftNo2.equals("")) {
-                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
-                    return false;
-                }
-            } else {
-                Log.e(TAG, "1个标签验证: " );
-                String theftNo = TV_theftNo.getText().toString().trim();
-                if (theftNo.equals("")) {
-                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
-                    return false;
-                }
-            }
-        }
-
-
-
-
         String shelvesNo = etShelvesNo.getText().toString().toUpperCase().trim();
         if (!RegularChecker.checkShelvesNoRegular(shelvesNo)) {
             return false;
@@ -2489,15 +2294,18 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 bundle.putString("ButtonName", "输入自主预登记编号");
                 ActivityUtil.goActivityForResultWithBundle(this, QRCodeScanActivity.class, bundle,
                         SCANNIN_GREQUEST_CODE_CAR);
+
+//                intent.setClass(this, QRCodeScanActivity.class);
+//                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
                 break;
             case 1:
-                dialogShow(10, "证件号查询预登记");
+                dialogShow(10, "预登记查询");
                 break;
             case 2:
-                dialogShow(11, "防盗号查询预登记");
+                dialogShow(11, "登记号查询");
                 break;
             case 3:
-                dialogShow(12, "免费上牌登记查询");
+                dialogShow(12, "车牌号预登记查询");
                 break;
             default:
                 break;
