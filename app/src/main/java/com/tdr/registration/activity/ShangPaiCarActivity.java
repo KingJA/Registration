@@ -67,6 +67,7 @@ import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
 import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 import com.tdr.registration.view.popwindow.RegistrPop;
+import com.tdr.registration.view.popwindow.ShangPaiRegistrPop;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -91,7 +92,7 @@ import butterknife.OnClick;
 /**
  * 免费上牌 车辆登记
  */
-public class ShangPaiCarActivity extends BaseActivity implements AdapterView.OnItemClickListener, RegistrPop
+public class ShangPaiCarActivity extends BaseActivity implements AdapterView.OnItemClickListener, ShangPaiRegistrPop
         .OnRegistrPopClickListener {
 
     private final static int SCANNIN_GREQUEST_CODE_CAR = 1996;//二维码回调值
@@ -292,7 +293,7 @@ public class ShangPaiCarActivity extends BaseActivity implements AdapterView.OnI
     private String IsConfirm = "";
     private ConfirmInsuranceModel ConfirmInsuranceList;
     private String REGISTRATION;
-    private RegistrPop registrPop;
+    private ShangPaiRegistrPop registrPop;
     private DX_PreRegistrationModel prm;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -521,9 +522,9 @@ public class ShangPaiCarActivity extends BaseActivity implements AdapterView.OnI
      * 加载view
      */
     private void initView() {
-        imageScan.setVisibility(View.GONE);
+        imageScan.setVisibility(View.VISIBLE);
         imageScan.setBackgroundResource(R.mipmap.register_pop);
-        registrPop = new RegistrPop(imageScan, mActivity);
+        registrPop = new ShangPaiRegistrPop(imageScan, mActivity);
         registrPop.setOnRegistrPopClickListener(this);
 
 
