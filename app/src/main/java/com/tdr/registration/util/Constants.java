@@ -112,6 +112,7 @@ public class Constants {
     public static final String HTTP_VehicleBoardStatisticsAPP = "/api/Statistics/VehicleBoardStatisticsAPP";//上牌统计
     public static final String HTTP_ElectricPager = "/api/ElectricCar/ElectricPager";//上牌查询
     public static final String HTTP_ToElectricCar = "/api/ElectricCar/ToElectricCar";//免费上牌转备案登记
+    public static final String HTTP_GetRecordNo = "/api/ElectricCarBattery/GetRecordNo";//获取备案登记好号
 
 
     /**

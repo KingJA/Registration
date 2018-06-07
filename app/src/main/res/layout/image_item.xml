@@ -8,7 +8,7 @@
         android:id="@+id/image_add"
         android:layout_width="85dp"
         android:layout_height="85dp"
-        android:background="@mipmap/image_add"
+        android:background="@mipmap/ic_add_photo"
         android:scaleType="centerCrop" />
 
 </LinearLayout>

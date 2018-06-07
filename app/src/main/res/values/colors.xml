@@ -62,4 +62,20 @@
     <color name="circular_blue">#48F0E2</color>
 
 
+
+
+
+
+
+
+
+    <color name="f_3">#333333</color>
+    <color name="f_6">#666666</color>
+    <color name="f_9">#999999</color>
+    <color name="f_f">#ffffff</color>
+    <color name="f_red">#c60000</color>
+    <color name="f_bg">#F9F9F9</color>
+    <color name="f_divider">#CFCFCF</color>
+    <color name="f_blue">#4B9DF9</color>
+
 </resources>

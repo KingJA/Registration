@@ -54,6 +54,30 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!--电瓶备案登记-查询-->
+        <activity
+            android:name="com.tdr.kingja.activity.PowerRegisterQueryActivity"
+            android:screenOrientation="portrait"/>
+        <!--电瓶备案登记-登记新电瓶-->
+        <activity
+            android:name="com.tdr.kingja.activity.PowerRegisterActivity"
+            android:screenOrientation="portrait"/>
+        <!--电瓶回收-查询-->
+        <activity
+            android:name="com.tdr.kingja.activity.PowerRecycleQueryActivity"
+            android:screenOrientation="portrait"/>
+        <!--电瓶回收-回收-->
+        <activity
+            android:name="com.tdr.kingja.activity.PowerRecycleActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--电池数量选择界面-->
+        <activity
+            android:name="com.tdr.kingja.activity.BatteryCountSelectActivity"
+            android:screenOrientation="portrait"/>
+
+
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -533,12 +557,12 @@
             android:name=".activity.ShangPaiCarActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
-      <!-- 免费上牌人 -->
+        <!-- 免费上牌人 -->
         <activity
             android:name=".activity.ShangPaiPersonalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
-     <!-- 免费上牌人 -->
+        <!-- 免费上牌人 -->
         <activity
             android:name=".activity.ShangPaiListActivity"
             android:screenOrientation="portrait"
