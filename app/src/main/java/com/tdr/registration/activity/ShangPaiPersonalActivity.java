@@ -554,8 +554,9 @@ public class ShangPaiPersonalActivity extends BaseActivity implements View.OnCli
 
         }
         mLog.e("apiUrl:" + (String) SharedPreferencesUtils.get("apiUrl", ""));
+        mLog.e("accessToken:" + (String) SharedPreferencesUtils.get("token", ""));
         WebServiceUtils.callWebService(ShangPaiPersonalActivity.this, (String) SharedPreferencesUtils.get("apiUrl",
-                ""), functionName,
+                ""), Constants.WEBSERVER_ADDELECTRICCAR,
                 map, new WebServiceUtils.WebServiceCallBack() {
                     @Override
                     public void callBack(String result) {
