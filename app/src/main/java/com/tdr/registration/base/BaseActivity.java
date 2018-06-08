@@ -33,7 +33,7 @@ import com.umeng.analytics.MobclickAgent;
  * Created by Linus_Xie on 2016/9/9.
  */
 public class BaseActivity extends AppCompatActivity {
-    private  final String TAG = getClass().getSimpleName();
+    protected   final String TAG = getClass().getSimpleName();
     private App mBaseApp = null;
     private boolean mIsAddedView;
 

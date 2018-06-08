@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,15 +45,19 @@ import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.ElectricCarModel;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
+import com.tdr.registration.model.SignType;
 import com.tdr.registration.model.SortModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.AllCapTransformationMethod;
 import com.tdr.registration.util.CharacterParser;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
+import com.tdr.registration.util.InterfaceChecker;
 import com.tdr.registration.util.PhotoUtils;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
+import com.tdr.registration.util.RegularChecker;
 import com.tdr.registration.util.SharedPreferencesUtils;
+import com.tdr.registration.util.ToastUtil;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
@@ -341,6 +346,45 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
         }else if (city.contains("丽水")) {
             isManualInputPlate = false;
         }
+
+        if (InterfaceChecker.isNewInterface()) {
+            Log.e(TAG, "新接口: " );
+            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+            //新接口方式
+            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+
+            Log.e(TAG, "标签数: "+signTypes.size() );
+            if (signTypes.size() == 1) {
+                Log.e(TAG, "1个标签: " );
+                RL_scanTheft.setVisibility(View.VISIBLE);
+                RL_scanTheft2.setVisibility(View.GONE);
+                TV_lable.setText(signTypes.get(0).getName());
+                REGULAR=signTypes.get(0).getRegular();
+            } else if (signTypes.size() == 2||signTypes.size() == 3) {
+                Log.e(TAG, "2个标签: " );
+                RL_scanTheft.setVisibility(View.VISIBLE);
+                RL_scanTheft2.setVisibility(View.VISIBLE);
+                TV_lable.setText(signTypes.get(0).getName());
+                TV_lable2.setText(signTypes.get(1).getName());
+                REGULAR=signTypes.get(0).getRegular();
+                REGULAR2=signTypes.get(1).getRegular();
+            }
+        }else{
+            Log.e(TAG, "老接口: " );
+            //老接口方式
+            if (ISDOUBLESIGN.equals("1")) {
+                RL_scanTheft.setVisibility(View.VISIBLE);
+                RL_scanTheft2.setVisibility(View.VISIBLE);
+            } else {
+                RL_scanTheft.setVisibility(View.VISIBLE);
+                RL_scanTheft2.setVisibility(View.GONE);
+            }
+        }
+        Log.e(TAG, "REGULAR: "+REGULAR );
+
+
         if (isManualInputPlate) {
             RL_plateNumber.setVisibility(View.GONE);
             LL_plateNumber.setVisibility(View.VISIBLE);
@@ -1087,56 +1131,138 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
             return false;
         }
 
+//        if (isScanLabel.equals("1")) {
+//            String textTheftNoNum = TV_theftNo.getText().toString().toUpperCase().trim();
+//            if (textTheftNoNum.equals("") || textTheftNoNum == null) {
+//                Utils.myToast(mContext, "请输入" + TV_lable.getText() + "号");
+//                return false;
+//            } else {
+//                if (!city.contains("龙岩")) {
+//                    Pattern pat = Pattern.compile(REGULAR);
+//                    Matcher mat = pat.matcher(textTheftNoNum + "");
+//                    if (!mat.matches()) {
+//                        Utils.myToast(mContext, "输入的" + TV_lable.getText() + "号格式错误");
+//                        return false;
+//                    }
+//                }
+//            }
+//
+//
+//            if(ISDOUBLESIGN.equals("1")){
+//                String textTheftNoNum2 = TV_theftNo2.getText().toString().toUpperCase().trim();
+//                if (textTheftNoNum2.equals("") || textTheftNoNum2 == null) {
+//                    Utils.myToast(mContext, "请输入" + TV_lable2.getText() + "号");
+//                    return false;
+//                } else {
+//                    if (!city.contains("龙岩")) {
+//                        Pattern pat = Pattern.compile(REGULAR2);
+//                        Matcher mat = pat.matcher(textTheftNoNum2 + "");
+//                        if (!mat.matches()) {
+//                            Utils.myToast(mContext, "输入的" + TV_lable2.getText() + "号格式错误");
+//                            return false;
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
+
+
+        //TODO
         if (isScanLabel.equals("1")) {
-            String textTheftNoNum = TV_theftNo.getText().toString().toUpperCase().trim();
-            if (textTheftNoNum.equals("") || textTheftNoNum == null) {
-                Utils.myToast(mContext, "请输入" + TV_lable.getText() + "号");
+            String theftNo = TV_theftNo.getText().toString().trim();
+            if (theftNo.equals("")) {
+                ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
                 return false;
-            } else {
-                if (!city.contains("龙岩")) {
-                    Pattern pat = Pattern.compile(REGULAR);
-                    Matcher mat = pat.matcher(textTheftNoNum + "");
-                    if (!mat.matches()) {
-                        Utils.myToast(mContext, "输入的" + TV_lable.getText() + "号格式错误");
-                        return false;
-                    }
-                }
             }
-            if(ISDOUBLESIGN.equals("1")){
-                String textTheftNoNum2 = TV_theftNo2.getText().toString().toUpperCase().trim();
-                if (textTheftNoNum2.equals("") || textTheftNoNum2 == null) {
-                    Utils.myToast(mContext, "请输入" + TV_lable2.getText() + "号");
+            if (ISDOUBLESIGN.equals("1")) {
+                String theftNo2 = TV_theftNo2.getText().toString().trim();
+                if (theftNo2.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
                     return false;
-                } else {
-                    if (!city.contains("龙岩")) {
-                        Pattern pat = Pattern.compile(REGULAR2);
-                        Matcher mat = pat.matcher(textTheftNoNum2 + "");
-                        if (!mat.matches()) {
-                            Utils.myToast(mContext, "输入的" + TV_lable2.getText() + "号格式错误");
-                            return false;
-                        }
-                    }
                 }
             }
-
         }
 
-        String frame = ET_frame.getText().toString().trim();
-        if (frame.equals("") || frame == null) {
-            Utils.myToast(mContext, "请输入车架号");
-            return false;
-        }
-        String motor = ET_motor.getText().toString().trim();
-        if (motor.equals("") || motor == null) {
-            Utils.myToast(mContext, "请输入电机号");
-            return false;
-        }
-        if(city.contains("昆明")){
-            if(!Utils.check_FrameOrMotor(frame)&&!Utils.check_FrameOrMotor(motor)){
-                Utils.myToast(mContext, "电机号与车架号必须正确录入其中一个");
-                return false;
+        if (InterfaceChecker.isNewInterface()) {
+            Log.e(TAG, "新接口: " );
+            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+            //新接口方式
+            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+
+            Log.e(TAG, "标签数: "+signTypes.size() );
+            if (signTypes.size() == 1) {
+                Log.e(TAG, "1个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
+            } else if (signTypes.size() == 2||signTypes.size() == 3) {
+                Log.e(TAG, "2个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
+                String theftNo2 = TV_theftNo2.getText().toString().trim();
+                if (theftNo2.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
+                    return false;
+                }
+            }
+        }else{
+            Log.e(TAG, "老接口: " );
+            //老接口方式
+            if (ISDOUBLESIGN.equals("1")) {
+                Log.e(TAG, "2个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
+                String theftNo2 = TV_theftNo2.getText().toString().trim();
+                if (theftNo2.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable2.getText().toString().trim());
+                    return false;
+                }
+            } else {
+                Log.e(TAG, "1个标签验证: " );
+                String theftNo = TV_theftNo.getText().toString().trim();
+                if (theftNo.equals("")) {
+                    ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
+                    return false;
+                }
             }
         }
+
+        String shelvesNo = ET_frame.getText().toString().toUpperCase().trim();
+        if (!RegularChecker.checkShelvesNoRegular(shelvesNo)) {
+            return false;
+        }
+        String engineNo = ET_motor.getText().toString().toUpperCase().trim();
+        if (!RegularChecker.checkEngineNoRegular(engineNo)) {
+            return false;
+        }
+
+//        String frame = ET_frame.getText().toString().trim();
+//        if (frame.equals("") || frame == null) {
+//            Utils.myToast(mContext, "请输入车架号");
+//            return false;
+//        }
+//        String motor = ET_motor.getText().toString().trim();
+//        if (motor.equals("") || motor == null) {
+//            Utils.myToast(mContext, "请输入电机号");
+//            return false;
+//        }
+//        if(city.contains("昆明")){
+//            if(!Utils.check_FrameOrMotor(frame)&&!Utils.check_FrameOrMotor(motor)){
+//                Utils.myToast(mContext, "电机号与车架号必须正确录入其中一个");
+//                return false;
+//            }
+//        }
         String color = model.getColorId();
         if (color.equals("") || color == null) {
             Utils.myToast(mContext, "请选择电动车颜色");
@@ -1152,8 +1278,8 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
             return false;
         }
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.PLATENUMBER, plateNum);
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, frame);
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, motor);
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.SHELVESNO, shelvesNo);
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.ENGINENO, engineNo);
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.BUYDATE, buyTime);
 
         return true;
