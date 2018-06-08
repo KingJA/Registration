@@ -1072,9 +1072,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 }
                 colorsList.add(sortModel);
             }
-
             colorsAdapter.notifyDataSetChanged();
-
             dialogBuilder.isCancelable(false);
             dialogBuilder.setCustomView(color_view, mContext);
             dialogBuilder.withTitle("颜色列表").withTitleColor("#333333")

@@ -3,6 +3,10 @@ package com.tdr.kingja.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,8 +19,15 @@ import com.orhanobut.logger.Logger;
 import com.tdr.kingja.base.BaseTitleActivity;
 import com.tdr.kingja.entity.CarRegisterInfo;
 import com.tdr.kingja.utils.GoUtil;
+import com.tdr.kingja.utils.ImageUtil;
+import com.tdr.kingja.view.dialog.BaseListDialog;
 import com.tdr.registration.R;
+import com.tdr.registration.activity.QRCodeScanActivity;
+import com.tdr.registration.activity.normal.RegisterCarActivity;
+import com.tdr.registration.model.BikeCode;
+import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
+import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.ToastUtil;
@@ -24,9 +35,14 @@ import com.tdr.registration.util.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
+import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -75,21 +91,59 @@ public class PowerRegisterActivity extends BaseTitleActivity {
     private CarRegisterInfo carRegisterInfo;
     private TimePickerView timePickerView;
     private static final int REQUEST_BATTERY_COUNT = 0x01;
+    private static final int REQUEST_CAMERA = 0x02;
+    private static final int REQUEST_SCANNIN_QR_CODE = 0x03;
+    private String colorId;
+    private BaseListDialog colorSelector;
+    private String photoBase64;
+    private List<BikeCode> colorList = new ArrayList<>();
+    private DbManager db;
 
-    @OnClick({R.id.ll_power_register_batteryCount, R.id.ll_power_register_buyDate, R.id.ll_power_register_color})
+    @OnClick({R.id.ll_power_register_batteryCount, R.id.ll_power_register_buyDate, R.id.ll_power_register_color, R.id
+            .iv_power_register_photo, R.id.iv_power_register_scan})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.ll_power_register_batteryCount:
                 GoUtil.goActivityForResult(this, BatteryCountSelectActivity.class, REQUEST_BATTERY_COUNT);
                 break;
             case R.id.ll_power_register_color:
+                colorSelector.show();
                 break;
             case R.id.ll_power_register_buyDate:
                 timePickerView.show();
                 break;
+            case R.id.iv_power_register_photo:
+                takePhoto();
+                break;
+            case R.id.iv_power_register_scan:
+                goScanCamera(0, true, false, "请输入二维码");
+                break;
             default:
                 break;
         }
+    }
+
+
+    private void takePhoto() {
+        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_CAMERA);
+    }
+
+    /**
+     * 扫码
+     *
+     * @param ScanType   扫描类型
+     * @param showInput  是否显示录入框
+     * @param isPlate    是否扫描车牌
+     * @param ButtonName 按钮文本
+     */
+    private void goScanCamera(int ScanType, boolean showInput, boolean isPlate, String ButtonName) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("ScanType", ScanType);
+        bundle.putBoolean("isShow", showInput);
+        bundle.putBoolean("isPlateNumber", isPlate);
+        bundle.putString("ButtonName", ButtonName);
+        ActivityUtil.goActivityForResultWithBundle(this, QRCodeScanActivity.class, bundle,
+                REQUEST_SCANNIN_QR_CODE);
     }
 
     @Override
@@ -100,15 +154,33 @@ public class PowerRegisterActivity extends BaseTitleActivity {
                     String count = data.getStringExtra("count");
                     tvPowerRegisterBatteryCount.setText(count);
                     break;
+                case REQUEST_CAMERA:
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                    ivPowerRegisterPhoto.setImageBitmap(bitmap);
+                    photoBase64 = ImageUtil.bitmapToBase64(bitmap);
+                    break;
+
+                case REQUEST_SCANNIN_QR_CODE:
+                    String result = data.getExtras().getString("result");
+                    Log.e(TAG, "result: "+result );
+                    tvPowerRegisterTagId.setText(result);
+                    break;
                 default:
                     break;
             }
         }
     }
 
+
     @Override
     public void initVariable() {
         carRegisterInfo = (CarRegisterInfo) getIntent().getSerializableExtra("carRegisterInfo");
+        db = x.getDb(DBUtils.getDb());
+        try {
+            colorList = db.selector(BikeCode.class).where("type", "=", "4").findAll();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -123,12 +195,31 @@ public class PowerRegisterActivity extends BaseTitleActivity {
 
     @Override
     protected void initView() {
+
     }
+
 
     @Override
     protected void initData() {
         tvPowerRegisterPlateName.setText(carRegisterInfo.getPlateNumber());
         initDateSelector();
+        initColorSelector();
+    }
+
+    private void initColorSelector() {
+        colorSelector = new BaseListDialog<BikeCode>(this, colorList) {
+            @Override
+            protected void fillLvData(List<BikeCode> list, int position, TextView tv) {
+                tv.setText(list.get(position).getName());
+            }
+
+            @Override
+            protected void onItemSelect(BikeCode colorBean) {
+                tvPowerRegisterColor.setText(colorBean.getName());
+                colorId = colorBean.getCodeId();
+                Log.e(TAG, "colorId: " + colorId);
+            }
+        };
     }
 
     private void initDateSelector() {

@@ -19,6 +19,7 @@ import butterknife.Unbinder;
  * Email:kingjavip@gmail.com
  */
 public abstract class BaseTitleActivity extends BaseActivity {
+    protected String TAG=getClass().getSimpleName();
 
     protected View rootView;
     private TextView tvTitleTitle;
