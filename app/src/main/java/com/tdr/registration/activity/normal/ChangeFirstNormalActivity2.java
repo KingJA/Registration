@@ -258,7 +258,7 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
 
     private String cardType = "";//车辆类型
 
-    private ElectricCarModel model;
+    private ElectricCarModel  model = new ElectricCarModel();
     private List<PhotoModel> photoModels = new ArrayList<>();
 
     private String REGULAR = "";
@@ -288,11 +288,17 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
         GetReady();
         SetPhotoList();
         initView();
-        model = new ElectricCarModel();
+
         Utils.ClearData();
         initData();
     }
     private void initView() {
+        Bundle bundle = (Bundle) getIntent().getExtras();
+        if (bundle != null) {
+            model = (ElectricCarModel) bundle.getSerializable("model");
+        }
+
+
         textTitle.setText("信息变更");
         ET_plateNumber.setTransformationMethod(new AllCapTransformationMethod(true));
         mLog.e("city=" + city);
@@ -346,6 +352,9 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
         }else if (city.contains("丽水")) {
             isManualInputPlate = false;
         }
+
+        VehiclesStorageUtils.setVehiclesAttr
+                (VehiclesStorageUtils.VEHICLETYPE,model.getVehicleType());
 
         if (InterfaceChecker.isNewInterface()) {
             Log.e(TAG, "新接口: " );
@@ -532,10 +541,7 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
     }
 
     private void initData() {
-        Bundle bundle = (Bundle) getIntent().getExtras();
-        if (bundle != null) {
-            model = (ElectricCarModel) bundle.getSerializable("model");
-        }
+
         DrawableList = new ArrayList<PhotoListAdapter.DrawableList>();
         repairList();
         VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.CARTYPE, model.getCARTYPE());

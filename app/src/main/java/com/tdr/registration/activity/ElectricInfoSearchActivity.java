@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.kunming.ChangeFirstKunMingActivity;
 import com.tdr.registration.activity.normal.ChangeFirstNormalActivity2;
@@ -194,6 +195,7 @@ public class ElectricInfoSearchActivity extends BaseActivity implements View.OnC
                     @Override
                     public void callBack(String result) {
                         if (result != null) {
+                            Logger.json(result);
                             Utils.LOGE("Pan", result);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);

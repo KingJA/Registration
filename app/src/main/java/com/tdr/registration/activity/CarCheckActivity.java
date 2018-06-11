@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.base.BaseActivity;
 import com.tdr.registration.data.ParsingQR;
@@ -63,15 +64,16 @@ public class CarCheckActivity extends BaseActivity {
 
     private final static int SCANNIN_GREQUEST_CODE = 1991;//二维码扫描回调
     private ParsingQR mQR;
-    private String locCityName="";
+    private String locCityName = "";
     private Activity mActivity;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carcheck);
         ButterKnife.bind(this);
         mContext = this;
-        mActivity=this;
+        mActivity = this;
         intent = new Intent();
         mQR = new ParsingQR();
         initView();
@@ -80,7 +82,7 @@ public class CarCheckActivity extends BaseActivity {
     private void initView() {
         textTitle.setText("车辆查询");
         locCityName = (String) SharedPreferencesUtils.get("locCityName", "");
-        if(locCityName.contains("天津")){
+        if (locCityName.contains("天津")) {
             editPlateNumber.setHint("请输入电动自行车车牌");
         }
         mProgressHUD = new ZProgressHUD(this);
@@ -102,7 +104,8 @@ public class CarCheckActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("isPlateNumber", true);
                 bundle.putString("activity", "");
-                ActivityUtil.goActivityForResultWithBundle(CarCheckActivity.this, QRCodeScanActivity.class, bundle, SCANNIN_GREQUEST_CODE);
+                ActivityUtil.goActivityForResultWithBundle(CarCheckActivity.this, QRCodeScanActivity.class, bundle,
+                        SCANNIN_GREQUEST_CODE);
                 break;
             case R.id.btn_search:
                 if (TextUtils.isEmpty(editPlateNumber.getText().toString()
@@ -116,6 +119,8 @@ public class CarCheckActivity extends BaseActivity {
                 }
                 queryPlateNumber();
                 break;
+            default:
+                break;
         }
     }
 
@@ -126,10 +131,12 @@ public class CarCheckActivity extends BaseActivity {
         map.put("W_CPH", editPlateNumber.getText().toString().toUpperCase().trim());
         map.put("W_FDJH", editEngineNumber.getText().toString().trim());
         map.put("W_CJH", editShelvesNumber.getText().toString().trim());
-        WebServiceUtils.callWebService(mActivity,(String) SharedPreferencesUtils.get("apiUrl", ""), Constants.WEBSERVER_CHECKSTOLENVEHICLE, map, new WebServiceUtils.WebServiceCallBack() {
+        WebServiceUtils.callWebService(mActivity, (String) SharedPreferencesUtils.get("apiUrl", ""), Constants
+                .WEBSERVER_CHECKSTOLENVEHICLE, map, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(String result) {
                 if (result != null) {
+                    Logger.json(result);
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         int errorCode = jsonObject.getInt("ErrorCode");
@@ -146,7 +153,8 @@ public class CarCheckActivity extends BaseActivity {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("ElectricCar", json.toString());
                                 bundle.putInt("type", 0);
-                                ActivityUtil.goActivityWithBundle(CarCheckActivity.this, CheckShowActivity.class, bundle);
+                                ActivityUtil.goActivityWithBundle(CarCheckActivity.this, CheckShowActivity.class,
+                                        bundle);
 //                                finish();
                             } else if (type == 4) {
                                 JSONObject json = jsonObject.getJSONObject("ElectricCar");
@@ -155,7 +163,7 @@ public class CarCheckActivity extends BaseActivity {
                         } else if (errorCode == 1) {
                             mProgressHUD.dismiss();
                             Utils.myToast(mContext, data);
-                            SharedPreferencesUtils.put("token","");
+                            SharedPreferencesUtils.put("token", "");
                             ActivityUtil.goActivityAndFinish(CarCheckActivity.this, LoginActivity.class);
                         } else {
                             mProgressHUD.dismiss();

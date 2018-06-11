@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.PhotoListAdapter;
 import com.tdr.registration.base.BaseActivity;
@@ -309,6 +310,13 @@ public class CarReissueActivity2 extends BaseActivity implements LGImgCompressor
         if (bundle != null) {
             this.model = (ElectricCarModel) bundle.getSerializable("model");
         }
+        Logger.d("HasRFID:"+model.getHasRFID());
+        if ("0".equals(model.getHasRFID())) {
+            checkLabelA.setVisibility(View.GONE);
+            checkLabelB.setVisibility(View.GONE);
+        }
+
+
         textPlateNumber.setText(model.getPlateNumber());
         textBrand.setText(model.getVehicleBrandName());
         textOwner.setText(model.getOwnerName());

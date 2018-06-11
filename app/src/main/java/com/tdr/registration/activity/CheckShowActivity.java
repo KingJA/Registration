@@ -269,6 +269,17 @@ public class CheckShowActivity extends BaseActivity {
         RV_PhotoList.setAdapter(PLA);
     }
     private void initView() {
+        Bundle bundle = (Bundle) getIntent().getExtras();
+        if (bundle != null) {
+            electricCar = bundle.getString("ElectricCar");
+            Log.e("Pan","electricCar"+electricCar);
+            type = bundle.getInt("type");
+        }
+        textDeal.setVisibility(View.GONE);
+
+        model = mGson.fromJson(electricCar, new TypeToken<ElectricCarModel>() {
+        }.getType());
+
         showLayout = (FrameLayout) findViewById(R.id.show_layout);
         showPic = (DragImageView) findViewById(R.id.show_pic);
         closeImg = (ImageView) findViewById(R.id.close_img);
@@ -313,6 +324,7 @@ public class CheckShowActivity extends BaseActivity {
             relativePlateType.setVisibility(View.VISIBLE);
         }
 
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE,model.getVehicleType());
         if (InterfaceChecker.isNewInterface()) {
             Log.e(TAG, "新接口: " );
             Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
@@ -336,22 +348,7 @@ public class CheckShowActivity extends BaseActivity {
 
 
     private void initData() {
-        Bundle bundle = (Bundle) getIntent().getExtras();
-        if (bundle != null) {
-            electricCar = bundle.getString("ElectricCar");
-            Log.e("Pan","electricCar"+electricCar);
-            type = bundle.getInt("type");
-        }
 
-//        if (type == 0) {
-//            textDeal.setVisibility(View.GONE);
-//        } else {
-//            textDeal.setVisibility(View.VISIBLE);
-//        }
-        textDeal.setVisibility(View.GONE);
-
-        model = mGson.fromJson(electricCar, new TypeToken<ElectricCarModel>() {
-        }.getType());
 
         List<PhotoModel> pm=  model.getPhotoListFile();
 //        List<PhotoModel> photolist=new ArrayList<PhotoModel>();
