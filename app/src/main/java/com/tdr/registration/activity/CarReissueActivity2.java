@@ -314,9 +314,9 @@ public class CarReissueActivity2 extends BaseActivity implements LGImgCompressor
         if ("0".equals(model.getHasRFID())) {
             checkLabelA.setVisibility(View.GONE);
             checkLabelB.setVisibility(View.GONE);
+            LL_labelA.setVisibility(View.GONE);
+            LL_labelB.setVisibility(View.GONE);
         }
-
-
         textPlateNumber.setText(model.getPlateNumber());
         textBrand.setText(model.getVehicleBrandName());
         textOwner.setText(model.getOwnerName());
