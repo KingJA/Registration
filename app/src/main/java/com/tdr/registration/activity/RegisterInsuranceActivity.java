@@ -513,7 +513,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 }
             }
 
-
             mLog.e(i + "RemarkID:" + RemarkID);
             if (checkInsurance.isChecked()) {
                 if (RemarkID.equals("")) {
