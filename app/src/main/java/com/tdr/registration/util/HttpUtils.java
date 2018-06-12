@@ -103,9 +103,9 @@ public class HttpUtils {
         x.http().post(RP, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                httpcallback.onSuccess(result);
-                Logger.json(result);
                 mLog.e("onSuccess:" + result);
+                Logger.json(result);
+                httpcallback.onSuccess(result);
             }
 
             @Override
@@ -117,7 +117,7 @@ public class HttpUtils {
                 if(ex.getMessage().contains("timeout")){
                     Utils.showToast("访问网络超时。请检查网络状况并联系相关工作人员。");
                 }
-                mLog.e("onError:" + ex.toString());
+              Logger.d(ex.toString());
             }
 
             @Override
