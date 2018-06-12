@@ -170,6 +170,7 @@
                 <EditText
                     android:id="@+id/edit_labelB"
                     style="@style/inputText"
+                    android:enabled="false"
                     android:hint="请输入电池标签编号" />
 
             </LinearLayout>
