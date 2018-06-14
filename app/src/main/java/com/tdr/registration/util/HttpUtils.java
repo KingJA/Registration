@@ -103,16 +103,9 @@ public class HttpUtils {
         x.http().post(RP, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-<<<<<<< HEAD
                 Logger.json(result);
                 mLog.e("onSuccess:" + result);
                 httpcallback.onSuccess(result);
-
-=======
-                mLog.e("onSuccess:" + result);
-                Logger.json(result);
-                httpcallback.onSuccess(result);
->>>>>>> 109.1
             }
 
             @Override
