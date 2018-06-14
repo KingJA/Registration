@@ -160,7 +160,7 @@ public class CarRegisterInfo implements Serializable{
     private String PhotoList;
     private String OwnerName;
     private String CardId;
-    private Object Address;
+    private String Address;
     private String ResidentAddress;
     private String Phone1;
     private Object Phone2;
@@ -508,11 +508,11 @@ public class CarRegisterInfo implements Serializable{
         this.CardId = CardId;
     }
 
-    public Object getAddress() {
+    public String getAddress() {
         return Address;
     }
 
-    public void setAddress(Object Address) {
+    public void setAddress(String Address) {
         this.Address = Address;
     }
 

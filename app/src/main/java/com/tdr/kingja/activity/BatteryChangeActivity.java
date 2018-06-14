@@ -17,13 +17,14 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.kingja.supershapeview.view.SuperShapeTextView;
 import com.orhanobut.logger.Logger;
 import com.tdr.kingja.base.BaseTitleActivity;
-import com.tdr.kingja.entity.CarRegisterInfo;
+import com.tdr.kingja.entity.BatteryInfo;
+import com.tdr.kingja.utils.CheckUtil;
+import com.tdr.kingja.utils.DialogUtil;
 import com.tdr.kingja.utils.GoUtil;
 import com.tdr.kingja.utils.ImageUtil;
 import com.tdr.kingja.view.dialog.BaseListDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.QRCodeScanActivity;
-import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
@@ -42,18 +43,19 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Description:电瓶登记-登记新电瓶
+ * Description:电瓶更换-登记新电瓶
  * Create Time:2018/13/32 66:66
  * Author:KingJA
  * Email:kingjavip@gmail.com
  */
-public class PowerRegisterActivity extends BaseTitleActivity {
+public class BatteryChangeActivity extends BaseTitleActivity {
 
 
     @BindView(R.id.tv_power_register_plateName)
@@ -88,7 +90,7 @@ public class PowerRegisterActivity extends BaseTitleActivity {
     ImageView ivPowerRegisterPhoto;
     @BindView(R.id.stv_power_register)
     SuperShapeTextView stvPowerRegister;
-    private CarRegisterInfo carRegisterInfo;
+    //    private CarRegisterInfo carRegisterInfo;
     private TimePickerView timePickerView;
     private static final int REQUEST_BATTERY_COUNT = 0x01;
     private static final int REQUEST_CAMERA = 0x02;
@@ -98,9 +100,11 @@ public class PowerRegisterActivity extends BaseTitleActivity {
     private String photoBase64;
     private List<BikeCode> colorList = new ArrayList<>();
     private DbManager db;
+    private String recordId;
+    private BatteryInfo batteryInfo;
 
     @OnClick({R.id.ll_power_register_batteryCount, R.id.ll_power_register_buyDate, R.id.ll_power_register_color, R.id
-            .iv_power_register_photo, R.id.iv_power_register_scan})
+            .iv_power_register_photo, R.id.iv_power_register_scan, R.id.stv_power_register})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.ll_power_register_batteryCount:
@@ -118,9 +122,87 @@ public class PowerRegisterActivity extends BaseTitleActivity {
             case R.id.iv_power_register_scan:
                 goScanCamera(0, true, false, "请输入二维码");
                 break;
+            case R.id.stv_power_register:
+                registerBattery();
+                break;
             default:
                 break;
         }
+    }
+
+    private void registerBattery() {
+        String batteryCount = tvPowerRegisterBatteryCount.getText().toString().trim();
+        String batteryBrandName = etPowerRegisterBrandName.getText().toString().trim();
+        String batteryType = tvPowerRegisterType.getText().toString().trim();
+        String batteryColor = tvPowerRegisterColor.getText().toString().trim();
+        String batteryBuyDate = tvPowerRegisterBuyDate.getText().toString().trim();
+        String batteryTheftNo = tvPowerRegisterTagId.getText().toString().trim();
+        String batteryPrice = etPowerRegisterBuyPrice.getText().toString().trim();
+        String remark = etPowerRegisterRemark.getText().toString().trim();
+
+        Log.e(TAG, "batteryPrice: " + batteryPrice);
+        Log.e(TAG, "remark: " + remark);
+
+        if (!CheckUtil.checkEmpty(batteryCount, "请选择电池节数")
+                || !CheckUtil.checkEmpty(batteryBrandName, "请输入品牌")
+                || !CheckUtil.checkEmpty(batteryType, "请输入型号")
+                || !CheckUtil.checkEmpty(batteryColor, "请选择颜色")
+                || !CheckUtil.checkEmpty(batteryBuyDate, "请选择购买时间")) {
+            return;
+        }
+        showProgress(true);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("BATTERYID", batteryInfo.getBATTERYID());
+        map.put("ECID", batteryInfo.getECID());
+        map.put("PLATENUMBER", batteryInfo.getPLATENUMBER());
+        map.put("OWNER_NAME", batteryInfo.getOWNER_NAME());
+        map.put("OWNER_CARDID", batteryInfo.getOWNER_CARDID());
+        map.put("OWNER_CARDTYPE", batteryInfo.getOWNER_CARDTYPE() + "");
+        map.put("OWNER_PHONE", batteryInfo.getOWNER_PHONE());
+        map.put("OWNER_ADDRESS", batteryInfo.getOWNER_ADDRESS());
+        map.put("UNITID", batteryInfo.getUNITID());
+        map.put("VehicleType", batteryInfo.getVehicleType());
+        map.put("BATTERY_RECORDID", recordId);
+        map.put("BATTERY_THEFTNO", batteryTheftNo);
+        map.put("VEHICLEBRAND", batteryBrandName);
+        map.put("VEHICLEMODELS", batteryType);
+        map.put("COLORID", colorId);
+        map.put("BATTERY_QUANTITY", batteryCount);
+        map.put("BUYDATE", batteryBuyDate);
+        map.put("PRICE", batteryPrice);
+        map.put("PHOTOLIST", photoBase64);
+        map.put("REMARK", remark);
+        map.put("operate", "2");
+        JSONObject JB = new JSONObject(map);
+        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_ChangeBatter);
+        RP.setAsJsonContent(true);
+        RP.setBodyContent(JB.toString());
+        HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                showProgress(false);
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(result);
+                    int errorCode = jsonObject.getInt("ErrorCode");
+                    String data = jsonObject.getString("Data");
+                    if (errorCode == 0) {
+                        DialogUtil.showSuccess(BatteryChangeActivity.this,"电瓶更换成功");
+                    } else {
+                        ToastUtil.showToast(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onError(Throwable ex) {
+                showProgress(false);
+            }
+        });
+
+
     }
 
 
@@ -162,7 +244,7 @@ public class PowerRegisterActivity extends BaseTitleActivity {
 
                 case REQUEST_SCANNIN_QR_CODE:
                     String result = data.getExtras().getString("result");
-                    Log.e(TAG, "result: "+result );
+                    Log.e(TAG, "result: " + result);
                     tvPowerRegisterTagId.setText(result);
                     break;
                 default:
@@ -174,7 +256,7 @@ public class PowerRegisterActivity extends BaseTitleActivity {
 
     @Override
     public void initVariable() {
-        carRegisterInfo = (CarRegisterInfo) getIntent().getSerializableExtra("carRegisterInfo");
+        batteryInfo = (BatteryInfo) getIntent().getSerializableExtra("batteryInfo");
         db = x.getDb(DBUtils.getDb());
         try {
             colorList = db.selector(BikeCode.class).where("type", "=", "4").findAll();
@@ -185,7 +267,7 @@ public class PowerRegisterActivity extends BaseTitleActivity {
 
     @Override
     protected String getContentTitle() {
-        return "登记新电瓶";
+        return "电瓶更换";
     }
 
     @Override
@@ -201,7 +283,7 @@ public class PowerRegisterActivity extends BaseTitleActivity {
 
     @Override
     protected void initData() {
-        tvPowerRegisterPlateName.setText(carRegisterInfo.getPlateNumber());
+        tvPowerRegisterPlateName.setText(batteryInfo.getPLATENUMBER());
         initDateSelector();
         initColorSelector();
     }
@@ -250,6 +332,7 @@ public class PowerRegisterActivity extends BaseTitleActivity {
                     int errorCode = resultObject.getInt("ErrorCode");
                     String data = resultObject.getString("Data");
                     if (errorCode == 0) {
+                        recordId = data;
                         tvPowerRegisterRecordId.setText(data);
                     } else {
                         ToastUtil.showToast(data);
@@ -266,9 +349,9 @@ public class PowerRegisterActivity extends BaseTitleActivity {
         });
     }
 
-    public static void goActivity(Context context, CarRegisterInfo carRegisterInfo) {
-        Intent intent = new Intent(context, PowerRegisterActivity.class);
-        intent.putExtra("carRegisterInfo", carRegisterInfo);
+    public static void goActivity(Context context, BatteryInfo batteryInfo) {
+        Intent intent = new Intent(context, BatteryChangeActivity.class);
+        intent.putExtra("batteryInfo", batteryInfo);
         context.startActivity(intent);
     }
 

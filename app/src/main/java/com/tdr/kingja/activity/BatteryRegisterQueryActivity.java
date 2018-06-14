@@ -1,26 +1,20 @@
 package com.tdr.kingja.activity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.tdr.kingja.base.BaseTitleActivity;
+import com.tdr.kingja.entity.BatteryInfo;
 import com.tdr.kingja.entity.CarRegisterInfo;
 import com.tdr.kingja.utils.CheckUtil;
-import com.tdr.kingja.utils.GoUtil;
-import com.tdr.kingja.view.dialog.PowerRecycleDialog;
-import com.tdr.kingja.view.dialog.PowerChangeDialog;
 import com.tdr.kingja.view.dialog.PowerRegisterDialog;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.ElectricInfoSearchActivity;
 import com.tdr.registration.activity.LoginActivity;
-import com.tdr.registration.model.ElectricCarModel;
-import com.tdr.registration.model.ReturnModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
+import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.ToastUtil;
 import com.tdr.registration.util.Utils;
@@ -28,6 +22,7 @@ import com.tdr.registration.util.WebServiceUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.http.RequestParams;
 
 import java.util.HashMap;
 
@@ -40,8 +35,8 @@ import butterknife.OnClick;
  * Author:KingJA
  * Email:kingjavip@gmail.com
  */
-public class PowerRegisterQueryActivity extends BaseTitleActivity {
-    private static final String TAG = "PowerRegisterQueryActivity";
+public class BatteryRegisterQueryActivity extends BaseTitleActivity {
+    private static final String TAG = "BatteryRegisterQueryActivity";
     @BindView(R.id.et_plateNumber)
     EditText etPlateNumber;
 
@@ -78,7 +73,7 @@ public class PowerRegisterQueryActivity extends BaseTitleActivity {
                         } else if (errorCode == 1) {
                             ToastUtil.showToast(data);
                             SharedPreferencesUtils.put("token", "");
-                            ActivityUtil.goActivityAndFinish(PowerRegisterQueryActivity.this, LoginActivity.class);
+                            ActivityUtil.goActivityAndFinish(BatteryRegisterQueryActivity.this, LoginActivity.class);
                         } else {
                             ToastUtil.showToast(data);
                         }
@@ -101,10 +96,18 @@ public class PowerRegisterQueryActivity extends BaseTitleActivity {
             public void onCancle() {
 
             }
-
             @Override
             public void onRegister() {
-                PowerRegisterActivity.goActivity(PowerRegisterQueryActivity.this,info);
+                BatteryInfo batteryInfo = new BatteryInfo();
+                batteryInfo.setECID(info.getEcId());
+                batteryInfo.setPLATENUMBER(info.getPlateNumber());
+                batteryInfo.setOWNER_NAME(info.getOwnerName());
+                batteryInfo.setOWNER_CARDID(info.getCardId());
+                batteryInfo.setOWNER_CARDTYPE(info.getCARDTYPE());
+                batteryInfo.setOWNER_PHONE(info.getPhone1());
+                batteryInfo.setUNITID(info.getUnitID());
+                batteryInfo.setVehicleType(info.getVehicleType());
+                BatteryRegisterActivity.goActivity(BatteryRegisterQueryActivity.this, batteryInfo);
 
             }
         });

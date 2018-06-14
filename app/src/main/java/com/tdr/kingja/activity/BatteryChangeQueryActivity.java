@@ -1,67 +1,57 @@
 package com.tdr.kingja.activity;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tdr.kingja.base.BaseTitleActivity;
-import com.tdr.kingja.utils.GoUtil;
+import com.tdr.kingja.entity.BatteryInfo;
+import com.tdr.kingja.utils.CheckUtil;
+import com.tdr.kingja.view.dialog.PowerChangeDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.LoginActivity;
-import com.tdr.registration.activity.RegisterInsuranceActivity;
-import com.tdr.registration.model.InsuranceModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.ToastUtil;
-import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.VehiclesStorageUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Description:电瓶回收-查询
+ * Description:电瓶更换-查询
  * Create Time:2018/13/32 66:66
  * Author:KingJA
  * Email:kingjavip@gmail.com
  */
-public class PowerRecycleQueryActivity extends BaseTitleActivity {
-    @BindView(R.id.et_query_recordId)
-    EditText etQueryRecordId;
-    @BindView(R.id.et_query_phone)
-    EditText etQueryPhone;
+public class BatteryChangeQueryActivity extends BaseTitleActivity {
+    private static final String TAG = "BatteryRegisterQueryActivity";
+    @BindView(R.id.et_plateNumber)
+    EditText etPlateNumber;
 
-    @OnClick({R.id.stv_recycle_query, R.id.tv_recycle_unrecord_query})
-    public void click(View view) {
-        switch (view.getId()) {
-            case R.id.stv_recycle_query:
-                GoUtil.goActivity(this, PowerRecycleActivity.class);
-                break;
-            case R.id.tv_recycle_unrecord_query:
-                ToastUtil.showToast("未备案登记");
-                break;
-            default:
-                break;
-        }
+    @Override
+    public void initVariable() {
+
     }
 
-    private void getBatteryInfo() {
-       showProgress(true);
+    @OnClick({R.id.stv_power_query})
+    public void click(View view) {
+        showProgress(true);
+        String plateNumber = etPlateNumber.getText().toString().trim();
+        if (!CheckUtil.checkEmpty(plateNumber, "请输入查询关键字")) {
+            return;
+        }
+        showProgress(true);
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("PLATENUMBER", "");
+        map.put("PLATENUMBER", plateNumber);
         map.put("OWNER_PHONE", "");
         map.put("BATTERY_RECORDID", "");
         JSONObject JB = new JSONObject(map);
@@ -77,17 +67,18 @@ public class PowerRecycleQueryActivity extends BaseTitleActivity {
                 try {
                     jsonObject = new JSONObject(result);
                     int errorCode = jsonObject.getInt("ErrorCode");
+                    String data = jsonObject.getString("Data");
                     if (errorCode == 0) {
+                        BatteryInfo batteryInfo = new Gson().fromJson(data, BatteryInfo.class);
+                        showBatteryChangeDialog(batteryInfo);
 
                     } else if (errorCode == 1) {
-                        String data = jsonObject.getString("Data");
                         ToastUtil.showToast(data);
                         SharedPreferencesUtils.put("token", "");
-                        ActivityUtil.goActivityAndFinish(PowerRecycleQueryActivity.this, LoginActivity
+                        ActivityUtil.goActivityAndFinish(BatteryChangeQueryActivity.this, LoginActivity
                                 .class);
                     } else {
-                        String errorMsg = jsonObject.getString("Data");
-                        Utils.showToast(errorMsg);
+                       ToastUtil.showToast(data);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -100,24 +91,36 @@ public class PowerRecycleQueryActivity extends BaseTitleActivity {
             }
         });
     }
-    @Override
-    public void initVariable() {
 
+    private void showBatteryChangeDialog(final BatteryInfo info) {
+        final PowerChangeDialog powerChangeDialog = new PowerChangeDialog(this, info);
+        powerChangeDialog.setOnDoubleClickListener(new PowerChangeDialog.OnDoubleClickListener() {
+            @Override
+            public void onCancle() {
+            }
+
+            @Override
+            public void onChange() {
+                BatteryChangeActivity.goActivity(BatteryChangeQueryActivity.this,info);
+
+            }
+        });
+        powerChangeDialog.show();
     }
+
 
     @Override
     protected String getContentTitle() {
-        return "电瓶回收";
+        return "电瓶更换";
     }
 
     @Override
     protected int getContentId() {
-        return R.layout.activity_power_recycle_query;
+        return R.layout.activity_power_query;
     }
 
     @Override
     protected void initView() {
-
     }
 
     @Override
@@ -129,4 +132,5 @@ public class PowerRecycleQueryActivity extends BaseTitleActivity {
     protected void initNet() {
 
     }
+
 }

@@ -157,7 +157,7 @@
 
         <RelativeLayout
             android:background="@drawable/sel_left_tr2gray"
-            android:id="@+id/rl_doubledialog_left"
+            android:id="@+id/rl_left"
             android:padding="12dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
 
         <RelativeLayout
             android:background="@drawable/sel_right_tr2gray"
-            android:id="@+id/rl_doubledialog_right"
+            android:id="@+id/rl_right"
             android:padding="12dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

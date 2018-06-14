@@ -20,8 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.tdr.kingja.activity.PowerRecycleQueryActivity;
-import com.tdr.kingja.activity.PowerRegisterQueryActivity;
+import com.tdr.kingja.activity.BatteryChangeQueryActivity;
+import com.tdr.kingja.activity.BatteryRecycleQueryActivity;
+import com.tdr.kingja.activity.BatteryRegisterQueryActivity;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.DX_PreRegistrationQueryActivity;
 import com.tdr.registration.activity.DX_PreRegistration_Car_Activity;
@@ -635,13 +636,13 @@ public class BusinessFragment extends Fragment {
                         ActivityUtil.goActivity(getActivity(), LabelBindingCarQueryActivity.class);
                         break;
                     case "10111"://电瓶备案登记
-                        ActivityUtil.goActivity(getActivity(), PowerRegisterQueryActivity.class);
+                        ActivityUtil.goActivity(getActivity(), BatteryRegisterQueryActivity.class);
                         break;
                     case "10112"://电瓶更换
-                        ActivityUtil.goActivity(getActivity(), PowerRecycleQueryActivity.class);
+                        ActivityUtil.goActivity(getActivity(), BatteryChangeQueryActivity.class);
                         break;
                     case "10113"://电瓶回收
-                        ActivityUtil.goActivity(getActivity(), PowerRecycleQueryActivity.class);
+                        ActivityUtil.goActivity(getActivity(), BatteryRecycleQueryActivity.class);
                         break;
                     default:
                         break;

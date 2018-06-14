@@ -57,24 +57,37 @@
 
         <!--电瓶备案登记-查询-->
         <activity
-            android:name="com.tdr.kingja.activity.PowerRegisterQueryActivity"
+            android:name="com.tdr.kingja.activity.BatteryRegisterQueryActivity"
             android:screenOrientation="portrait"/>
         <!--电瓶备案登记-登记新电瓶-->
         <activity
-            android:name="com.tdr.kingja.activity.PowerRegisterActivity"
+            android:name="com.tdr.kingja.activity.BatteryRegisterActivity"
             android:screenOrientation="portrait"/>
         <!--电瓶回收-查询-->
         <activity
-            android:name="com.tdr.kingja.activity.PowerRecycleQueryActivity"
+            android:name="com.tdr.kingja.activity.BatteryRecycleQueryActivity"
             android:screenOrientation="portrait"/>
         <!--电瓶回收-回收-->
         <activity
-            android:name="com.tdr.kingja.activity.PowerRecycleActivity"
+            android:name="com.tdr.kingja.activity.BatteryRecycleActivity"
             android:screenOrientation="portrait"/>
 
         <!--电池数量选择界面-->
         <activity
             android:name="com.tdr.kingja.activity.BatteryCountSelectActivity"
+            android:screenOrientation="portrait"/>
+        <!--电池更换查询界面-->
+        <activity
+            android:name="com.tdr.kingja.activity.BatteryChangeQueryActivity"
+            android:screenOrientation="portrait"/>
+        <!--电池更换界面-->
+        <activity
+            android:name="com.tdr.kingja.activity.BatteryChangeActivity"
+            android:screenOrientation="portrait"/>
+
+       <!--未备案登记回收界面-->
+        <activity
+            android:name="com.tdr.kingja.activity.BatteryUnregisteredRecycleActivity"
             android:screenOrientation="portrait"/>
 
 

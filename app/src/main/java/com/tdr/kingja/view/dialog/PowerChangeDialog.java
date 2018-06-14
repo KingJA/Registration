@@ -6,30 +6,42 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tdr.kingja.entity.BatteryInfo;
 import com.tdr.registration.R;
 
 
 public class PowerChangeDialog extends DialogBaseAlert {
-    private TextView tv_doubledialog_title;
-    private RelativeLayout rl_doubledialog_left;
-    private RelativeLayout rl_doubledialog_right;
-    private TextView tv_doubledialog_left;
-    private TextView tv_doubledialog_right;
     private OnDoubleClickListener onDoubleClickListener;
 
-    public PowerChangeDialog(Context context) {
+    private TextView mTvTitle;
+    private TextView mTvRecordId;
+    private TextView mTvOwnName;
+    private TextView mTvPhone;
+    private TextView mTvBatteryCount;
+    private TextView mTvBrand;
+    private TextView mTvType;
+    private RelativeLayout mRlLeft;
+    private RelativeLayout mRlRight;
+    private BatteryInfo batteryInfo;
+
+    public PowerChangeDialog(Context context, BatteryInfo batteryInfo) {
         super(context);
+        this.batteryInfo = batteryInfo;
     }
 
 
     @Override
     public void initView() {
         setContentView(R.layout.dialog_power_change);
-        tv_doubledialog_title = findViewById(R.id.tv_title);
-        tv_doubledialog_left = findViewById(R.id.tv_doubledialog_left);
-        tv_doubledialog_right = findViewById(R.id.tv_doubledialog_right);
-        rl_doubledialog_left = findViewById(R.id.rl_doubledialog_left);
-        rl_doubledialog_right = findViewById(R.id.rl_doubledialog_right);
+        mTvTitle = findViewById(R.id.tv_title);
+        mTvRecordId = findViewById(R.id.tv_recordId);
+        mTvOwnName = findViewById(R.id.tv_ownName);
+        mTvPhone = findViewById(R.id.tv_phone);
+        mTvBatteryCount = findViewById(R.id.tv_batteryCount);
+        mTvBrand = findViewById(R.id.tv_brand);
+        mTvType = findViewById(R.id.tv_type);
+        mRlLeft = findViewById(R.id.rl_left);
+        mRlRight = findViewById(R.id.rl_right);
 
 
     }
@@ -41,28 +53,30 @@ public class PowerChangeDialog extends DialogBaseAlert {
 
     @Override
     public void initEvent() {
-        rl_doubledialog_left.setOnClickListener(this);
-        rl_doubledialog_right.setOnClickListener(this);
-
+        mRlLeft.setOnClickListener(this);
+        mRlRight.setOnClickListener(this);
     }
 
     @Override
     public void initData() {
-//        tv_doubledialog_title.setText(title);
-//        tv_doubledialog_left.setText(leftString);
-//        tv_doubledialog_right.setText(rightString);
-
+        mTvTitle.setText(batteryInfo.getPLATENUMBER());
+        mTvRecordId.setText(batteryInfo.getBATTERY_RECORDID());
+        mTvOwnName.setText(batteryInfo.getOWNER_NAME());
+        mTvPhone.setText(batteryInfo.getOWNER_PHONE());
+        mTvBatteryCount.setText(batteryInfo.getBATTERY_QUANTITY()+"");
+        mTvBrand.setText(batteryInfo.getVEHICLEBRAND());
+        mTvType.setText(batteryInfo.getVEHICLEMODELS());
     }
 
 
     @Override
     public void childClick(View v) {
         switch (v.getId()) {
-            case R.id.rl_doubledialog_left:
+            case R.id.rl_left:
                 dismiss();
                 onDoubleClickListener.onCancle();
                 break;
-            case R.id.rl_doubledialog_right:
+            case R.id.rl_right:
                 dismiss();
                 onDoubleClickListener.onChange();
                 break;

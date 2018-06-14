@@ -26,7 +26,7 @@
                 android:text="备案号"/>
 
             <TextView
-                android:id="@+id/tv_power_register_plateName"
+                android:id="@+id/tv_battery_recycle_recordId"
                 style="@style/font_9_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -37,31 +37,6 @@
 
         <View style="@style/divider_nomal_horizontal"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="24dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="手机号"/>
-
-            <TextView
-                android:id="@+id/tv_power_register_recordId"
-                style="@style/font_9_12"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:background="@null"/>
-
-
-        </LinearLayout>
-
-        <View style="@style/divider_nomal_horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,12 +53,13 @@
                 android:text="姓名"/>
 
             <EditText
-                android:id="@+id/et_power_register_BrandName"
+                android:id="@+id/et_battery_recycle_name"
                 style="@style/font_9_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@null"
+                android:singleLine="true"
                 android:hint="请输入姓名"/>
         </LinearLayout>
 
@@ -104,8 +80,9 @@
                 android:text="联系电话"/>
 
             <EditText
-                android:id="@+id/tv_power_register_type"
+                android:id="@+id/tv_battery_recycle_phone"
                 style="@style/font_9_12"
+                android:singleLine="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -130,15 +107,14 @@
                 android:text="住址信息"/>
 
             <EditText
-                android:id="@+id/et_power_register_buyPrice"
+                android:id="@+id/tv_battery_recycle_address"
                 style="@style/font_9_12"
+                android:singleLine="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@null"
                 android:hint="请输入住址信息"/>
-
-
         </LinearLayout>
 
         <View style="@style/divider_nomal_horizontal"/>
@@ -164,10 +140,12 @@
                 android:layout_weight="3">
 
                 <ImageView
-                    android:id="@+id/iv_power_register_photo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/iv_battery_recycle_photo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:background="@mipmap/ic_add_photo"/>
+
             </FrameLayout>
 
 
@@ -176,7 +154,7 @@
         <View style="@style/divider_nomal_horizontal"/>
 
         <com.kingja.supershapeview.view.SuperShapeTextView
-            android:id="@+id/stv_power_register"
+            android:id="@+id/stv_battery_recycle"
             style="@style/font_f_15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
