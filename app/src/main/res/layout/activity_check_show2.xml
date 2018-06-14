@@ -240,6 +240,7 @@
                         android:paddingLeft="15dp">
 
                         <TextView
+                            android:id="@+id/tv_lable"
                             style="@style/showText"
                             android:layout_gravity="center_vertical"
                             android:text="车辆标签" />
@@ -271,6 +272,7 @@
                         android:paddingLeft="15dp">
 
                         <TextView
+                            android:id="@+id/tv_lable2"
                             style="@style/showText"
                             android:layout_gravity="center_vertical"
                             android:text="电池标签" />
