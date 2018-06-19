@@ -138,7 +138,6 @@ public class BlackCarDialog extends DialogBaseAlert {
                 view.setBackgroundResource(R.mipmap.ic_point_nor);
             }
             points.add(view);
-
         }
     }
 
