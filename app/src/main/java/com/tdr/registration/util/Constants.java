@@ -118,6 +118,7 @@ public class Constants {
     public static final String HTTP_AddElectricCarBattery = "/api/ElectricCarBattery/AddElectricCarBattery";//添加电池备案登记
     public static final String HTTP_ChangeBatter = "/api/ElectricCarBattery/ChangeBatter";//更换电池备案登记
     public static final String HTTP_RecoveryBattery = "/api/ElectricCarBattery/RecoveryBattery";//回收电瓶
+    public static final String HTTP_BlackCheck = "/api/BlackList/BlackCheck";//黑色检查
 
 
     /**

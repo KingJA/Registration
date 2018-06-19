@@ -203,6 +203,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                         JSONObject dataObject = new JSONObject(resultObject.getString("Data"));
                         String engineNoRegular = dataObject.getString("EngineNoRegular");
                         String shelvesNoRegular = dataObject.getString("ShelvesNoRegular");
+                        boolean blackCheck = dataObject.getBoolean("BlackCheck");
+                        SpSir.getDefault().setBlackCheck(blackCheck);
                         SpSir.getDefault().setEngineNoRegular(engineNoRegular);
                         SpSir.getDefault().setShelvesNoRegular(shelvesNoRegular);
                         String signTypes = dataObject.getString("SignType");

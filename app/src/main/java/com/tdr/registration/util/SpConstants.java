@@ -13,6 +13,8 @@ public class SpConstants {
     public static final String ElectroCarSignTypes = "ElectroCarSignTypes";
     public static final String ThreeElectroCarSignTypes = "ThreeElectroCarSignTypes";
     public static final String BindTagVehicleType = "BindTagVehicleType";
+    public static final String BlackCheck = "BlackCheck";
     public static final String EMPTY = "";
+    public static final boolean FALSE = false;
     public static final int ZERO = 0;
 }
