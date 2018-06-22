@@ -951,6 +951,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 String shelvesNo = etShelvesNo.getText().toString().trim();
                 if (!"*".equals(shelvesNo)) {
                     checkBlackCar(shelvesNo);
+                }else{
+                    checkPlateNumber();
                 }
 
                 break;

@@ -576,27 +576,28 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
 
     private void SendMSG() {
         String IsConfirm = (String) SharedPreferencesUtils.get("IsConfirm", "");
-        if (IsConfirm.equals("1")) {
-            ConfirmInsuranceList.setPlateNumber(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER));
-            ConfirmInsuranceList.setName(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.OWNERNAME));
-            ConfirmInsuranceList.setCardType(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE));
-            ConfirmInsuranceList.setCardID(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.IDENTITY));
-            ConfirmInsuranceList.setPhone(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PHONE1));
-            mLog.e("PlateNumber=" + ConfirmInsuranceList.getPlateNumber());
-            mLog.e("Name=" + ConfirmInsuranceList.getName());
-            mLog.e("CardType=" + ConfirmInsuranceList.getCardType());
-            mLog.e("CardID=" + ConfirmInsuranceList.getCardID());
-            mLog.e("Phone=" + ConfirmInsuranceList.getPhone());
-
-            Bundle bundle = new Bundle();
-            ArrayList list = new ArrayList();
-            list.add(ConfirmInsuranceList);
-            bundle.putParcelableArrayList("ConfirmInsurance", list);
-            ActivityUtil.goActivityForResultWithBundle(this, ConfirmationInsuranceActivity.class,
-                    bundle, CONFIRMATION_INSURANCE);
-        } else {
-            sendMsg();
-        }
+//        if (IsConfirm.equals("1")) {
+//            ConfirmInsuranceList.setPlateNumber(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER));
+//            ConfirmInsuranceList.setName(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.OWNERNAME));
+//            ConfirmInsuranceList.setCardType(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE));
+//            ConfirmInsuranceList.setCardID(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.IDENTITY));
+//            ConfirmInsuranceList.setPhone(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PHONE1));
+//            mLog.e("PlateNumber=" + ConfirmInsuranceList.getPlateNumber());
+//            mLog.e("Name=" + ConfirmInsuranceList.getName());
+//            mLog.e("CardType=" + ConfirmInsuranceList.getCardType());
+//            mLog.e("CardID=" + ConfirmInsuranceList.getCardID());
+//            mLog.e("Phone=" + ConfirmInsuranceList.getPhone());
+//
+//            Bundle bundle = new Bundle();
+//            ArrayList list = new ArrayList();
+//            list.add(ConfirmInsuranceList);
+//            bundle.putParcelableArrayList("ConfirmInsurance", list);
+//            ActivityUtil.goActivityForResultWithBundle(this, ConfirmationInsuranceActivity.class,
+//                    bundle, CONFIRMATION_INSURANCE);
+//        } else {
+//            sendMsg();
+//        }
+        sendMsg();
     }
 
     @Override
