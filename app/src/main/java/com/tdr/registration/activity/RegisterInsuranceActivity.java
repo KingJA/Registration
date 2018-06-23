@@ -203,14 +203,15 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         String interfaceVersion = (String) SharedPreferencesUtils.get("InterfaceVersion", "0");
         if ("1".equals(interfaceVersion)) {
             Log.e(TAG, "interfaceVersion:"+interfaceVersion+" 保险从服务器获取: " );
-            if (TextUtils.isEmpty(insurancesStr)) {
-                getInsuranceData();
-            }else{
-                List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
-                        TypeToken<List<InsuranceModel>>() {
-                        }.getType());
-                fillInsuranceData(insurances);
-            }
+//            if (TextUtils.isEmpty(insurancesStr)) {
+//                getInsuranceData();
+//            }else{
+//                List<InsuranceModel> insurances = new Gson().fromJson(insurancesStr, new
+//                        TypeToken<List<InsuranceModel>>() {
+//                        }.getType());
+//                fillInsuranceData(insurances);
+//            }
+            getInsuranceData();
 
         } else {
             Log.e(TAG, "interfaceVersion:"+interfaceVersion+" 保险从本地获取: " );
