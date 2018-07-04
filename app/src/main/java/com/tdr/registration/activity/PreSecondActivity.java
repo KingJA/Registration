@@ -347,8 +347,17 @@ public class PreSecondActivity extends BaseActivity implements AdapterView.OnIte
         }
         String phone1 = editOwnerPhone1.getText().toString().trim();
         if (phone1.equals("")) {
-            Utils.myToast(mContext, "请输入联系方式1");
+            Utils.myToast(mContext, "请输入车主联系手机");
             return false;
+        } else {
+            if (!phone1.substring(0, 1).equals("1")) {
+                Utils.myToast(mContext, "请输入正确的手机号码");
+                return false;
+            }
+            if (phone1.length() != 11) {
+                Utils.myToast(mContext, "输入的手机号码长度不符");
+                return false;
+            }
         }
 
         if (!locCityName.contains("昆明") && !locCityName.contains("天津") && !locCityName.contains("南宁")) {
