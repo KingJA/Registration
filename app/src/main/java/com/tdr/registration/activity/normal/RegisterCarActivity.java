@@ -949,7 +949,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 }
                 //TODO
                 String shelvesNo = etShelvesNo.getText().toString().trim();
-                if (!"*".equals(shelvesNo)) {
+                if (!"*".equals(shelvesNo)&&InterfaceChecker.isCheckBlack()) {
                     checkBlackCar(shelvesNo);
                 }else{
                     checkPlateNumber();

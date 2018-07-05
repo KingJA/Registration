@@ -19,8 +19,6 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.WebServiceUtils;
-import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
 
 import org.json.JSONException;
@@ -32,7 +30,6 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * 电信预登记统计
