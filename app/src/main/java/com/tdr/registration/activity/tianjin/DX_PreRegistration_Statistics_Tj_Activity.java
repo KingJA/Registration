@@ -141,7 +141,7 @@ public class DX_PreRegistration_Statistics_Tj_Activity extends Activity implemen
         RequestParams rp = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_VehicleBoardStatisticsAPP);
         rp.addBodyParameter("startDate", TV_startTime.getText().toString().trim()+" 00:00:00");
-        rp.addBodyParameter("endDate", TV_startTime.getText().toString().trim()+" 23:59:59");
+        rp.addBodyParameter("endDate", TV_endTime.getText().toString().trim()+" 23:59:59");
         //错误
         cancelable = HttpUtils.get(rp, new HttpUtils.HttpCallBack() {
             @Override
