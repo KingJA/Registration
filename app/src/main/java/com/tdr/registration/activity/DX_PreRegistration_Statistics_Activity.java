@@ -138,8 +138,6 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
         Logger.d("httpurl:"+((String) SharedPreferencesUtils.get("httpUrl", "")).trim());
         rp.addBodyParameter("startDate", TV_startTime.getText().toString().trim()+" 00:00:00");
         rp.addBodyParameter("endDate", TV_endTime.getText().toString().trim()+" 23:59:59");
-        Logger.d("startDate:"+TV_startTime.getText().toString().trim()+" 00:00:00");
-        Logger.d("endDate:"+TV_startTime.getText().toString().trim()+" 23:59:59");
         cancelable = HttpUtils.get(rp, new HttpUtils.HttpCallBack() {
             @Override
             public void onSuccess(String result) {

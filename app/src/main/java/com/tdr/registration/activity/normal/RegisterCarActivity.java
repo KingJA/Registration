@@ -459,6 +459,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         mLog.e("REGULAR:" + REGULAR);
         mLog.e("REGULAR2:" + REGULAR2);
         mLog.e("ISDOUBLESIGN:" + ISDOUBLESIGN);
+        Logger.json(BI.getPhotoConfig());
         try {
             JSONArray JA = new JSONArray(BI.getPhotoConfig());
             JSONObject JB;
