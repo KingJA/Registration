@@ -26,7 +26,9 @@ public class InterfaceChecker {
     public static boolean isNewInterface() {
         return NEW_INTERFACE.equals(SpSir.getDefault().getInterfaceVersion());
     }
-
+    public static boolean isCheckBlack() {
+        return NEW_INTERFACE.equals(SpSir.getDefault().getInterfaceVersion())&&SpSir.getDefault().getBlackCheck();
+    }
     /**
      * 设置电动车VehicleType 1,三轮车VehicleType 5 配置
      *

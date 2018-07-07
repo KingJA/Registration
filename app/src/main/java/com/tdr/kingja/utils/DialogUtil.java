@@ -21,7 +21,7 @@ public class DialogUtil {
                 .withMessage(message)
                 .isCancelableOnTouchOutside(false)
                 .withEffect(NiftyDialogBuilder.Effectstype.Fadein)
-                .withButton1Text("確定")
+                .withButton1Text("确定")
                 .setCustomView(R.layout.custom_view, activity)
                 .setButton1Click(new View.OnClickListener() {
                     @Override

@@ -16,9 +16,8 @@ import com.orhanobut.logger.Logger;
 import com.tdr.kingja.base.BaseTitleActivity;
 import com.tdr.kingja.utils.CheckUtil;
 import com.tdr.kingja.utils.DialogUtil;
-import com.tdr.kingja.utils.GoUtil;
 import com.tdr.kingja.utils.ImageUtil;
-import com.tdr.kingja.view.dialog.PowerRecycleDialog;
+import com.tdr.kingja.view.dialog.DoubleDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
@@ -89,9 +88,9 @@ public class BatteryUnregisteredRecycleActivity extends BaseTitleActivity {
     }
 
     private void showUnregisteredDialog(final String name, final String phone, final String address) {
-        PowerRecycleDialog unRegisteredRecycleDialog = new PowerRecycleDialog(this, "请核对是否本人回收", "收购有风险，举报有义务，违法必追究",
+        DoubleDialog unRegisteredRecycleDialog = new DoubleDialog(this, "请核对是否本人回收", "收购有风险，举报有义务，违法必追究",
                 "取消", "确定");
-        unRegisteredRecycleDialog.setOnDoubleClickListener(new PowerRecycleDialog.OnDoubleClickListener() {
+        unRegisteredRecycleDialog.setOnDoubleClickListener(new DoubleDialog.OnDoubleClickListener() {
             @Override
             public void onCancle() {
             }

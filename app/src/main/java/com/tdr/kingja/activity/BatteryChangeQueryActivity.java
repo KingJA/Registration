@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.tdr.kingja.base.BaseTitleActivity;
 import com.tdr.kingja.entity.BatteryInfo;
 import com.tdr.kingja.utils.CheckUtil;
+import com.tdr.kingja.view.dialog.DoubleDialog;
 import com.tdr.kingja.view.dialog.PowerChangeDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.LoginActivity;
@@ -44,7 +45,6 @@ public class BatteryChangeQueryActivity extends BaseTitleActivity {
 
     @OnClick({R.id.stv_power_query})
     public void click(View view) {
-        showProgress(true);
         String plateNumber = etPlateNumber.getText().toString().trim();
         if (!CheckUtil.checkEmpty(plateNumber, "请输入查询关键字")) {
             return;
@@ -101,13 +101,26 @@ public class BatteryChangeQueryActivity extends BaseTitleActivity {
 
             @Override
             public void onChange() {
-                BatteryChangeActivity.goActivity(BatteryChangeQueryActivity.this,info);
-
+                showTipDialog(info);
             }
         });
         powerChangeDialog.show();
     }
 
+    public void showTipDialog(final BatteryInfo info) {
+        DoubleDialog doubleDialog = new DoubleDialog(this, "提示", "请核实原电瓶是否本人持有，违法必究","不是","是");
+        doubleDialog.setOnDoubleClickListener(new DoubleDialog.OnDoubleClickListener() {
+            @Override
+            public void onCancle() {
+            }
+
+            @Override
+            public void onConfirm() {
+                BatteryChangeActivity.goActivity(BatteryChangeQueryActivity.this,info);
+            }
+        });
+        doubleDialog.show();
+    }
 
     @Override
     protected String getContentTitle() {

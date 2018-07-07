@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.tdr.registration.R;
 
 
-public class PowerRecycleDialog extends DialogBaseAlert {
+public class DoubleDialog extends DialogBaseAlert {
     private Context context;
     private String message;
     private TextView tv_doubledialog_message;
@@ -23,7 +23,7 @@ public class PowerRecycleDialog extends DialogBaseAlert {
     private String rightString;
     private OnDoubleClickListener onDoubleClickListener;
 
-    public PowerRecycleDialog(Context context, String title, String message, String leftString, String rightString) {
+    public DoubleDialog(Context context, String title, String message, String leftString, String rightString) {
         super(context);
         this.context = context;
         this.title = title;
@@ -32,7 +32,7 @@ public class PowerRecycleDialog extends DialogBaseAlert {
         this.rightString = rightString;
     }
 
-    public PowerRecycleDialog(Context context, String title, String message) {
+    public DoubleDialog(Context context, String title, String message) {
         this(context, title, message, "取消", "确定");
     }
 

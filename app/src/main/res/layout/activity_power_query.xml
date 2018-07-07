@@ -7,8 +7,10 @@
               android:orientation="vertical">
 
 
+    <View style="@style/divider_nomal_horizontal"
+          android:layout_marginTop="12dp"/>
     <LinearLayout
-        android:layout_marginTop="12dp"
+
         android:padding="12dp"
         android:gravity="center_vertical"
         android:background="@color/white"
@@ -36,7 +38,7 @@
 
 
     </LinearLayout>
-
+    <View style="@style/divider_nomal_horizontal"/>
     <com.kingja.supershapeview.view.SuperShapeTextView
 
         android:id="@+id/stv_power_query"

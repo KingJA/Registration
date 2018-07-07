@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.tdr.kingja.utils.DialogUtil;
 import com.tdr.kingja.utils.GoUtil;
 import com.tdr.kingja.utils.ImageUtil;
 import com.tdr.kingja.view.dialog.BaseListDialog;
+import com.tdr.kingja.view.dialog.DoubleDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.QRCodeScanActivity;
 import com.tdr.registration.model.BikeCode;
@@ -86,25 +88,34 @@ public class BatteryChangeActivity extends BaseTitleActivity {
     ImageView ivPowerRegisterScan;
     @BindView(R.id.et_power_register_remark)
     EditText etPowerRegisterRemark;
-    @BindView(R.id.iv_power_register_photo)
-    ImageView ivPowerRegisterPhoto;
+    @BindView(R.id.iv_power_register_photo1)
+    ImageView ivPowerRegisterPhoto1;
+    @BindView(R.id.iv_power_register_photo2)
+    ImageView ivPowerRegisterPhoto2;
+    @BindView(R.id.iv_power_register_photo3)
+    ImageView ivPowerRegisterPhoto3;
     @BindView(R.id.stv_power_register)
     SuperShapeTextView stvPowerRegister;
     //    private CarRegisterInfo carRegisterInfo;
     private TimePickerView timePickerView;
     private static final int REQUEST_BATTERY_COUNT = 0x01;
-    private static final int REQUEST_CAMERA = 0x02;
-    private static final int REQUEST_SCANNIN_QR_CODE = 0x03;
+    private static final int REQUEST_PHOTO1 = 0x02;
+    private static final int REQUEST_PHOTO2 = 0x03;
+    private static final int REQUEST_PHOTO3 = 0x04;
+    private static final int REQUEST_SCANNIN_QR_CODE = 0x08;
     private String colorId;
     private BaseListDialog colorSelector;
-    private String photoBase64;
+    private String photo1;
     private List<BikeCode> colorList = new ArrayList<>();
     private DbManager db;
     private String recordId;
     private BatteryInfo batteryInfo;
+    private String photo2;
+    private String photo3;
+
 
     @OnClick({R.id.ll_power_register_batteryCount, R.id.ll_power_register_buyDate, R.id.ll_power_register_color, R.id
-            .iv_power_register_photo, R.id.iv_power_register_scan, R.id.stv_power_register})
+            .iv_power_register_photo1, R.id.iv_power_register_photo2, R.id.iv_power_register_photo3,R.id.iv_power_register_scan, R.id.stv_power_register})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.ll_power_register_batteryCount:
@@ -116,8 +127,14 @@ public class BatteryChangeActivity extends BaseTitleActivity {
             case R.id.ll_power_register_buyDate:
                 timePickerView.show();
                 break;
-            case R.id.iv_power_register_photo:
-                takePhoto();
+            case R.id.iv_power_register_photo1:
+                takePhoto(REQUEST_PHOTO1);
+                break;
+            case R.id.iv_power_register_photo2:
+                takePhoto(REQUEST_PHOTO2);
+                break;
+            case R.id.iv_power_register_photo3:
+                takePhoto(REQUEST_PHOTO3);
                 break;
             case R.id.iv_power_register_scan:
                 goScanCamera(0, true, false, "请输入二维码");
@@ -131,14 +148,14 @@ public class BatteryChangeActivity extends BaseTitleActivity {
     }
 
     private void registerBattery() {
-        String batteryCount = tvPowerRegisterBatteryCount.getText().toString().trim();
-        String batteryBrandName = etPowerRegisterBrandName.getText().toString().trim();
-        String batteryType = tvPowerRegisterType.getText().toString().trim();
+        final String batteryCount = tvPowerRegisterBatteryCount.getText().toString().trim();
+        final String batteryBrandName = etPowerRegisterBrandName.getText().toString().trim();
+        final String batteryType = tvPowerRegisterType.getText().toString().trim();
         String batteryColor = tvPowerRegisterColor.getText().toString().trim();
-        String batteryBuyDate = tvPowerRegisterBuyDate.getText().toString().trim();
-        String batteryTheftNo = tvPowerRegisterTagId.getText().toString().trim();
-        String batteryPrice = etPowerRegisterBuyPrice.getText().toString().trim();
-        String remark = etPowerRegisterRemark.getText().toString().trim();
+        final String batteryBuyDate = tvPowerRegisterBuyDate.getText().toString().trim();
+        final String batteryTheftNo = tvPowerRegisterTagId.getText().toString().trim();
+        final String batteryPrice = etPowerRegisterBuyPrice.getText().toString().trim();
+        final String remark = etPowerRegisterRemark.getText().toString().trim();
 
         Log.e(TAG, "batteryPrice: " + batteryPrice);
         Log.e(TAG, "remark: " + remark);
@@ -147,9 +164,28 @@ public class BatteryChangeActivity extends BaseTitleActivity {
                 || !CheckUtil.checkEmpty(batteryBrandName, "请输入品牌")
                 || !CheckUtil.checkEmpty(batteryType, "请输入型号")
                 || !CheckUtil.checkEmpty(batteryColor, "请选择颜色")
-                || !CheckUtil.checkEmpty(batteryBuyDate, "请选择购买时间")) {
+                || !CheckUtil.checkEmpty(batteryBuyDate, "请选择购买时间")
+                || !CheckUtil.checkEmpty(photo1, "请上传照片")) {
             return;
         }
+
+        DoubleDialog doubleDialog = new DoubleDialog(this, "提示", "是否回收电频","不回收","回收");
+        doubleDialog.setOnDoubleClickListener(new DoubleDialog.OnDoubleClickListener() {
+            @Override
+            public void onCancle() {
+                doChange(batteryCount, batteryBrandName, batteryType, batteryBuyDate, batteryTheftNo, batteryPrice, remark,"2");
+            }
+
+            @Override
+            public void onConfirm() {
+                doChange(batteryCount, batteryBrandName, batteryType, batteryBuyDate, batteryTheftNo, batteryPrice, remark,"1");
+            }
+        });
+        doubleDialog.show();
+    }
+
+    private void doChange(String batteryCount, String batteryBrandName, String batteryType, String batteryBuyDate,
+                          String batteryTheftNo, String batteryPrice, String remark,String operate) {
         showProgress(true);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("BATTERYID", batteryInfo.getBATTERYID());
@@ -170,9 +206,9 @@ public class BatteryChangeActivity extends BaseTitleActivity {
         map.put("BATTERY_QUANTITY", batteryCount);
         map.put("BUYDATE", batteryBuyDate);
         map.put("PRICE", batteryPrice);
-        map.put("PHOTOLIST", photoBase64);
+        map.put("PHOTOLIST", getPhotoList());
         map.put("REMARK", remark);
-        map.put("operate", "2");
+        map.put("operate", operate);
         JSONObject JB = new JSONObject(map);
         RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_ChangeBatter);
@@ -201,14 +237,23 @@ public class BatteryChangeActivity extends BaseTitleActivity {
                 showProgress(false);
             }
         });
-
-
     }
 
-
-    private void takePhoto() {
-        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_CAMERA);
+    private String getPhotoList() {
+        StringBuffer sb = new StringBuffer(photo1);
+        if (!TextUtils.isEmpty(photo2)) {
+            sb.append(",").append(photo2);
+        }
+        if (!TextUtils.isEmpty(photo3)) {
+            sb.append(",").append(photo3);
+        }
+        return sb.toString();
     }
+
+    private void takePhoto(int requestCode) {
+        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), requestCode);
+    }
+
 
     /**
      * 扫码
@@ -236,12 +281,21 @@ public class BatteryChangeActivity extends BaseTitleActivity {
                     String count = data.getStringExtra("count");
                     tvPowerRegisterBatteryCount.setText(count);
                     break;
-                case REQUEST_CAMERA:
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    ivPowerRegisterPhoto.setImageBitmap(bitmap);
-                    photoBase64 = ImageUtil.bitmapToBase64(bitmap);
+                case REQUEST_PHOTO1:
+                    Bitmap bitmap1 = (Bitmap) data.getExtras().get("data");
+                    ivPowerRegisterPhoto1.setImageBitmap(bitmap1);
+                    photo1 = ImageUtil.bitmapToBase64(bitmap1);
                     break;
-
+                case REQUEST_PHOTO2:
+                    Bitmap bitmap2 = (Bitmap) data.getExtras().get("data");
+                    ivPowerRegisterPhoto2.setImageBitmap(bitmap2);
+                    photo2 = ImageUtil.bitmapToBase64(bitmap2);
+                    break;
+                case REQUEST_PHOTO3:
+                    Bitmap bitmap3 = (Bitmap) data.getExtras().get("data");
+                    ivPowerRegisterPhoto3.setImageBitmap(bitmap3);
+                    photo3 = ImageUtil.bitmapToBase64(bitmap3);
+                    break;
                 case REQUEST_SCANNIN_QR_CODE:
                     String result = data.getExtras().getString("result");
                     Log.e(TAG, "result: " + result);
@@ -272,7 +326,7 @@ public class BatteryChangeActivity extends BaseTitleActivity {
 
     @Override
     protected int getContentId() {
-        return R.layout.activity_power_register;
+        return R.layout.activity_power_change;
     }
 
     @Override
@@ -298,8 +352,7 @@ public class BatteryChangeActivity extends BaseTitleActivity {
             @Override
             protected void onItemSelect(BikeCode colorBean) {
                 tvPowerRegisterColor.setText(colorBean.getName());
-                colorId = colorBean.getCodeId();
-                Log.e(TAG, "colorId: " + colorId);
+                colorId = colorBean.getCode();
             }
         };
     }

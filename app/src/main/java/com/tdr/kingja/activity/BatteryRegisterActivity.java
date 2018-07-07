@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -18,16 +19,13 @@ import com.kingja.supershapeview.view.SuperShapeTextView;
 import com.orhanobut.logger.Logger;
 import com.tdr.kingja.base.BaseTitleActivity;
 import com.tdr.kingja.entity.BatteryInfo;
-import com.tdr.kingja.entity.CarRegisterInfo;
 import com.tdr.kingja.utils.CheckUtil;
 import com.tdr.kingja.utils.DialogUtil;
 import com.tdr.kingja.utils.GoUtil;
 import com.tdr.kingja.utils.ImageUtil;
 import com.tdr.kingja.view.dialog.BaseListDialog;
 import com.tdr.registration.R;
-import com.tdr.registration.activity.HomeActivity;
 import com.tdr.registration.activity.QRCodeScanActivity;
-import com.tdr.registration.activity.RegisterInsuranceActivity;
 import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
@@ -36,8 +34,6 @@ import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.ToastUtil;
 import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.VehiclesStorageUtils;
-import com.tdr.registration.view.niftydialog.NiftyDialogBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,25 +87,34 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
     ImageView ivPowerRegisterScan;
     @BindView(R.id.et_power_register_remark)
     EditText etPowerRegisterRemark;
-    @BindView(R.id.iv_power_register_photo)
-    ImageView ivPowerRegisterPhoto;
+    @BindView(R.id.iv_power_register_photo1)
+    ImageView ivPowerRegisterPhoto1;
+    @BindView(R.id.iv_power_register_photo2)
+    ImageView ivPowerRegisterPhoto2;
+    @BindView(R.id.iv_power_register_photo3)
+    ImageView ivPowerRegisterPhoto3;
     @BindView(R.id.stv_power_register)
     SuperShapeTextView stvPowerRegister;
     //    private CarRegisterInfo carRegisterInfo;
     private TimePickerView timePickerView;
     private static final int REQUEST_BATTERY_COUNT = 0x01;
-    private static final int REQUEST_CAMERA = 0x02;
-    private static final int REQUEST_SCANNIN_QR_CODE = 0x03;
+    private static final int REQUEST_PHOTO1 = 0x02;
+    private static final int REQUEST_PHOTO2 = 0x03;
+    private static final int REQUEST_PHOTO3 = 0x04;
+    private static final int REQUEST_SCANNIN_QR_CODE = 0x08;
     private String colorId;
     private BaseListDialog colorSelector;
-    private String photoBase64;
+    private String photo1;
     private List<BikeCode> colorList = new ArrayList<>();
     private DbManager db;
     private String recordId;
     private BatteryInfo batteryInfo;
+    private String photo2;
+    private String photo3;
 
     @OnClick({R.id.ll_power_register_batteryCount, R.id.ll_power_register_buyDate, R.id.ll_power_register_color, R.id
-            .iv_power_register_photo, R.id.iv_power_register_scan, R.id.stv_power_register})
+            .iv_power_register_photo1, R.id.iv_power_register_photo2, R.id.iv_power_register_photo3, R.id
+            .iv_power_register_scan, R.id.stv_power_register})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.ll_power_register_batteryCount:
@@ -121,8 +126,14 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
             case R.id.ll_power_register_buyDate:
                 timePickerView.show();
                 break;
-            case R.id.iv_power_register_photo:
-                takePhoto();
+            case R.id.iv_power_register_photo1:
+                takePhoto(REQUEST_PHOTO1);
+                break;
+            case R.id.iv_power_register_photo2:
+                takePhoto(REQUEST_PHOTO2);
+                break;
+            case R.id.iv_power_register_photo3:
+                takePhoto(REQUEST_PHOTO3);
                 break;
             case R.id.iv_power_register_scan:
                 goScanCamera(0, true, false, "请输入二维码");
@@ -153,7 +164,7 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
                 || !CheckUtil.checkEmpty(batteryType, "请输入型号")
                 || !CheckUtil.checkEmpty(batteryColor, "请选择颜色")
                 || !CheckUtil.checkEmpty(batteryBuyDate, "请选择购买时间")
-                || !CheckUtil.checkEmpty(photoBase64, "请上传照片")) {
+                || !CheckUtil.checkEmpty(photo1, "请上传照片")) {
             return;
         }
         showProgress(true);
@@ -175,7 +186,7 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
         map.put("BATTERY_QUANTITY", batteryCount);
         map.put("BUYDATE", batteryBuyDate);
         map.put("PRICE", batteryPrice);
-        map.put("PHOTOLIST", photoBase64);
+        map.put("PHOTOLIST", getPhotoList());
         map.put("REMARK", remark);
         JSONObject JB = new JSONObject(map);
         RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
@@ -193,7 +204,7 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
                     int errorCode = jsonObject.getInt("ErrorCode");
                     String data = jsonObject.getString("Data");
                     if (errorCode == 0) {
-                        DialogUtil.showSuccess(BatteryRegisterActivity.this,"电瓶登记成功");
+                        DialogUtil.showSuccess(BatteryRegisterActivity.this, "电瓶登记成功");
                     } else {
                         ToastUtil.showToast(data);
                     }
@@ -211,9 +222,20 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
 
     }
 
+    private String getPhotoList() {
+        StringBuffer sb = new StringBuffer(photo1);
+        if (!TextUtils.isEmpty(photo2)) {
+            sb.append(",").append(photo2);
+        }
+        if (!TextUtils.isEmpty(photo3)) {
+            sb.append(",").append(photo3);
+        }
+        return sb.toString();
+    }
 
-    private void takePhoto() {
-        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_CAMERA);
+
+    private void takePhoto(int requestCode) {
+        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), requestCode);
     }
 
     /**
@@ -242,10 +264,20 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
                     String count = data.getStringExtra("count");
                     tvPowerRegisterBatteryCount.setText(count);
                     break;
-                case REQUEST_CAMERA:
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    ivPowerRegisterPhoto.setImageBitmap(bitmap);
-                    photoBase64 = ImageUtil.bitmapToBase64(bitmap);
+                case REQUEST_PHOTO1:
+                    Bitmap bitmap1 = (Bitmap) data.getExtras().get("data");
+                    ivPowerRegisterPhoto1.setImageBitmap(bitmap1);
+                    photo1 = ImageUtil.bitmapToBase64(bitmap1);
+                    break;
+                case REQUEST_PHOTO2:
+                    Bitmap bitmap2 = (Bitmap) data.getExtras().get("data");
+                    ivPowerRegisterPhoto2.setImageBitmap(bitmap2);
+                    photo2 = ImageUtil.bitmapToBase64(bitmap2);
+                    break;
+                case REQUEST_PHOTO3:
+                    Bitmap bitmap3 = (Bitmap) data.getExtras().get("data");
+                    ivPowerRegisterPhoto3.setImageBitmap(bitmap3);
+                    photo3 = ImageUtil.bitmapToBase64(bitmap3);
                     break;
 
                 case REQUEST_SCANNIN_QR_CODE:
@@ -304,8 +336,7 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
             @Override
             protected void onItemSelect(BikeCode colorBean) {
                 tvPowerRegisterColor.setText(colorBean.getName());
-                colorId = colorBean.getCodeId();
-                Log.e(TAG, "colorId: " + colorId);
+                colorId = colorBean.getCode();
             }
         };
     }

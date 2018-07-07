@@ -103,8 +103,7 @@ public class BusinessFragment extends Fragment {
             R.mipmap.ic_statistics, R.mipmap.ic_pre,
             R.mipmap.ic_insurance_claims, R.mipmap.ic_return,
             R.mipmap.ic_appointment, R.mipmap.ic_visit,
-            R.mipmap.ic_insurance_claims, R.mipmap.registration_tj,
-            R.mipmap.registration_tj_query, R.mipmap.ic_binding,
+            R.mipmap.ic_insurance_claims,  R.mipmap.ic_binding,
             R.mipmap.ic_power_register, R.mipmap.ic_power_change,
             R.mipmap.ic_power_recycle};
     private String[] funTitles = {

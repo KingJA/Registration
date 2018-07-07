@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -13,13 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kingja.supershapeview.view.SuperShapeTextView;
-import com.orhanobut.logger.Logger;
 import com.tdr.kingja.base.BaseTitleActivity;
 import com.tdr.kingja.entity.BatteryInfo;
 import com.tdr.kingja.utils.CheckUtil;
 import com.tdr.kingja.utils.DialogUtil;
 import com.tdr.kingja.utils.ImageUtil;
-import com.tdr.kingja.view.dialog.PowerRecycleDialog;
+import com.tdr.kingja.view.dialog.DoubleDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
@@ -33,7 +31,6 @@ import org.xutils.http.RequestParams;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -93,9 +90,9 @@ public class BatteryRecycleActivity extends BaseTitleActivity {
     }
 
     private void showUnregisteredDialog(final String name, final String phone, final String address) {
-        PowerRecycleDialog unRegisteredRecycleDialog = new PowerRecycleDialog(this, "请核对是否本人回收", "收购有风险，举报有义务，违法必追究",
+        DoubleDialog unRegisteredRecycleDialog = new DoubleDialog(this, "请核对是否本人回收", "收购有风险，举报有义务，违法必追究",
                 "取消", "确定");
-        unRegisteredRecycleDialog.setOnDoubleClickListener(new PowerRecycleDialog.OnDoubleClickListener() {
+        unRegisteredRecycleDialog.setOnDoubleClickListener(new DoubleDialog.OnDoubleClickListener() {
             @Override
             public void onCancle() {
             }

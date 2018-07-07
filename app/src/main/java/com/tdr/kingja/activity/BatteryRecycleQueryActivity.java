@@ -9,7 +9,7 @@ import com.tdr.kingja.base.BaseTitleActivity;
 import com.tdr.kingja.entity.BatteryInfo;
 import com.tdr.kingja.utils.CheckUtil;
 import com.tdr.kingja.utils.GoUtil;
-import com.tdr.kingja.view.dialog.PowerRecycleDialog;
+import com.tdr.kingja.view.dialog.DoubleDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.LoginActivity;
 import com.tdr.registration.util.ActivityUtil;
@@ -17,7 +17,6 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.ToastUtil;
-import com.tdr.registration.util.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,9 +54,9 @@ public class BatteryRecycleQueryActivity extends BaseTitleActivity {
     }
 
     private void showUnregisteredDialog() {
-        PowerRecycleDialog unRegisteredRecycleDialog = new PowerRecycleDialog(this, "电瓶未登记", "收购有风险，举报有义务，违法必追究",
+        DoubleDialog unRegisteredRecycleDialog = new DoubleDialog(this, "电瓶未登记", "收购有风险，举报有义务，违法必追究",
                 "取消", "确定");
-        unRegisteredRecycleDialog.setOnDoubleClickListener(new PowerRecycleDialog.OnDoubleClickListener() {
+        unRegisteredRecycleDialog.setOnDoubleClickListener(new DoubleDialog.OnDoubleClickListener() {
             @Override
             public void onCancle() {
 
