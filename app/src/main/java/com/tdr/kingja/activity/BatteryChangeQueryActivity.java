@@ -1,6 +1,5 @@
 package com.tdr.kingja.activity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 

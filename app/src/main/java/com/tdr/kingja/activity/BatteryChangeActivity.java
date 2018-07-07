@@ -169,7 +169,7 @@ public class BatteryChangeActivity extends BaseTitleActivity {
             return;
         }
 
-        DoubleDialog doubleDialog = new DoubleDialog(this, "提示", "是否回收电频","不回收","回收");
+        DoubleDialog doubleDialog = new DoubleDialog(this, "提示", "是否回收旧电瓶","不回收","回收");
         doubleDialog.setOnDoubleClickListener(new DoubleDialog.OnDoubleClickListener() {
             @Override
             public void onCancle() {

@@ -45,8 +45,6 @@ public class DoubleDialog extends DialogBaseAlert {
         tv_doubledialog_right = findViewById(R.id.tv_doubledialog_right);
         rl_doubledialog_left = findViewById(R.id.rl_doubledialog_left);
         rl_doubledialog_right = findViewById(R.id.rl_doubledialog_right);
-
-
     }
 
     @Override
@@ -67,7 +65,6 @@ public class DoubleDialog extends DialogBaseAlert {
         tv_doubledialog_title.setText(title);
         tv_doubledialog_left.setText(leftString);
         tv_doubledialog_right.setText(rightString);
-
     }
 
 
