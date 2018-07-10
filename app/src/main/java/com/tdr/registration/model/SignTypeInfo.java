@@ -6,7 +6,7 @@ package com.tdr.registration.model;
  * Author:KingJA
  * Email:kingjavip@gmail.com
  */
-public class SignType {
+public class SignTypeInfo {
     private int Number;
     private String Field;
     private String Name;
@@ -100,7 +100,7 @@ public class SignType {
 
     @Override
     public String toString() {
-        return "SignType{" +
+        return "SignTypeInfo{" +
                 "Number=" + Number +
                 ", Field='" + Field + '\'' +
                 ", Name='" + Name + '\'' +

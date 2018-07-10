@@ -45,7 +45,7 @@ import com.tdr.registration.model.BikeCode;
 import com.tdr.registration.model.ElectricCarModel;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
-import com.tdr.registration.model.SignType;
+import com.tdr.registration.model.SignTypeInfo;
 import com.tdr.registration.model.SortModel;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.AllCapTransformationMethod;
@@ -361,24 +361,24 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
             Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
             //新接口方式
-            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+            List<SignTypeInfo> signTypeInfos = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
 
-            Log.e(TAG, "标签数: "+signTypes.size() );
-            if (signTypes.size() == 1) {
+            Log.e(TAG, "标签数: "+ signTypeInfos.size() );
+            if (signTypeInfos.size() == 1) {
                 Log.e(TAG, "1个标签: " );
                 RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.GONE);
-                TV_lable.setText(signTypes.get(0).getName());
-                REGULAR=signTypes.get(0).getRegular();
-            } else if (signTypes.size() == 2||signTypes.size() == 3) {
+                TV_lable.setText(signTypeInfos.get(0).getName());
+                REGULAR= signTypeInfos.get(0).getRegular();
+            } else if (signTypeInfos.size() == 2|| signTypeInfos.size() == 3) {
                 Log.e(TAG, "2个标签: " );
                 RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.VISIBLE);
-                TV_lable.setText(signTypes.get(0).getName());
-                TV_lable2.setText(signTypes.get(1).getName());
-                REGULAR=signTypes.get(0).getRegular();
-                REGULAR2=signTypes.get(1).getRegular();
+                TV_lable.setText(signTypeInfos.get(0).getName());
+                TV_lable2.setText(signTypeInfos.get(1).getName());
+                REGULAR= signTypeInfos.get(0).getRegular();
+                REGULAR2= signTypeInfos.get(1).getRegular();
             }
         }else{
             Log.e(TAG, "老接口: " );
@@ -1195,18 +1195,18 @@ public class ChangeFirstNormalActivity2 extends BaseActivity implements View.OnC
             Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
             //新接口方式
-            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+            List<SignTypeInfo> signTypeInfos = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
 
-            Log.e(TAG, "标签数: "+signTypes.size() );
-            if (signTypes.size() == 1) {
+            Log.e(TAG, "标签数: "+ signTypeInfos.size() );
+            if (signTypeInfos.size() == 1) {
                 Log.e(TAG, "1个标签验证: " );
                 String theftNo = TV_theftNo.getText().toString().trim();
                 if (theftNo.equals("")) {
                     ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
                     return false;
                 }
-            } else if (signTypes.size() == 2||signTypes.size() == 3) {
+            } else if (signTypeInfos.size() == 2|| signTypeInfos.size() == 3) {
                 Log.e(TAG, "2个标签验证: " );
                 String theftNo = TV_theftNo.getText().toString().trim();
                 if (theftNo.equals("")) {

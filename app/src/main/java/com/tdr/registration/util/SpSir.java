@@ -80,6 +80,15 @@ public class SpSir {
         return get(SpConstants.BlackCheck, SpConstants.FALSE);
     }
 
+    public void setBatteryTHEFTNO(String value) {
+        save(SpConstants.BatteryTHEFTNO, value);
+    }
+
+    public String getBatteryTHEFTNO() {
+        return get(SpConstants.BatteryTHEFTNO, SpConstants.EMPTY);
+    }
+
+
 
     public void setBindTagVehicleType(String value) {
         save(SpConstants.BindTagVehicleType, value);

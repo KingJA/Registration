@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +34,7 @@ import com.tdr.registration.model.ElectricCarModel;
 import com.tdr.registration.model.ImageInfo;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
-import com.tdr.registration.model.SignType;
+import com.tdr.registration.model.SignTypeInfo;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
@@ -45,7 +44,6 @@ import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
-import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.DragImageView;
 
 
@@ -54,7 +52,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
-import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -330,17 +327,17 @@ public class CheckShowActivity extends BaseActivity {
             Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
             //新接口方式
-            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+            List<SignTypeInfo> signTypeInfos = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
 
-            Log.e(TAG, "标签数: "+signTypes.size() );
-            if (signTypes.size() == 1) {
+            Log.e(TAG, "标签数: "+ signTypeInfos.size() );
+            if (signTypeInfos.size() == 1) {
                 Log.e(TAG, "1个标签: " );
-                TV_lable.setText(signTypes.get(0).getName());
-            } else if (signTypes.size() == 2||signTypes.size() == 3) {
+                TV_lable.setText(signTypeInfos.get(0).getName());
+            } else if (signTypeInfos.size() == 2|| signTypeInfos.size() == 3) {
                 Log.e(TAG, "2个标签: " );
-                TV_lable.setText(signTypes.get(0).getName());
-                TV_lable2.setText(signTypes.get(1).getName());
+                TV_lable.setText(signTypeInfos.get(0).getName());
+                TV_lable2.setText(signTypeInfos.get(1).getName());
             }
         }
 

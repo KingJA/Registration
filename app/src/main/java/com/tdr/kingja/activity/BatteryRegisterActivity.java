@@ -31,6 +31,7 @@ import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
 import com.tdr.registration.util.HttpUtils;
+import com.tdr.registration.util.InterfaceChecker;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.ToastUtil;
 import com.tdr.registration.util.Utils;
@@ -283,7 +284,16 @@ public class BatteryRegisterActivity extends BaseTitleActivity {
                 case REQUEST_SCANNIN_QR_CODE:
                     String result = data.getExtras().getString("result");
                     Log.e(TAG, "result: " + result);
-                    tvPowerRegisterTagId.setText(result);
+                    if (InterfaceChecker.hasBatteryTHEFTNO()) {
+                        Log.e(TAG, "新接口: ");
+                        if (InterfaceChecker.checkBatteryTHEFTNO(result)) {
+                            Log.e(TAG, "验证: ");
+                            tvPowerRegisterTagId.setText(result);
+                        }
+                    } else {
+                        Log.e(TAG, "老接口: " );
+                        tvPowerRegisterTagId.setText(result);
+                    }
                     break;
                 default:
                     break;
