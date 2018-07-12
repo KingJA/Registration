@@ -101,7 +101,7 @@ public interface OnItemClickLitener {
             holder.itemView.setTag("add");
             holder.clear.setVisibility(View.GONE);
             holder.name.setVisibility(View.GONE);
-            holder.photo.setBackgroundResource(R.mipmap.image_add);
+            holder.photo.setBackgroundResource(R.mipmap.ic_add_photo);
             if (position == number) {
                 holder.itemView.setVisibility(View.GONE);
             }

@@ -76,7 +76,7 @@ public class ImageAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if (position == bitmaps.size()) {
-            holder.imageAdd.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.image_add));
+            holder.imageAdd.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_add_photo));
             if (position == number) {
                 holder.imageAdd.setVisibility(View.GONE);
             }

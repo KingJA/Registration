@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:paddingTop="24dp"
+        android:paddingBottom="12dp"
+        android:paddingRight="12dp"
+        android:paddingLeft="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginBottom="6dp"
+            android:id="@+id/tv_title"
+            style="@style/font_3_18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0456525"/>
+
+        <TextView
+            style="@style/font_red_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="当前车辆已有备案登记的电瓶"/>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                style="@style/font_3_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="备案号"/>
+
+            <TextView
+                android:id="@+id/tv_recordId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="AAADDD255"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                style="@style/font_3_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="所有者姓名"/>
+
+            <TextView
+                android:id="@+id/tv_ownName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="Mical"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                style="@style/font_3_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系方式"/>
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="330322222211112222"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                style="@style/font_3_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="电瓶节数"/>
+
+            <TextView
+                android:id="@+id/tv_batteryCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:text="18888888888"/>
+        </RelativeLayout>    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                style="@style/font_3_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="品牌"/>
+
+            <TextView
+                android:id="@+id/tv_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:text="544"/>
+        </RelativeLayout>    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                style="@style/font_3_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="型号"/>
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:text="18888888888"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <View style="@style/divider_nomal_horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:background="@drawable/sel_left_tr2gray"
+            android:id="@+id/rl_left"
+            android:padding="12dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/tv_cancle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="取消"
+                style="@style/font_9_16" />
+        </RelativeLayout>
+
+        <View style="@style/divider_nomal_vertical" />
+
+        <RelativeLayout
+            android:background="@drawable/sel_right_tr2gray"
+            android:id="@+id/rl_right"
+            android:padding="12dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/tv_change"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="更换电瓶"
+                style="@style/font_blue_16" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

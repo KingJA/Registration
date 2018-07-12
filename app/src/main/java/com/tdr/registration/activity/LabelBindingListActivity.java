@@ -241,8 +241,10 @@ public class LabelBindingListActivity extends Activity {
             viewHolder.TV_BindingTime.setText("绑定时间:" + Label.getBindTime());
             if (Label.getSIGNTYPE() < 3) {
                 viewHolder.TV_Replace.setVisibility(View.GONE);
+                viewHolder.TV_Unbundling.setVisibility(View.GONE);
             }else{
                 viewHolder.TV_Replace.setVisibility(View.VISIBLE);
+                viewHolder.TV_Unbundling.setVisibility(View.VISIBLE);
             }
 
             viewHolder.TV_Replace.setOnClickListener(new View.OnClickListener() {

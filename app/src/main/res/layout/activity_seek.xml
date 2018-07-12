@@ -252,7 +252,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:background="@mipmap/image_choice" />
+                    android:background="@mipmap/ic_arrow_right" />
             </RelativeLayout>
 
             <ImageView style="@style/dividerLine" />

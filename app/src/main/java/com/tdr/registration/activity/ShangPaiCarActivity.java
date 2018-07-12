@@ -438,8 +438,9 @@ public class ShangPaiCarActivity extends BaseActivity implements AdapterView.OnI
         mLog.e("REGULAR:" + REGULAR);
         mLog.e("REGULAR2:" + REGULAR2);
         mLog.e("ISDOUBLESIGN:" + ISDOUBLESIGN);
+        Logger.json(BI.getPrephotoConfig());
         try {
-            JSONArray JA = new JSONArray(BI.getPhotoConfig());
+            JSONArray JA = new JSONArray(BI.getPrephotoConfig());
             JSONObject JB;
             PhotoListInfo pli;
             for (int i = 0; i < JA.length(); i++) {

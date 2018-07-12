@@ -27,16 +27,15 @@ public class Constants {
     /**
      * Webservice参数
      */
-//    public static final String WEBSERVER_URL = "https://ykgcapp.iotone.cn/OpenService.asmx";// WebServices访问地址，正式服
+//    public static final String WEBSERVER_URL = "https://ykgcapp.iotone.cn/OpenService.asmx";// WebServices1访问地址，正式服
 //    public static final String WEBSERVER_URL = "http://183.129.130.119:48012/OpenService.asmx";// WebServices访问地址，测试====>外网
-    public static final String WEBSERVER_URL = "http://10.130.0.104:8012/OpenService.asmx";// WebServices访问地址，测试====>内网
+    public static final String WEBSERVER_URL = "http://10.130.0.104:8012/OpenService.asmx";// WebServices访问地址，测试====>测试内网
+//    public static final String WEBSERVER_URL = "http://183.129.130.119:58012/OpenService.asmx";// WebServices访问地址，测试====>测试外网
 //    public static final String WEBSERVER_URL = "http://10.130.0.104:8071/OpenService.asmx";// WebServices访问地址，测试
 //    public static final String WEBSERVER_URL = "http://10.130.0.104:8812/OpenService.asmx";// WebServices访问地址，测试
 //    public static final String WEBSERVER_URL = "http://183.129.130.119:52000/OpenService.asmx";// WebServices访问地址，测试
     public static final String WEBSERVER_NAMESPACE = "http://tempuri.org/";// 命名空间
-
     public static final String WEBSERVER_OPENAPI = "OpenApi";//通用接口
-
     public static final String WEBSERVER_LOGIN = "Login";//登录接口1.0
     public static final String WEBSERVER_LOGIN_V2 = "Login_V2";//登陆接口2.0
     public static final String WEBSERVER_GETINSURANCECONFIGURE = "GetInsuranceConfigure";//保险相关配置
@@ -112,6 +111,12 @@ public class Constants {
     public static final String HTTP_VehicleBoardStatisticsAPP = "/api/Statistics/VehicleBoardStatisticsAPP";//上牌统计
     public static final String HTTP_ElectricPager = "/api/ElectricCar/ElectricPager";//上牌查询
     public static final String HTTP_ToElectricCar = "/api/ElectricCar/ToElectricCar";//免费上牌转备案登记
+    public static final String HTTP_GetRecordNo = "/api/ElectricCarBattery/GetRecordNo";//获取备案登记好号
+    public static final String HTTP_GetBatteryModel = "/api/ElectricCarBattery/GetBatteryModel";//获取电瓶信息
+    public static final String HTTP_AddElectricCarBattery = "/api/ElectricCarBattery/AddElectricCarBattery";//添加电池备案登记
+    public static final String HTTP_ChangeBatter = "/api/ElectricCarBattery/ChangeBatter";//更换电池备案登记
+    public static final String HTTP_RecoveryBattery = "/api/ElectricCarBattery/RecoveryBattery";//回收电瓶
+    public static final String HTTP_BlackCheck = "/api/BlackList/BlackCheck";//黑色检查
 
 
     /**

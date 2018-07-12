@@ -513,7 +513,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
                 }
             }
 
-
             mLog.e(i + "RemarkID:" + RemarkID);
             if (checkInsurance.isChecked()) {
                 if (RemarkID.equals("")) {
@@ -577,27 +576,28 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
 
     private void SendMSG() {
         String IsConfirm = (String) SharedPreferencesUtils.get("IsConfirm", "");
-        if (IsConfirm.equals("1")) {
-            ConfirmInsuranceList.setPlateNumber(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER));
-            ConfirmInsuranceList.setName(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.OWNERNAME));
-            ConfirmInsuranceList.setCardType(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE));
-            ConfirmInsuranceList.setCardID(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.IDENTITY));
-            ConfirmInsuranceList.setPhone(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PHONE1));
-            mLog.e("PlateNumber=" + ConfirmInsuranceList.getPlateNumber());
-            mLog.e("Name=" + ConfirmInsuranceList.getName());
-            mLog.e("CardType=" + ConfirmInsuranceList.getCardType());
-            mLog.e("CardID=" + ConfirmInsuranceList.getCardID());
-            mLog.e("Phone=" + ConfirmInsuranceList.getPhone());
-
-            Bundle bundle = new Bundle();
-            ArrayList list = new ArrayList();
-            list.add(ConfirmInsuranceList);
-            bundle.putParcelableArrayList("ConfirmInsurance", list);
-            ActivityUtil.goActivityForResultWithBundle(this, ConfirmationInsuranceActivity.class,
-                    bundle, CONFIRMATION_INSURANCE);
-        } else {
-            sendMsg();
-        }
+//        if (IsConfirm.equals("1")) {
+//            ConfirmInsuranceList.setPlateNumber(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PLATENUMBER));
+//            ConfirmInsuranceList.setName(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.OWNERNAME));
+//            ConfirmInsuranceList.setCardType(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.CARDTYPE));
+//            ConfirmInsuranceList.setCardID(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.IDENTITY));
+//            ConfirmInsuranceList.setPhone(VehiclesStorageUtils.getVehiclesAttr(VehiclesStorageUtils.PHONE1));
+//            mLog.e("PlateNumber=" + ConfirmInsuranceList.getPlateNumber());
+//            mLog.e("Name=" + ConfirmInsuranceList.getName());
+//            mLog.e("CardType=" + ConfirmInsuranceList.getCardType());
+//            mLog.e("CardID=" + ConfirmInsuranceList.getCardID());
+//            mLog.e("Phone=" + ConfirmInsuranceList.getPhone());
+//
+//            Bundle bundle = new Bundle();
+//            ArrayList list = new ArrayList();
+//            list.add(ConfirmInsuranceList);
+//            bundle.putParcelableArrayList("ConfirmInsurance", list);
+//            ActivityUtil.goActivityForResultWithBundle(this, ConfirmationInsuranceActivity.class,
+//                    bundle, CONFIRMATION_INSURANCE);
+//        } else {
+//            sendMsg();
+//        }
+        sendMsg();
     }
 
     @Override
@@ -773,14 +773,17 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
         HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
             @Override
             public void onSuccess(String result) {
+                mProgressHUD.dismiss();
+                Logger.d("进入成功");
                 if (result != null) {
+                    Logger.json(result);
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         int errorCode = jsonObject.getInt("ErrorCode");
                         String data = jsonObject.getString("Data");
                         if (errorCode == 0) {
-                            mProgressHUD.dismiss();
-                            if ("登记成功".equals(data)) {
+                            Logger.d("登记成功");
+                            if ("登记成功".equals(data)||"转换成功".equals(data)) {
                                 showSuccess();
                                 return;
                             }
@@ -864,7 +867,6 @@ public class RegisterInsuranceActivity extends BaseActivity implements View.OnCl
             }
         });
     }
-
     private void sendByWebService(HashMap<String, String> map, String functionName) {
         WebServiceUtils.callWebService(RegisterInsuranceActivity.this, (String) SharedPreferencesUtils.get("apiUrl",
                 ""), functionName,

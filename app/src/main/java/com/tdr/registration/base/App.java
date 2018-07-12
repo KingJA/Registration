@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.kingja.volleysir.VolleySir;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tdr.registration.model.ConfirmInsuranceModel;
@@ -105,6 +106,7 @@ public class App extends MultiDexApplication implements BleInterface.BleStatusLi
     public void onCreate() {
         super.onCreate();
         Logger.addLogAdapter(new AndroidLogAdapter());
+        VolleySir.getDefault().init(this);
         x.Ext.init(this);
 //        Logger.addLogAdapter(new AndroidLogAdapter());
         context = this;

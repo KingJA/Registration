@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:background="@color/f_bg"
+            android:orientation="vertical">
+
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="车牌号"/>
+
+            <TextView
+                android:id="@+id/tv_power_register_plateName"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@null"/>
+
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="备案号"/>
+
+            <TextView
+                android:id="@+id/tv_power_register_recordId"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@null"/>
+
+
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:id="@+id/ll_power_register_batteryCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <com.tdr.kingja.view.RequiredTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="电池节数"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:hint="请选择电池节数"
+                android:id="@+id/tv_power_register_batteryCount"
+                style="@style/font_9_12"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"/>
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@mipmap/ic_arrow_right"/>
+            </LinearLayout>  </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <com.tdr.kingja.view.RequiredTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="品牌"/>
+
+            <EditText
+                android:singleLine="true"
+                android:id="@+id/et_power_register_BrandName"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@null"
+                android:hint="请输入品牌"/>
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <com.tdr.kingja.view.RequiredTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="型号"/>
+
+            <EditText
+                android:singleLine="true"
+                android:id="@+id/tv_power_register_type"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@null"
+                android:hint="请输入型号"/>
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:id="@+id/ll_power_register_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <com.tdr.kingja.view.RequiredTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="颜色"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_power_register_color"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="请选择颜色"/>
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@mipmap/ic_arrow_right"/>
+            </LinearLayout>  </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:id="@+id/ll_power_register_buyDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <com.tdr.kingja.view.RequiredTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="购买时间"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_power_register_buyDate"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="请选择购买时间"/>
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@mipmap/ic_arrow_right"/>
+            </LinearLayout>   </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="购入价格"/>
+
+            <EditText
+                android:singleLine="true"
+                android:inputType="number"
+                android:id="@+id/et_power_register_buyPrice"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@null"
+                android:hint="请输入购入价格"/>
+
+
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="溯源标签"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_power_register_tagId"
+                    style="@style/font_9_12"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="24dp"
+                    android:background="@null"/>
+
+                <ImageView
+                    android:id="@+id/iv_power_register_scan"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@mipmap/ic_scan"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="备注"/>
+
+            <EditText
+                android:singleLine="true"
+                android:id="@+id/et_power_register_remark"
+                style="@style/font_9_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@null"/>
+
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <com.tdr.kingja.view.RequiredTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="电瓶照片"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+
+                <ImageView
+                    android:layout_marginRight="4dp"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/iv_power_register_photo1"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:background="@mipmap/ic_add_photo_require"/>
+                <ImageView
+                    android:layout_marginRight="4dp"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/iv_power_register_photo2"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:background="@mipmap/ic_add_photo"/>
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:id="@+id/iv_power_register_photo3"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:background="@mipmap/ic_add_photo"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View style="@style/divider_nomal_horizontal"/>
+
+        <com.kingja.supershapeview.view.SuperShapeTextView
+            android:id="@+id/stv_power_register"
+            style="@style/font_f_15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="36dp"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="登记"
+            app:super_cornerRadius="4dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+            app:super_solidColor="@color/font_blue"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,15 +34,16 @@ import com.tdr.registration.model.ElectricCarModel;
 import com.tdr.registration.model.ImageInfo;
 import com.tdr.registration.model.PhotoListInfo;
 import com.tdr.registration.model.PhotoModel;
+import com.tdr.registration.model.SignTypeInfo;
 import com.tdr.registration.util.ActivityUtil;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.DBUtils;
+import com.tdr.registration.util.InterfaceChecker;
 import com.tdr.registration.util.RecyclerViewItemDecoration;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
 import com.tdr.registration.util.VehiclesStorageUtils;
 import com.tdr.registration.util.WebServiceUtils;
-import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.DragImageView;
 
 
@@ -138,6 +138,10 @@ public class CheckShowActivity extends BaseActivity {
     @BindView(R.id.rv_PhotoList)
     RecyclerView RV_PhotoList;
 
+    @BindView(R.id.tv_lable)
+    TextView TV_lable;
+    @BindView(R.id.tv_lable2)
+    TextView TV_lable2;
     private Context mConext;
     private Gson mGson;
     private ElectricCarModel model;
@@ -262,6 +266,17 @@ public class CheckShowActivity extends BaseActivity {
         RV_PhotoList.setAdapter(PLA);
     }
     private void initView() {
+        Bundle bundle = (Bundle) getIntent().getExtras();
+        if (bundle != null) {
+            electricCar = bundle.getString("ElectricCar");
+            Log.e("Pan","electricCar"+electricCar);
+            type = bundle.getInt("type");
+        }
+        textDeal.setVisibility(View.GONE);
+
+        model = mGson.fromJson(electricCar, new TypeToken<ElectricCarModel>() {
+        }.getType());
+
         showLayout = (FrameLayout) findViewById(R.id.show_layout);
         showPic = (DragImageView) findViewById(R.id.show_pic);
         closeImg = (ImageView) findViewById(R.id.close_img);
@@ -306,26 +321,31 @@ public class CheckShowActivity extends BaseActivity {
             relativePlateType.setVisibility(View.VISIBLE);
         }
 
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.VEHICLETYPE,model.getVehicleType());
+        if (InterfaceChecker.isNewInterface()) {
+            Log.e(TAG, "新接口: " );
+            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+            //新接口方式
+            List<SignTypeInfo> signTypeInfos = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+                    (VehiclesStorageUtils.VEHICLETYPE));
+
+            Log.e(TAG, "标签数: "+ signTypeInfos.size() );
+            if (signTypeInfos.size() == 1) {
+                Log.e(TAG, "1个标签: " );
+                TV_lable.setText(signTypeInfos.get(0).getName());
+            } else if (signTypeInfos.size() == 2|| signTypeInfos.size() == 3) {
+                Log.e(TAG, "2个标签: " );
+                TV_lable.setText(signTypeInfos.get(0).getName());
+                TV_lable2.setText(signTypeInfos.get(1).getName());
+            }
+        }
+
     }
 
 
     private void initData() {
-        Bundle bundle = (Bundle) getIntent().getExtras();
-        if (bundle != null) {
-            electricCar = bundle.getString("ElectricCar");
-            Log.e("Pan","electricCar"+electricCar);
-            type = bundle.getInt("type");
-        }
 
-//        if (type == 0) {
-//            textDeal.setVisibility(View.GONE);
-//        } else {
-//            textDeal.setVisibility(View.VISIBLE);
-//        }
-        textDeal.setVisibility(View.GONE);
-
-        model = mGson.fromJson(electricCar, new TypeToken<ElectricCarModel>() {
-        }.getType());
 
         List<PhotoModel> pm=  model.getPhotoListFile();
 //        List<PhotoModel> photolist=new ArrayList<PhotoModel>();

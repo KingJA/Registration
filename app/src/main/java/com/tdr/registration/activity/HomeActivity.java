@@ -3,20 +3,19 @@ package com.tdr.registration.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
+import com.tdr.kingja.entity.GetSettingInfo;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.HomePagerAdapter;
 import com.tdr.registration.fragment.BusinessFragment;
 import com.tdr.registration.fragment.InspectFragment;
 import com.tdr.registration.fragment.SettingFragment;
-import com.tdr.registration.model.SignType;
+import com.tdr.registration.model.SignTypeInfo;
 import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.InterfaceChecker;
@@ -189,7 +188,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void GetSetting() {
-        mLog.e("GetSetting");
+        mLog.e("获取配置接口");
         RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_GetSetting);
         HttpUtils.get(RP, new HttpUtils.HttpCallBack() {
@@ -200,20 +199,46 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                     int errorCode = resultObject.getInt("ErrorCode");
                     String data = resultObject.getString("Data");
                     if (errorCode == 0) {
-                        JSONObject dataObject = new JSONObject(resultObject.getString("Data"));
-                        String engineNoRegular = dataObject.getString("EngineNoRegular");
-                        String shelvesNoRegular = dataObject.getString("ShelvesNoRegular");
+//                        JSONObject dataObject = new JSONObject(resultObject.getString("Data"));
+//                        String engineNoRegular = dataObject.getString("EngineNoRegular");
+//                        String shelvesNoRegular = dataObject.getString("ShelvesNoRegular");
+//                        boolean blackCheck = dataObject.getBoolean("BlackCheck");
+//                        SpSir.getDefault().setBlackCheck(blackCheck);
+//                        SpSir.getDefault().setEngineNoRegular(engineNoRegular);
+//                        SpSir.getDefault().setShelvesNoRegular(shelvesNoRegular);
+//                        String signTypes = dataObject.getString("SignTypeInfo");
+//                        String BatteryTHEFTNO = dataObject.getString("BatteryTHEFTNO");
+//                        SpSir.getDefault().setBatteryTHEFTNO(BatteryTHEFTNO);
+//                        List<SignTypeInfo> signTypeInfoList = mGson.fromJson(signTypes, new
+// TypeToken<List<SignTypeInfo>>() {
+//                        }.getType());
+//                        InterfaceChecker.setElectroCar(signTypeInfoList);
+//                        mLog.e("获取配置完成：");
+//
+
+                        GetSettingInfo settingInfo = new Gson().fromJson(resultObject.getString("Data"), GetSettingInfo
+                                .class);
+                        String engineNoRegular = settingInfo.getEngineNoRegular();
+                        String shelvesNoRegular = settingInfo.getShelvesNoRegular();
+                        GetSettingInfo.BatteryTHEFTNOBean batteryTHEFTNO = settingInfo.getBatteryTHEFTNO();
+                        if (batteryTHEFTNO != null) {
+                            String batteryRegular = batteryTHEFTNO.getRegular();
+                            SpSir.getDefault().setBatteryTHEFTNO(batteryRegular);
+                        }
+                        boolean blackCheck = settingInfo.isBlackCheck();
+                        SpSir.getDefault().setBlackCheck(blackCheck);
                         SpSir.getDefault().setEngineNoRegular(engineNoRegular);
                         SpSir.getDefault().setShelvesNoRegular(shelvesNoRegular);
-                        String signTypes = dataObject.getString("SignType");
-                        List<SignType> signTypeList = mGson.fromJson(signTypes, new TypeToken<List<SignType>>() {
-                        }.getType());
-                        InterfaceChecker.setElectroCar(signTypeList);
+
+                        List<SignTypeInfo> signTypeInfoList = settingInfo.getSignType();
+                        InterfaceChecker.setElectroCar(signTypeInfoList);
+                        mLog.e("获取配置完成：");
                     } else {
                         ToastUtil.showToast(data);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    mLog.e("获取配置接口错误：" + e.toString());
+//                    e.printStackTrace();
                 }
             }
 

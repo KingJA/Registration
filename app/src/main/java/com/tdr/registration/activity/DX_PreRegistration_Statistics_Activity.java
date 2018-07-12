@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.model.ShangPaiStatistics;
 import com.tdr.registration.util.ActivityUtil;
@@ -19,8 +20,6 @@ import com.tdr.registration.util.Constants;
 import com.tdr.registration.util.HttpUtils;
 import com.tdr.registration.util.SharedPreferencesUtils;
 import com.tdr.registration.util.Utils;
-import com.tdr.registration.util.WebServiceUtils;
-import com.tdr.registration.util.mLog;
 import com.tdr.registration.view.ZProgressHUD;
 
 import org.json.JSONException;
@@ -32,7 +31,6 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * 电信预登记统计
@@ -136,8 +134,10 @@ public class DX_PreRegistration_Statistics_Activity extends Activity implements 
         mProgressHUD.show();
         RequestParams rp = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
                 .HTTP_VehicleBoardStatisticsAPP);
+
+        Logger.d("httpurl:"+((String) SharedPreferencesUtils.get("httpUrl", "")).trim());
         rp.addBodyParameter("startDate", TV_startTime.getText().toString().trim()+" 00:00:00");
-        rp.addBodyParameter("endDate", TV_startTime.getText().toString().trim()+" 23:59:59");
+        rp.addBodyParameter("endDate", TV_endTime.getText().toString().trim()+" 23:59:59");
         cancelable = HttpUtils.get(rp, new HttpUtils.HttpCallBack() {
             @Override
             public void onSuccess(String result) {

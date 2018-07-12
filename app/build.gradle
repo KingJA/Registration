@@ -101,6 +101,8 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'com.kingja.volleysir:volleysir:1.0.0'
+    implementation 'com.kingja.supershapeview:supershapeview:1.2.0'
 }
 
 def releaseTime() {

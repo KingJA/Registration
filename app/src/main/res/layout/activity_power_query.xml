@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/f_bg"
+              android:orientation="vertical">
+
+
+    <View style="@style/divider_nomal_horizontal"
+          android:layout_marginTop="12dp"/>
+    <LinearLayout
+
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/font_3_14"
+            android:layout_marginRight="12dp"
+            android:gravity="end"
+            android:text="车牌号"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/et_plateNumber"
+            style="@style/font_9_12"
+            android:hint="请输入车牌号"
+            android:background="@null"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
+    <View style="@style/divider_nomal_horizontal"/>
+    <com.kingja.supershapeview.view.SuperShapeTextView
+
+        android:id="@+id/stv_power_query"
+        style="@style/font_f_15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="查询"
+        app:super_cornerRadius="4dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp"
+        app:super_solidColor="@color/font_blue"/>
+
+</LinearLayout>

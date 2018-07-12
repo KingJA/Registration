@@ -70,7 +70,7 @@ public class SettingConfig {
      * Source : [{"name":"110报案","value":"1"},{"name":"派出所报案","value":"2"},{"name":"警综系统","value":"4"}]
      * VehicletypeSelect : null
      * EqtypeModule : 2
-     * SignType : [{"Number":1,"Field":"THEFTNO","Name":"车辆标签","Value":"32803","Alias":"920","EqType":"8023",
+     * SignTypeInfo : [{"Number":1,"Field":"THEFTNO","Name":"车辆标签","Value":"32803","Alias":"920","EqType":"8023",
      * "Regular":null,"VehicleType":"1","isValid":true}]
      * InsSysConfig : {"EnableSynergy":false,"CrossFeedback":true,"InsSysDUUnits":"","DeployAutoIns":6,
      * "EnableOffset":true,"OffsetLNG":0,"OffsetLAT":-9.0E-5}

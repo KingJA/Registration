@@ -73,6 +73,23 @@ public class SpSir {
         return get(SpConstants.ThreeElectroCarSignTypes, SpConstants.EMPTY);
     }
 
+    public void setBlackCheck(boolean value) {
+        save(SpConstants.BlackCheck, value);
+    }
+
+    public boolean getBlackCheck() {
+        return get(SpConstants.BlackCheck, SpConstants.FALSE);
+    }
+
+    public void setBatteryTHEFTNO(String value) {
+        save(SpConstants.BatteryTHEFTNO, value);
+    }
+
+    public String getBatteryTHEFTNO() {
+        return get(SpConstants.BatteryTHEFTNO, SpConstants.EMPTY);
+    }
+
+
 
     public void setBindTagVehicleType(String value) {
         save(SpConstants.BindTagVehicleType, value);
@@ -86,9 +103,16 @@ public class SpSir {
     public String get(String key, String defValue) {
         return defaultSp.getString(key, defValue);
     }
+    public boolean get(String key, boolean defValue) {
+        return defaultSp.getBoolean(key, defValue);
+    }
 
     private void save(String key, String value) {
         defaultSp.edit().putString(key, value).apply();
+    }
+
+    private void save(String key, boolean value) {
+        defaultSp.edit().putBoolean(key, value).apply();
     }
 
     private void save(String key, int value) {

@@ -32,6 +32,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
+import com.tdr.kingja.entity.BlackCar;
+import com.tdr.kingja.view.dialog.BlackCarDialog;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.BrandActivity;
 import com.tdr.registration.activity.ConfirmationInsuranceActivity;
@@ -59,7 +61,7 @@ import com.tdr.registration.model.PhotoModel;
 import com.tdr.registration.model.PreModel;
 import com.tdr.registration.model.PreRegistrationModel;
 import com.tdr.registration.model.ShangPaiInfo;
-import com.tdr.registration.model.SignType;
+import com.tdr.registration.model.SignTypeInfo;
 import com.tdr.registration.model.SortModel;
 import com.tdr.registration.model.UploadInsuranceModel;
 import com.tdr.registration.util.ActivityUtil;
@@ -349,7 +351,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     @Override
     protected void onResume() {
         super.onResume();
-
         Utils.getServerTime();
     }
 
@@ -455,6 +456,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         mLog.e("REGULAR:" + REGULAR);
         mLog.e("REGULAR2:" + REGULAR2);
         mLog.e("ISDOUBLESIGN:" + ISDOUBLESIGN);
+        Logger.json(BI.getPhotoConfig());
         try {
             JSONArray JA = new JSONArray(BI.getPhotoConfig());
             JSONObject JB;
@@ -711,7 +713,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         if (preregisters.equals("") && preregistration.equals("") && photoListFile.equals("")) {
             return;
         }
-         if (!photoListFile.equals("")) {
+        if (!photoListFile.equals("")) {
             List<PhotoModel> list = mGson.fromJson(photoListFile, new TypeToken<List<PhotoModel>>() {
             }.getType());
             Logger.d("|photoList:" + list.size());
@@ -724,7 +726,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 PM.setRemark(photoModel.getRemark());
                 pm.add(PM);
             }
-        }else if (!preregisters.equals("")) {
+        } else if (!preregisters.equals("")) {
             preForKMModel = mGson.fromJson(preregisters, new TypeToken<PreRegistrationModel>() {
             }.getType());
             mLog.e("Pan", "preForKMModel=" + preForKMModel.getColorName());
@@ -812,33 +814,32 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         mLog.e(isScanLabel.equals("1") ? "启用扫标签：" + isScanLabel : "禁用扫标签：" + isScanLabel);
 
 
-
         if (InterfaceChecker.isNewInterface()) {
-            Log.e(TAG, "新接口: " );
-            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
+            Log.e(TAG, "新接口: ");
+            Log.e(TAG, "车辆类型: " + VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
             //新接口方式
-            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+            List<SignTypeInfo> signTypeInfos = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
 
-            Log.e(TAG, "标签数: "+signTypes.size() );
-            if (signTypes.size() == 1) {
-                Log.e(TAG, "1个标签: " );
+            Log.e(TAG, "标签数: " + signTypeInfos.size());
+            if (signTypeInfos.size() == 1) {
+                Log.e(TAG, "1个标签: ");
                 RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.GONE);
-                TV_lable.setText(signTypes.get(0).getName());
-                REGULAR=signTypes.get(0).getRegular();
-            } else if (signTypes.size() == 2||signTypes.size() == 3) {
-                Log.e(TAG, "2个标签: " );
+                TV_lable.setText(signTypeInfos.get(0).getName());
+                REGULAR = signTypeInfos.get(0).getRegular();
+            } else if (signTypeInfos.size() == 2 || signTypeInfos.size() == 3) {
+                Log.e(TAG, "2个标签: ");
                 RL_scanTheft.setVisibility(View.VISIBLE);
                 RL_scanTheft2.setVisibility(View.VISIBLE);
-                TV_lable.setText(signTypes.get(0).getName());
-                TV_lable2.setText(signTypes.get(1).getName());
-                REGULAR=signTypes.get(0).getRegular();
-                REGULAR2=signTypes.get(1).getRegular();
+                TV_lable.setText(signTypeInfos.get(0).getName());
+                TV_lable2.setText(signTypeInfos.get(1).getName());
+                REGULAR = signTypeInfos.get(0).getRegular();
+                REGULAR2 = signTypeInfos.get(1).getRegular();
             }
-        }else{
-            Log.e(TAG, "老接口: " );
+        } else {
+            Log.e(TAG, "老接口: ");
             //老接口方式
             if (ISDOUBLESIGN.equals("1")) {
                 RL_scanTheft.setVisibility(View.VISIBLE);
@@ -848,10 +849,8 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 RL_scanTheft2.setVisibility(View.GONE);
             }
         }
-        Log.e(TAG, "REGULAR: "+REGULAR );
-        Log.e(TAG, "REGULAR2: "+REGULAR2 );
-
-
+        Log.e(TAG, "REGULAR: " + REGULAR);
+        Log.e(TAG, "REGULAR2: " + REGULAR2);
 
 
         if (city.contains("天津")) {
@@ -946,15 +945,90 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 if (!checkData()) {
                     break;
                 }
-                if (isScanCard.equals("1")) {
-                    ScanType = "ScanPlate";
-                    CheckPlate("请输入车牌号");
-                } else {
-                    dialogShow(3, "确认车牌号");
+                //TODO
+                String shelvesNo = etShelvesNo.getText().toString().trim();
+                if (!"*".equals(shelvesNo)&&InterfaceChecker.isCheckBlack()) {
+                    checkBlackCar(shelvesNo);
+                }else{
+                    checkPlateNumber();
                 }
+
                 break;
             default:
                 break;
+        }
+    }
+
+    private void checkBlackCar(String shelvesNo) {
+        mProgressHUD.show();
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("SHELVESNO", shelvesNo);
+        JSONObject JB = new JSONObject(map);
+        RequestParams RP = new RequestParams(((String) SharedPreferencesUtils.get("httpUrl", "")).trim() + Constants
+                .HTTP_BlackCheck);
+        RP.setAsJsonContent(true);
+        RP.setBodyContent(JB.toString());
+        HttpUtils.postK(RP, new HttpUtils.HttpCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                mProgressHUD.dismiss();
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(result);
+                    int errorCode = jsonObject.getInt("ErrorCode");
+                    if (errorCode == 0) {
+                        String data = jsonObject.getString("Data");
+                        List<BlackCar> blackCars = new Gson().fromJson(data, new
+                                TypeToken<List<BlackCar>>
+                                        () {
+                                }.getType());
+                        if (blackCars != null) {
+                            showBlackCarDialog(blackCars);
+                        }else{
+                            checkPlateNumber();
+                        }
+
+                    } else {
+                        //错误
+                        String errorMsg = jsonObject.getString("Data");
+                        Utils.showToast(errorMsg);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex) {
+                mProgressHUD.dismiss();
+            }
+        });
+
+    }
+
+    private void showBlackCarDialog(List<BlackCar> blackCars) {
+        BlackCarDialog blackCarDialog = new BlackCarDialog(this,blackCars);
+        blackCarDialog.setOnDoubleClickListener(new BlackCarDialog.OnDoubleClickListener() {
+            @Override
+            public void onCancle() {
+                checkPlateNumber();
+            }
+
+            @Override
+            public void onConfirm() {
+                onBackPressed();
+
+            }
+        });
+        blackCarDialog.show();
+    }
+
+    private void checkPlateNumber() {
+        if (isScanCard.equals("1")) {
+            ScanType = "ScanPlate";
+            CheckPlate("请输入车牌号");
+        } else {
+            dialogShow(3, "确认车牌号");
         }
     }
 
@@ -1014,7 +1088,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
 
             return;
         }
-
         dialogBuilder = NiftyDialogBuilder.getInstance(this);
 
         if (flag == 0) {
@@ -1072,9 +1145,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 }
                 colorsList.add(sortModel);
             }
-
             colorsAdapter.notifyDataSetChanged();
-
             dialogBuilder.isCancelable(false);
             dialogBuilder.setCustomView(color_view, mContext);
             dialogBuilder.withTitle("颜色列表").withTitleColor("#333333")
@@ -1295,7 +1366,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     }
 
     private void queryPreByFreeShangPaiPlateNumber(String plateNumber) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"1");
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI, "1");
 
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<String, String>();
@@ -1348,7 +1419,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
     }
 
     private void queryPreByPlateNumber(String plateNumber) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"");
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI, "");
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -1434,7 +1505,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
      * @param queryIdentity
      */
     private void queryPreByIdentity(String queryIdentity) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"");
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI, "");
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -1812,7 +1883,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
      * 获取电信预登记
      */
     private void query(String registerId) {
-        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI,"");
+        VehiclesStorageUtils.setVehiclesAttr(VehiclesStorageUtils.IS_FREE_SHANGPAI, "");
         mProgressHUD.show();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessToken", (String) SharedPreferencesUtils.get("token", ""));
@@ -2324,23 +2395,23 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
         }
 
         if (InterfaceChecker.isNewInterface()) {
-            Log.e(TAG, "新接口: " );
-            Log.e(TAG, "车辆类型: " +VehiclesStorageUtils.getVehiclesAttr
+            Log.e(TAG, "新接口: ");
+            Log.e(TAG, "车辆类型: " + VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
             //新接口方式
-            List<SignType> signTypes = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
+            List<SignTypeInfo> signTypeInfos = InterfaceChecker.getSignTypes(VehiclesStorageUtils.getVehiclesAttr
                     (VehiclesStorageUtils.VEHICLETYPE));
 
-            Log.e(TAG, "标签数: "+signTypes.size() );
-            if (signTypes.size() == 1) {
-                Log.e(TAG, "1个标签验证: " );
+            Log.e(TAG, "标签数: " + signTypeInfos.size());
+            if (signTypeInfos.size() == 1) {
+                Log.e(TAG, "1个标签验证: ");
                 String theftNo = TV_theftNo.getText().toString().trim();
                 if (theftNo.equals("")) {
                     ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
                     return false;
                 }
-            } else if (signTypes.size() == 2||signTypes.size() == 3) {
-                Log.e(TAG, "2个标签验证: " );
+            } else if (signTypeInfos.size() == 2 || signTypeInfos.size() == 3) {
+                Log.e(TAG, "2个标签验证: ");
                 String theftNo = TV_theftNo.getText().toString().trim();
                 if (theftNo.equals("")) {
                     ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
@@ -2352,11 +2423,11 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     return false;
                 }
             }
-        }else{
-            Log.e(TAG, "老接口: " );
+        } else {
+            Log.e(TAG, "老接口: ");
             //老接口方式
             if (ISDOUBLESIGN.equals("1")) {
-                Log.e(TAG, "2个标签验证: " );
+                Log.e(TAG, "2个标签验证: ");
                 String theftNo = TV_theftNo.getText().toString().trim();
                 if (theftNo.equals("")) {
                     ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
@@ -2368,7 +2439,7 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                     return false;
                 }
             } else {
-                Log.e(TAG, "1个标签验证: " );
+                Log.e(TAG, "1个标签验证: ");
                 String theftNo = TV_theftNo.getText().toString().trim();
                 if (theftNo.equals("")) {
                     ToastUtil.showToast("请输入" + TV_lable.getText().toString().trim());
@@ -2376,9 +2447,6 @@ public class RegisterCarActivity extends BaseActivity implements AdapterView.OnI
                 }
             }
         }
-
-
-
 
         String shelvesNo = etShelvesNo.getText().toString().toUpperCase().trim();
         if (!RegularChecker.checkShelvesNoRegular(shelvesNo)) {

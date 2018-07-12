@@ -20,6 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.tdr.kingja.activity.BatteryChangeQueryActivity;
+import com.tdr.kingja.activity.BatteryRecycleQueryActivity;
+import com.tdr.kingja.activity.BatteryRegisterQueryActivity;
 import com.tdr.registration.R;
 import com.tdr.registration.activity.DX_PreRegistrationQueryActivity;
 import com.tdr.registration.activity.DX_PreRegistration_Car_Activity;
@@ -38,7 +41,6 @@ import com.tdr.registration.activity.longyan.PreSearchActivity;
 import com.tdr.registration.activity.normal.RegisterCarActivity;
 import com.tdr.registration.activity.tianjin.AppointmentQueryActivity;
 import com.tdr.registration.activity.tianjin.DX_PreRegistration_Statistics_Tj_Activity;
-import com.tdr.registration.activity.tianjin.PreFirstActivity_TJ;
 import com.tdr.registration.adapter.MainRecyclerAdapter;
 import com.tdr.registration.adapter.RecyclerAdapter;
 import com.tdr.registration.model.BaseInfo;
@@ -102,15 +104,18 @@ public class BusinessFragment extends Fragment {
             R.mipmap.ic_statistics, R.mipmap.ic_pre,
             R.mipmap.ic_insurance_claims, R.mipmap.ic_return,
             R.mipmap.ic_appointment, R.mipmap.ic_visit,
-            R.mipmap.ic_insurance_claims, R.mipmap.registration_tj,
-            R.mipmap.registration_tj_query, R.mipmap.ic_binding};
+            R.mipmap.ic_insurance_claims,  R.mipmap.ic_binding,
+            R.mipmap.ic_power_register, R.mipmap.ic_power_change,
+            R.mipmap.ic_power_recycle};
     private String[] funTitles = {
             "车辆报废", "车牌补办",
             "车辆过户", "车辆布控",
             "备案统计", "车辆预登记",
             "被盗申报", "车辆发还",
             "预约查询", "车辆回访",
-            "服务延期", "标签绑定"};//ic小标签
+            "服务延期", "标签绑定",
+            "电瓶登记", "电瓶更换",
+            "电瓶回收"};//ic小标签
     private int[] funInsurance = {R.mipmap.ic_insurance_modify};
     private String[] funInsuranceTitles = {"套餐变更"};
     private int[] funImgsNone = {R.mipmap.ic_none};
@@ -123,7 +128,9 @@ public class BusinessFragment extends Fragment {
             "3700", "2700",
             "113", "1300106",
             "600", "199",
-            "114", "122"};
+            "114", "122",
+            "10111", "10112",
+            "10113"};
 
     private MainRecyclerAdapter MRAdapter;
     private RecyclerAdapter mRecyclerAdapter;
@@ -625,11 +632,18 @@ public class BusinessFragment extends Fragment {
                         ActivityUtil.goActivityWithBundle(getActivity(), DX_PreRegistrationQueryActivity.class,
                                 bundlet);
                         break;
-                    case "122"://更换标签
-
+                    case "122"://标签绑定
                         ActivityUtil.goActivity(getActivity(), LabelBindingCarQueryActivity.class);
                         break;
-
+                    case "10111"://电瓶备案登记
+                        ActivityUtil.goActivity(getActivity(), BatteryRegisterQueryActivity.class);
+                        break;
+                    case "10112"://电瓶更换
+                        ActivityUtil.goActivity(getActivity(), BatteryChangeQueryActivity.class);
+                        break;
+                    case "10113"://电瓶回收
+                        ActivityUtil.goActivity(getActivity(), BatteryRecycleQueryActivity.class);
+                        break;
                     default:
                         break;
                 }

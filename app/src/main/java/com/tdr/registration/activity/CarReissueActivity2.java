@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 import com.tdr.registration.R;
 import com.tdr.registration.adapter.PhotoListAdapter;
 import com.tdr.registration.base.BaseActivity;
@@ -237,8 +238,10 @@ public class CarReissueActivity2 extends BaseActivity implements LGImgCompressor
             editPlateNumber.setHint("请输入电动自行车车牌");
         }
         String changetype = (String) SharedPreferencesUtils.get("ChangeType", "1,2,4");
+        mLog.e("changetype:" + changetype);
         ChangeType = changetype.split(",");
         mLog.e("ChangeType" + ChangeType);
+        //1.车牌2.车辆标签4.电池标签
         if (!check("1")) {
             checkPlateNum.setVisibility(View.GONE);
             LL_plateNumber.setVisibility(View.GONE);
@@ -308,6 +311,13 @@ public class CarReissueActivity2 extends BaseActivity implements LGImgCompressor
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
             this.model = (ElectricCarModel) bundle.getSerializable("model");
+        }
+        Logger.d("HasRFID:"+model.getHasRFID());
+        if ("0".equals(model.getHasRFID())) {
+            checkLabelA.setVisibility(View.GONE);
+            checkLabelB.setVisibility(View.GONE);
+            LL_labelA.setVisibility(View.GONE);
+            LL_labelB.setVisibility(View.GONE);
         }
         textPlateNumber.setText(model.getPlateNumber());
         textBrand.setText(model.getVehicleBrandName());
