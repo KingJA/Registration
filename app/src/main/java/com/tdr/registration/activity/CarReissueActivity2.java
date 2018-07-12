@@ -238,8 +238,10 @@ public class CarReissueActivity2 extends BaseActivity implements LGImgCompressor
             editPlateNumber.setHint("请输入电动自行车车牌");
         }
         String changetype = (String) SharedPreferencesUtils.get("ChangeType", "1,2,4");
+        mLog.e("changetype:" + changetype);
         ChangeType = changetype.split(",");
         mLog.e("ChangeType" + ChangeType);
+        //1.车牌2.车辆标签4.电池标签
         if (!check("1")) {
             checkPlateNum.setVisibility(View.GONE);
             LL_plateNumber.setVisibility(View.GONE);

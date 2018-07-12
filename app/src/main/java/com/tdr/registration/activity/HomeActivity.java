@@ -209,7 +209,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
 //                        String signTypes = dataObject.getString("SignTypeInfo");
 //                        String BatteryTHEFTNO = dataObject.getString("BatteryTHEFTNO");
 //                        SpSir.getDefault().setBatteryTHEFTNO(BatteryTHEFTNO);
-//                        List<SignTypeInfo> signTypeInfoList = mGson.fromJson(signTypes, new TypeToken<List<SignTypeInfo>>() {
+//                        List<SignTypeInfo> signTypeInfoList = mGson.fromJson(signTypes, new
+// TypeToken<List<SignTypeInfo>>() {
 //                        }.getType());
 //                        InterfaceChecker.setElectroCar(signTypeInfoList);
 //                        mLog.e("获取配置完成：");
@@ -219,12 +220,16 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                                 .class);
                         String engineNoRegular = settingInfo.getEngineNoRegular();
                         String shelvesNoRegular = settingInfo.getShelvesNoRegular();
-                        String BatteryRegular = settingInfo.getBatteryTHEFTNO().getRegular();
-                        boolean blackCheck =settingInfo.isBlackCheck();
+                        GetSettingInfo.BatteryTHEFTNOBean batteryTHEFTNO = settingInfo.getBatteryTHEFTNO();
+                        if (batteryTHEFTNO != null) {
+                            String batteryRegular = batteryTHEFTNO.getRegular();
+                            SpSir.getDefault().setBatteryTHEFTNO(batteryRegular);
+                        }
+                        boolean blackCheck = settingInfo.isBlackCheck();
                         SpSir.getDefault().setBlackCheck(blackCheck);
                         SpSir.getDefault().setEngineNoRegular(engineNoRegular);
                         SpSir.getDefault().setShelvesNoRegular(shelvesNoRegular);
-                        SpSir.getDefault().setBatteryTHEFTNO(BatteryRegular);
+
                         List<SignTypeInfo> signTypeInfoList = settingInfo.getSignType();
                         InterfaceChecker.setElectroCar(signTypeInfoList);
                         mLog.e("获取配置完成：");
@@ -232,7 +237,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                         ToastUtil.showToast(data);
                     }
                 } catch (JSONException e) {
-                    mLog.e("获取配置接口错误："+e.toString());
+                    mLog.e("获取配置接口错误：" + e.toString());
 //                    e.printStackTrace();
                 }
             }
